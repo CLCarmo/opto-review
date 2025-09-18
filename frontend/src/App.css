@@ -1,0 +1,58 @@
+/* frontend/src/App.css */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f6f9;
+  color: #333;
+  margin: 0;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #007BFF;
+  padding: 20px;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.product-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  display: flex;
+  text-align: left;
+}
+
+.product-info {
+  padding: 1.5rem;
+}
+
+.product-info h2 {
+  margin-top: 0;
+}
+
+.product-info p {
+  margin: 0.5rem 0;
+}
+
+.product-info ul {
+  padding-left: 1.2rem;
+}
