@@ -1,0 +1,125 @@
+/* src/components/FiltersSidebar.css */
+/* Estilos adaptados do seu products.css original */
+
+.sidebar-filters {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color); /* Use variáveis globais se definidas */
+    position: sticky; /* Mantém a barra visível ao rolar */
+    top: 100px; /* Ajuste conforme a altura do seu header */
+    max-height: calc(100vh - 120px); /* Limita altura */
+    overflow-y: auto; /* Adiciona scroll se necessário */
+}
+
+.sidebar-filters h3 {
+    font-size: 1.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sidebar-filters h3 i {
+    color: var(--primary-color);
+}
+
+.filter-group {
+    margin-bottom: 2rem;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.filter-group h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark); /* Use variáveis globais */
+}
+
+/* Estilo para botões de filtro (Categorias) */
+.button-filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem; /* Espaço entre botões */
+}
+
+.filter-button {
+    background: none;
+    border: none;
+    padding: 0.5rem 0; /* Apenas padding vertical */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-muted); /* Cor padrão */
+    cursor: pointer;
+    transition: color 0.2s ease, font-weight 0.2s ease;
+    text-align: left;
+    width: 100%; /* Ocupa toda a largura */
+}
+
+.filter-button:hover {
+    color: var(--primary-color);
+}
+
+.filter-button.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Estilo para inputs de preço */
+.price-filter-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-filter-inputs span {
+    color: var(--text-muted);
+}
+
+.price-input {
+    width: 100%; /* Ocupa o espaço disponível */
+    padding: 0.7rem 0.8rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    /* Remove as setinhas padrão do input number */
+    -moz-appearance: textfield; 
+}
+.price-input::-webkit-outer-spin-button,
+.price-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Opcional: Botão para aplicar filtro de preço */
+/* .apply-price-btn {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    background-color: var(--secondary-color);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+} */
+
+/* Futuro: Estilos para checkboxes de marca, etc. */
+.checkbox-filter-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+.checkbox-filter-group input[type="checkbox"] {
+    accent-color: var(--primary-color);
+}

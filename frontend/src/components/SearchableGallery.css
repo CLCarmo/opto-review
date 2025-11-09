@@ -1,0 +1,91 @@
+/* frontend/src/components/SearchableGallery.css */
+
+.gallery-search-container {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.gallery-search-input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem; /* Espaço para o ícone */
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--light-bg);
+}
+
+.input-wrapper-gallery {
+    position: relative;
+}
+
+.input-wrapper-gallery .icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px; /* Espaço para a scrollbar */
+}
+
+/* Baseado no teu cs.txt e image_483ba3.png */
+.logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    position: relative;
+    height: 110px; /* Altura fixa */
+}
+
+.logo-item img {
+    max-width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.logo-item span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.logo-item:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+/* Estilo para item selecionado */
+.logo-item.selected {
+    border-color: var(--primary-color);
+    background-color: #f0f7ff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+/* Checkmark sutil no item selecionado */
+.logo-item.selected::after {
+    content: '\f00c'; /* Código do ícone de check do Font Awesome */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    color: var(--primary-color);
+}

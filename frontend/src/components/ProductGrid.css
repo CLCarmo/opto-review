@@ -1,0 +1,20 @@
+/* src/components/ProductGrid.css */
+/* Estilos adaptados do seu products.css original */
+
+.product-grid {
+    display: grid;
+    /* Grid responsivo */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: 1.5rem; /* Espaçamento entre os cards */
+}
+
+.no-products-message {
+    grid-column: 1 / -1; /* Ocupa todas as colunas */
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    background-color: #fff;
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+}

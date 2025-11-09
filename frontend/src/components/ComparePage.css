@@ -1,0 +1,350 @@
+/* frontend/src/components/ComparePage.css */
+/* VERSÃO "REFORÇADA" (COM ESCOPO) PARA GANHAR DO CSS GLOBAL */
+
+.compare-page-wrapper .comparison-header { 
+    text-align: center; 
+    margin-bottom: 3rem; 
+}
+.compare-page-wrapper .comparison-header h1 { 
+    font-size: 3rem; 
+    font-weight: 700; 
+}
+.compare-page-wrapper .comparison-header p { 
+    font-size: 1.2rem; 
+    color: var(--text-muted); 
+}
+.compare-page-wrapper .comparison-container { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 1.5rem; 
+    align-items: flex-start; 
+}
+.compare-page-wrapper .comparison-column { 
+    background-color: #fff; 
+    border-radius: 12px; 
+    border: 1px solid var(--border-color); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+}
+
+/* --- CARD VAZIO (PLACEHOLDER) --- */
+.compare-page-wrapper .placeholder-card { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 400px; 
+    padding: 2rem; 
+    border: 2px dashed var(--border-color); 
+    border-radius: 12px; 
+    cursor: pointer; 
+    transition: background-color 0.2s ease, border-color 0.2s ease; 
+}
+.compare-page-wrapper .placeholder-card:hover { 
+    background-color: #f8f9fa; 
+    border-color: var(--primary-color); 
+}
+.compare-page-wrapper .placeholder-icon { 
+    font-size: 3rem; 
+    color: var(--text-muted); 
+    margin-bottom: 1rem; 
+}
+.compare-page-wrapper .placeholder-card span { 
+    font-weight: 600; 
+    color: var(--text-dark); 
+}
+
+/* --- CARD PREENCHIDO (REGRAS REFORÇADAS) --- */
+.compare-page-wrapper .product-summary { 
+    text-align: center; 
+    padding: 1.5rem; 
+    border-bottom: 1px solid var(--border-color); 
+    position: relative; 
+}
+.compare-page-wrapper .product-actions {
+    margin-top: 1.5rem;
+    display: flex; /* <-- ISTO AGORA VAI GANHAR */
+    gap: 0.8rem;
+    justify-content: center;
+}
+.compare-page-wrapper .product-action-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: inline-flex; /* <-- ISTO AGORA VAI GANHAR */
+    align-items: center;
+    gap: 0.5rem;
+    width: auto; /* <-- ISTO AGORA VAI GANHAR */
+}
+.compare-page-wrapper .product-action-btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+.compare-page-wrapper .product-action-btn.primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-2px);
+}
+.compare-page-wrapper .product-action-btn.secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.compare-page-wrapper .product-action-btn.secondary:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+.compare-page-wrapper .remove-btn { 
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    background: #f1f1f1; 
+    border: none; 
+    border-radius: 50%; 
+    width: 30px; 
+    height: 30px; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    color: var(--text-muted); 
+    transition: all 0.2s ease; 
+}
+.compare-page-wrapper .remove-btn:hover { 
+    background-color: #e44; 
+    color: #fff; 
+}
+.compare-page-wrapper .summary-image { 
+    width: 150px !important; /* <-- "Important" para garantir a vitória */
+    height: 150px !important; 
+    object-fit: contain; 
+    margin-bottom: 1rem; 
+    display: inline-block; /* Garante que não é 100% */
+}
+.compare-page-wrapper .summary-name { 
+    font-size: 1.2rem; 
+    font-weight: 600; 
+}
+.compare-page-wrapper .summary-name a {
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.compare-page-wrapper .summary-name a:hover {
+    color: var(--primary-color);
+}
+.compare-page-wrapper .summary-price { 
+    font-size: 1.1rem; 
+    color: var(--secondary-color); 
+    font-weight: 700; 
+}
+
+/* --- LISTA DE SPECS (REFORÇADA) --- */
+.compare-page-wrapper .spec-list { 
+    list-style: none; 
+    padding: 1.5rem; 
+    margin: 0; /* Anula o margin global de 'ul' */
+}
+.compare-page-wrapper .spec-item { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 0.75rem 0; 
+    border-bottom: 1px solid #f1f1f1; 
+    font-size: 0.9rem;
+}
+.compare-page-wrapper .spec-item:last-child { border-bottom: none; }
+.compare-page-wrapper .spec-name { 
+    font-weight: 500; 
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.compare-page-wrapper .spec-info {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: help;
+}
+.compare-page-wrapper .spec-info-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+.compare-page-wrapper .spec-info:hover .spec-info-icon {
+    transform: scale(1.1);
+    background-color: var(--secondary-color);
+}
+.compare-page-wrapper .spec-tooltip {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+    max-width: 300px;
+    white-space: normal;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.compare-page-wrapper .spec-tooltip::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid rgba(0, 0, 0, 0.9);
+}
+.compare-page-wrapper .spec-info:hover .spec-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+.compare-page-wrapper .spec-value { 
+    font-weight: 600; 
+    color: var(--text-dark); 
+}
+.compare-page-wrapper .spec-value.highlight { 
+    color: var(--secondary-color); 
+    font-weight: 700; 
+}
+.compare-page-wrapper .pros-list, 
+.compare-page-wrapper .cons-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+}
+.compare-page-wrapper .pros-list li {
+    color: #008a00;
+    margin-bottom: 0.5rem;
+    display: flex; gap: 0.5rem;
+}
+.compare-page-wrapper .cons-list li {
+    color: #c90000;
+    margin-bottom: 0.5rem;
+    display: flex; gap: 0.5rem;
+}
+
+/* --- MODAL (REFORÇADO) --- */
+.compare-page-wrapper .modal-filters { 
+    display: grid; 
+    grid-template-columns: 2fr 1fr 1fr; 
+    gap: 1rem; 
+    margin-bottom: 2rem; 
+    padding-bottom: 1.5rem; 
+    border-bottom: 1px solid var(--border-color); 
+}
+.compare-page-wrapper .modal-filters .search-input,
+.compare-page-wrapper .modal-filters select,
+.compare-page-wrapper .modal-filters .price-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+.compare-page-wrapper .modal-product-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 1.5rem; 
+    margin-top: 1rem; 
+    max-height: 70vh; 
+    overflow-y: auto; 
+}
+.compare-page-wrapper .modal-product-card { 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    padding: 1rem; 
+    text-align: center; 
+    transition: box-shadow 0.2s ease, border-color 0.2s ease; 
+    display: flex; 
+    flex-direction: column; 
+}
+.compare-page-wrapper .modal-product-card:not(.selected-for-comparison) {
+    cursor: pointer;
+}
+.compare-page-wrapper .modal-product-card:not(.selected-for-comparison):hover { 
+    border-color: var(--primary-color); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+}
+.compare-page-wrapper .modal-product-card img { 
+    width: 120px !important; /* Garante que não é 100% */
+    height: 120px; 
+    object-fit: contain; 
+    margin-bottom: 0.5rem; 
+    align-self: center; 
+}
+.compare-page-wrapper .modal-product-card h4 { 
+    font-size: 1rem; 
+    font-weight: 600; 
+    flex-grow: 1; 
+    margin-bottom: 1rem; 
+}
+.compare-page-wrapper .modal-product-card.selected-for-comparison { 
+    opacity: 0.4; 
+    cursor: not-allowed; 
+    filter: grayscale(80%); 
+}
+
+.compare-page-wrapper .modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.compare-page-wrapper .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 0;
+    border: none;
+    width: 90%;
+    max-width: 1000px;
+    height: 60%;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+.compare-page-wrapper .modal-close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 0 1rem;
+    cursor: pointer;
+}
+.compare-page-wrapper .modal-content h2 {
+    padding: 1.5rem 2rem;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+}

@@ -1,0 +1,124 @@
+/* frontend/src/components/TermCard.css */
+/* CONTROLA O ESTILO DE UM CARTÃO (FILHO) */
+
+.term-item { 
+    background-color: #fff; 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    margin-bottom: 1rem; 
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+    transition: box-shadow 0.3s ease;
+}
+
+.term-item:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.07);
+}
+
+.term-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 1.5rem; 
+    cursor: pointer; 
+}
+
+.term-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.term-title { 
+    font-size: 1.5rem; 
+    color: var(--text-dark);
+}
+
+/* --- ESTILOS ADAPTADOS PARA AS TAGS (NOVO) --- */
+.term-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.term-tag {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+}
+.term-tag.category { 
+    color: var(--primary-color); 
+    background-color: rgba(0, 123, 255, 0.1); 
+}
+.term-tag.subcategory { 
+    color: var(--text-muted); 
+    background-color: var(--light-bg); 
+}
+/* --- FIM DOS ESTILOS ADAPTADOS --- */
+
+
+.toggle-icon {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: var(--text-muted);
+    transition: transform 0.4s ease;
+    padding: 0.5rem;
+}
+
+/* --- ESTADO DE ACORDEÃO (EXPANDIDO) --- */
+
+.term-content { 
+    padding: 0 1.5rem; 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out; 
+}
+
+.term-content p { 
+    margin-bottom: 1rem; 
+    color: var(--text-muted); 
+    line-height: 1.7; 
+}
+.term-content strong { 
+    color: var(--text-dark); 
+}
+
+/* Dica Prática */
+.term-content .practical-tip {
+    background-color: #f8f9fa;
+    border-left: 4px solid var(--secondary-color);
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
+    margin-top: 0.5rem;
+}
+
+/* Detalhe Técnico */
+.term-content .details {
+    font-size: 0.9rem;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 1rem;
+    margin-top: 1.5rem;
+}
+
+.term-item.expanded .term-content { 
+    max-height: 1000px; /* Altura suficiente para o conteúdo */
+    padding-bottom: 1.5rem; 
+}
+.term-item.expanded .toggle-icon { 
+    transform: rotate(180deg); 
+}
+/* SOLUÇÃO DE CONFLITO PARA FONT AWESOME (GlossaryPage.css) */
+
+/* Garante que os ícones "solid" (fas) são usados */
+.fas {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+}
+
+/* Garante que os ícones de "marca" (fab) são usados (ex: twitter, discord) */
+.fab {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+}

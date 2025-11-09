@@ -1,0 +1,56 @@
+/* frontend/src/components/TooltipIcon.css */
+
+.tooltip-icon {
+    display: inline-block;
+    position: relative;
+    margin-left: 6px;
+    font-weight: 600;
+    color: var(--primary-color);
+    background-color: #f0f7ff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.8rem;
+    line-height: 18px; /* Alinha o '?' verticalmente */
+    text-align: center;
+    cursor: help; /* Muda o cursor para 'ajuda' */
+}
+
+/* O texto do tooltip (escondido por padrão) */
+.tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background-color: var(--dark-bg);
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 10;
+    bottom: 150%; /* Posição acima do ícone */
+    left: 50%;
+    margin-left: -125px; /* Metade da largura para centrar */
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-weight: 400; /* Texto normal */
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Seta do tooltip */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--dark-bg) transparent transparent transparent;
+}
+
+/* Mostrar o texto ao passar o rato */
+.tooltip-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

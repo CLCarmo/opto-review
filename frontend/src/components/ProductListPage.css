@@ -1,0 +1,198 @@
+/* src/components/ProductListPage.css */
+
+.product-list-page {
+    max-width: 1600px; /* Ou a largura máxima do seu design */
+    margin: 0 auto;
+    padding: 2rem; /* Espaçamento geral da página */
+}
+
+/* Cabeçalho da Página (Opcional) */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+.page-header p {
+    font-size: 1.1rem;
+    color: var(--text-muted); /* Use variáveis globais */
+}
+
+/* Layout Principal (Sidebar + Conteúdo) */
+.page-content-layout {
+    display: grid;
+    /* Coluna fixa para a sidebar, o restante flexível */
+    grid-template-columns: 280px 1fr; 
+    gap: 2.5rem; /* Espaço entre sidebar e grid */
+    align-items: flex-start; /* Alinha os itens no topo */
+}
+
+/* Conteúdo Principal (onde fica a grid) */
+.main-content {
+    /* Ocupa o espaço restante */
+}
+
+/* Mensagens de Loading e Erro */
+.loading-message, .error-message {
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 5rem 1rem;
+    color: var(--text-muted);
+}
+.error-message {
+    color: #e53e3e; /* Vermelho para erro */
+    background-color: #fff0f0;
+    border: 1px solid #e53e3e;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+/* Responsividade Básica */
+@media (max-width: 992px) { /* Exemplo: tablets e menores */
+    .page-content-layout {
+        grid-template-columns: 1fr; /* Stack sidebar e conteúdo */
+        gap: 2rem;
+    }
+    .sidebar-filters {
+        position: static; /* Remove o sticky */
+        max-height: none; /* Remove limite de altura */
+        margin-bottom: 2rem;
+    }
+}
+/* src/components/ProductListPage.css - Adicionar ao final */
+
+/* --- ESTILOS PARA A BARRA DE BUSCA PRINCIPAL --- */
+.search-bar-container {
+    max-width: 600px; /* Ou a largura que preferir */
+    margin: 2rem auto 0 auto; /* Espaçamento abaixo do título */
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input { /* Reutiliza a classe, mas pode ser específica se quiser */
+    width: 100%;
+    padding: 0.9rem 3rem 0.9rem 3rem; /* Espaço para ícones */
+    border-radius: 50px; /* Bordas arredondadas */
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+    background-color: #fff; /* Fundo branco */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra suave */
+}
+
+.search-icon {
+    position: absolute;
+    left: 18px; /* Posição do ícone de lupa */
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    z-index: 1; /* Para ficar acima do input */
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 18px; /* Posição do ícone de limpar */
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0;
+    transition: color 0.2s ease;
+    z-index: 1;
+}
+
+.clear-search-btn:hover {
+    color: var(--primary-color);
+}
+/* src/components/ProductListPage.css */
+
+/* --- Estilos do Cabeçalho e Busca --- */
+
+.page-header {
+    /* Usa a cor de fundo clara da sua imagem */
+    background-color: #f8f9fa; 
+    padding: 2rem 1.5rem; /* Mais espaço interno */
+    text-align: center;
+    border-bottom: 1px solid #e9ecef; /* Linha sutil */
+    margin-bottom: 1.5rem; /* Espaço antes do conteúdo */
+}
+
+.page-header h1 {
+    color: #212529; /* Cor de texto mais escura */
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    color: #6c757d; /* Cor de texto mais suave */
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem; /* Espaço antes da busca */
+}
+
+/* Container da Barra de Busca */
+.search-bar-container {
+    width: 100%;
+    max-width: 600px; /* Limita a largura da barra */
+    margin: 0 auto; /* Centraliza a barra */
+    position: relative; /* (Útil se quisermos adicionar um ícone depois) */
+}
+
+/* A BARRA DE BUSCA PRINCIPAL */
+.main-search-bar {
+    width: 100%; /* Ocupa 100% do container */
+    padding: 14px 24px; /* Espaçamento interno (altura e texto) */
+    font-size: 1rem;
+    color: #495057;
+
+    /* Borda e Cantos */
+    border: 1px solid #ced4da;
+    border-radius: 50px; /* Deixa totalmente arredondado (pílula) */
+
+    /* Garante que padding não afete a largura total */
+    box-sizing: border-box; 
+
+    /* Efeito suave na transição */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Efeito ao clicar (foco) */
+.main-search-bar:focus {
+    border-color: #007bff; /* Borda azul (pode mudar a cor) */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Brilho suave */
+    outline: none; /* Remove a borda padrão feia do navegador */
+}
+
+/* Texto 'placeholder' */
+.main-search-bar::placeholder {
+    color: #adb5bd;
+}
+
+/* --- Layout Principal --- */
+
+.page-content-layout {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto; /* Centraliza o conteúdo da página */
+}
+
+.main-content {
+    flex: 1; /* Faz a grade de produtos ocupar o espaço restante */
+}
+
+/* --- Estados de Loading/Erro --- */
+.loading-message, .error-message {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 4rem;
+    font-weight: 500;
+}
+
+.error-message {
+    color: #dc3545; /* Vermelho para erro */
+}

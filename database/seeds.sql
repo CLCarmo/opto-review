@@ -1,7 +1,6 @@
 -- ===================================================================
 -- SCRIPT DE SEEDS PARA O BANCO DE DADOS OPTO REVIEW
 -- Este script popula o banco de dados com os dados iniciais.
--- Ele deve ser executado DEPOIS do schema.sql.
 -- ===================================================================
 
 -- PASSO 1: INSERIR CATEGORIAS INICIAIS

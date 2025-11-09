@@ -1,0 +1,198 @@
+/* /css/components.css */
+
+/* --- TÍTULOS DE SEÇÃO --- */
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-dark);
+}
+
+/* --- BOTÕES --- */
+.login-button { 
+    background-color: var(--primary-color); 
+    padding: 0.5rem 1.2rem; 
+    border-radius: 6px; 
+}
+.cta-button { 
+    background-color: var(--secondary-color); 
+    color: var(--text-dark); 
+    font-weight: 700; 
+    font-size: 1.2rem; 
+    padding: 1rem 3rem; 
+    border: none; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    text-decoration: none; 
+    transition: transform 0.2s ease; 
+    display: inline-block; 
+    margin-left: 10px;
+}
+.cta-button:hover { 
+    transform: scale(1.05); 
+}
+.action-btn {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+.action-btn.primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+.action-btn.primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+.action-btn.secondary {
+    background-color: transparent;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+.action-btn.secondary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+.action-btn.selected {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--dark-bg);
+    cursor: default;
+    pointer-events: none;
+}
+
+/* --- CARDS DE PRODUTO (Página de Busca) --- */
+.product-card { 
+    background-color: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+    border: 1px solid var(--border-color); 
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+.product-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1); 
+}
+.product-image { 
+    width: 100%; 
+    height: 220px; 
+    object-fit: contain; 
+    padding: 1rem; 
+    background-color: #fff; 
+}
+.product-content { 
+    padding: 1.5rem; 
+    text-align: center; 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column; 
+}
+.product-content h3 { 
+    font-size: 1.3rem; 
+    margin-bottom: 0.25rem; 
+    flex-grow: 1; 
+}
+.product-brand { 
+    color: var(--text-muted); 
+    font-weight: 500; 
+    margin-bottom: 1rem; 
+}
+.product-price { 
+    margin-top: auto; 
+    padding-top: 1rem; 
+    border-top: 1px solid var(--border-color); 
+}
+.price-avg { 
+    font-size: 0.9rem; 
+    color: var(--text-muted); 
+    text-decoration: line-through; 
+    margin-bottom: 0.25rem; 
+}
+.price-low { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: var(--secondary-color); 
+}
+.product-actions { 
+    margin-top: 1rem; 
+    display: flex; 
+    gap: 1rem; 
+}
+
+/* --- PAGINAÇÃO --- */
+.pagination { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 0.5rem; 
+    margin: 2rem 0; 
+}
+.page-btn { 
+    background: #fff; 
+    border: 1px solid var(--border-color); 
+    color: var(--text-muted); 
+    font-weight: 600; 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 0.9rem; 
+    min-width: 40px; 
+    height: 40px; 
+    padding: 0.5rem; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+}
+.page-btn:hover { 
+    background-color: #f8f9fa; 
+    color: var(--primary-color); 
+}
+.page-btn.active { 
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: #fff; 
+    cursor: default; 
+}
+.page-btn:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+}
+
+/* --- MODAL (Janela Pop-up) --- */
+.modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.6); 
+}
+.modal-content { 
+    background-color: #fff; 
+    margin: 5% auto; 
+    padding: 2rem; 
+    border-radius: 12px; 
+    width: 90%; 
+    max-width: 1000px; 
+    position: relative; 
+}
+.modal-close-btn { 
+    color: #aaa; 
+    position: absolute; 
+    top: 15px; 
+    right: 25px; 
+    font-size: 28px; 
+    font-weight: bold; 
+    cursor: pointer; 
+}

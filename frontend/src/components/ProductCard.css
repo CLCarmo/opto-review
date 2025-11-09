@@ -1,0 +1,154 @@
+/* src/components/ProductCard.css */
+/* Estilos adaptados do seu products.css original */
+
+.product-card {
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--border-color); /* Use variáveis globais se definidas */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.product-image-container {
+    height: 200px;
+    padding: 1rem;
+    position: relative; /* Para o checkbox */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa; /* Fundo leve para a imagem */
+}
+
+.product-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Checkbox de Seleção */
+.select-checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+.select-checkbox-input {
+    display: none; /* Esconde o input real */
+}
+.select-checkbox-label {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border: 2px solid #ccc; /* Cor da borda padrão */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.select-checkbox-label i {
+    color: #fff;
+    font-size: 0.9rem;
+    opacity: 0; /* Ícone escondido por padrão */
+    transform: scale(0.5);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.select-checkbox-input:checked + .select-checkbox-label {
+    background-color: var(--primary-color); /* Cor de fundo quando selecionado */
+    border-color: var(--primary-color);
+}
+.select-checkbox-input:checked + .select-checkbox-label i {
+    opacity: 1; /* Mostra o ícone */
+    transform: scale(1);
+}
+
+.product-info {
+    padding: 1rem 1.5rem;
+    flex-grow: 1; /* Faz esta seção ocupar o espaço restante */
+}
+
+.product-brand {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    /* Limita o nome a 2 linhas */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.6em; /* Garante altura mesmo com 1 linha */
+}
+.product-model {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.product-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+}
+
+.product-price .price-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: block;
+}
+
+.product-price .price-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.details-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.details-button:hover {
+    background-color: #0056b3; /* Tom mais escuro de azul */
+}
+
+.details-button i {
+    font-size: 0.8rem;
+}
+
+/* Estilo sutil para card selecionado */
+.product-card.selected {
+   outline: 3px solid var(--primary-color);
+   box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+}
