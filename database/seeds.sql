@@ -39,7 +39,7 @@ ON CONFLICT (nome) DO NOTHING;
 -- CATEGORIA: MOUSE
 INSERT INTO produtos (nome, id_categoria, id_fabricante, modelo, descricao, especificacoes) VALUES
 (
-    'Logitech G Pro X Superlight',
+    'TESTE 123 - MOUSE DO CAIO',
     (SELECT id_categoria FROM categorias WHERE nome = 'Mouse'),
     (SELECT id_fabricante FROM fabricantes WHERE nome = 'Logitech'),
     '910-005878',

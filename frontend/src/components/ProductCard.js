@@ -1,56 +1,116 @@
 // src/components/ProductCard.js
-import React from 'react';
-import './ProductCard.css'; // Precisaremos criar este CSS
+// Versão robusta com normalização de IDs e logs de debug
 
-const ProductCard = ({ product, onSelect, isSelected }) => {
-    // Função para formatar o preço (pode mover para um utilitário depois)
-    const formatPrice = (price) => {
-        return price ? `R$ ${price.toFixed(2).replace('.', ',')}` : 'N/A';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import './ProductCard.css';
+
+const ProductCard = ({ product, onProductSelect, selectedProducts }) => {
+
+    // Normaliza o ID do produto (aceita product.id ou product.id_produto)
+    const productId = useMemo(() => {
+        const rawId = product?.id ?? product?.id_produto ?? product?.sku ?? product?.codigo;
+        // Se não for convertível para número, usamos string fallback
+        const asNumber = Number(rawId);
+        return Number.isNaN(asNumber) ? String(rawId) : asNumber;
+    }, [product]);
+
+    // Normaliza array de selectedProducts para números (ou strings coerentes)
+    const normalizedSelected = useMemo(() => {
+        if (!Array.isArray(selectedProducts)) return [];
+        return selectedProducts.map(id => {
+            const n = Number(id);
+            return Number.isNaN(n) ? String(id) : n;
+        });
+    }, [selectedProducts]);
+
+    // isSelected agora compara valores normalizados (número com número)
+    const isSelected = normalizedSelected.includes(productId);
+
+    // Função que notifica o pai com o ID normalizado (numérico se possível)
+    const handleSelectChange = (eventOrObj) => {
+        // eventOrObj pode ser um event real ou o objeto simulado do botão "Comparar"
+        const checked = typeof eventOrObj === 'object' && 'target' in eventOrObj
+            ? eventOrObj.target.checked
+            : Boolean(eventOrObj);
+
+        if (typeof onProductSelect === 'function') {
+            onProductSelect(productId, checked);
+        } else {
+            console.warn('onProductSelect não recebido pelo ProductCard', { product, productId, onProductSelect });
+        }
+
+        // Log de debug (remova em produção)
+        // eslint-disable-next-line no-console
+        console.debug('ProductCard.handleSelectChange', { productId, checked, isSelected, normalizedSelected });
     };
 
-    // Função para lidar com a seleção do checkbox
-    const handleSelectChange = (event) => {
-        onSelect(product.id_produto, event.target.checked);
+    const formatPrice = (price) => {
+        return price ? `R$ ${Number(price).toFixed(2).replace('.', ',')}` : 'N/A';
     };
 
     return (
-        <div className={`product-card ${isSelected ? 'selected' : ''}`}>
+        <div className={`product-card ${isSelected ? 'selected' : ''}`} data-product-id={productId}>
             <div className="product-image-container">
-                <img 
-                    src={product.imagem_url || 'https://via.placeholder.com/200?text=Sem+Imagem'} 
-                    alt={product.nome} 
-                    className="product-image"
-                    onError={(e) => { e.target.onerror = null; e.target.src='https://via.placeholder.com/200?text=Erro+Img'; }} // Fallback
-                />
-                {/* Checkbox de seleção para comparação */}
+                <Link to={`/produtos/${productId}`}>
+                    <img
+                        src={product?.main_image ?? product?.imagem_url ?? 'https://via.placeholder.com/200?text=Sem+Imagem'}
+                        alt={product?.nome ?? product?.titulo ?? 'Produto'}
+                        className="product-image"
+                        onError={(e) => { e.target.onerror = null; e.target.src='https://via.placeholder.com/200?text=Erro+Img'; }}
+                    />
+                </Link>
                 <div className="select-checkbox">
-                    <input 
-                        type="checkbox" 
-                        id={`select-${product.id_produto}`} 
+                    <input
+                        type="checkbox"
+                        id={`select-${productId}`}
                         className="select-checkbox-input"
                         checked={isSelected}
                         onChange={handleSelectChange}
                     />
-                    <label htmlFor={`select-${product.id_produto}`} className="select-checkbox-label">
+                    <label htmlFor={`select-${productId}`} className="select-checkbox-label">
                         <i className="fas fa-check"></i>
                     </label>
                 </div>
             </div>
+
             <div className="product-info">
-                <span className="product-brand">{product.fabricante}</span>
-                <h3 className="product-name">{product.nome}</h3>
-                <p className="product-model">{product.modelo}</p>
-                {/* Poderia adicionar um resumo da descrição aqui */}
+                <span className="product-brand">{product?.fabricante ?? product?.brand ?? ''}</span>
+                <h3 className="product-name">
+                    <Link to={`/produtos/${productId}`}>{product?.nome ?? product?.titulo ?? 'Produto sem nome'}</Link>
+                </h3>
+                <p className="product-model">{product?.modelo ?? product?.model ?? ''}</p>
             </div>
+
             <div className="product-footer">
-                <div className="product-price">
-                    <span className="price-label">A partir de</span>
-                    <span className="price-value">{formatPrice(product.price_low)}</span> {/* Assumindo que você terá price_low */}
+                <div className="product-price-section">
+                    <div className="product-price">
+                        <span className="price-label">A partir de</span>
+                        <span className="price-value">{formatPrice(product?.price_low ?? product?.preco ?? product?.price)}</span>
+                    </div>
                 </div>
-                {/* Link para a página de detalhes (precisará de React Router) */}
-                <a href={`/produto/${product.id_produto}`} className="details-button">
-                    Ver Detalhes <i className="fas fa-arrow-right"></i>
-                </a>
+
+                <div className="product-action-row">
+                    <Link to={`/produtos/${productId}`} className="details-button-card">
+                        <i className="fas fa-arrow-right"></i> Detalhes
+                    </Link>
+                    <button
+                        className="compare-button-card"
+                        onClick={() => handleSelectChange({ target: { checked: !isSelected } })}
+                    >
+                        <i className="fas fa-columns"></i>
+                        {isSelected ? 'Remover' : 'Comparar'}
+                    </button>
+                </div>
+
+                <div className="product-action-row">
+                    <Link to={`/produtos/${productId}#ofertas`} className="buy-button-card">
+                        <i className="fas fa-shopping-cart"></i> Comprar
+                    </Link>
+                    <button className="favorite-button-card" onClick={() => alert('Função de favorito ainda em desenvolvimento!')}>
+                        <i className="far fa-heart"></i>
+                    </button>
+                </div>
             </div>
         </div>
     );
