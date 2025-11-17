@@ -1,198 +1,173 @@
 /* src/components/ProductListPage.css */
 
 .product-list-page {
-    max-width: 1600px; /* Ou a largura máxima do seu design */
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 2rem; /* Espaçamento geral da página */
+    /* Removemos o padding para a sidebar e o conteúdo principal controlarem */
 }
 
-/* Cabeçalho da Página (Opcional) */
-.page-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-.page-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-.page-header p {
-    font-size: 1.1rem;
-    color: var(--text-muted); /* Use variáveis globais */
-}
-
-/* Layout Principal (Sidebar + Conteúdo) */
+/* ------------------------------------------------------------------ */
+/* --- Layout (Sidebar + Conteúdo) --- */
+/* ------------------------------------------------------------------ */
 .page-content-layout {
     display: grid;
     /* Coluna fixa para a sidebar, o restante flexível */
     grid-template-columns: 280px 1fr; 
     gap: 2.5rem; /* Espaço entre sidebar e grid */
     align-items: flex-start; /* Alinha os itens no topo */
+    
+    /* Adiciona o padding geral da página AQUI */
+    padding: 2rem; 
 }
 
-/* Conteúdo Principal (onde fica a grid) */
+/* ------------------------------------------------------------------ */
+/* --- Coluna da Direita (Main) --- */
+/* ------------------------------------------------------------------ */
 .main-content {
-    /* Ocupa o espaço restante */
+    /* Ocupa a coluna da direita */
 }
 
-/* Mensagens de Loading e Erro */
-.loading-message, .error-message {
+/* ------------------------------------------------------------------ */
+/* --- Header da Página (O BANNER) --- */
+/* ------------------------------------------------------------------ */
+.page-header {
     text-align: center;
-    font-size: 1.5rem;
-    padding: 5rem 1rem;
-    color: var(--text-muted);
-}
-.error-message {
-    color: #e53e3e; /* Vermelho para erro */
-    background-color: #fff0f0;
-    border: 1px solid #e53e3e;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 2rem auto;
-}
-
-/* Responsividade Básica */
-@media (max-width: 992px) { /* Exemplo: tablets e menores */
-    .page-content-layout {
-        grid-template-columns: 1fr; /* Stack sidebar e conteúdo */
-        gap: 2rem;
-    }
-    .sidebar-filters {
-        position: static; /* Remove o sticky */
-        max-height: none; /* Remove limite de altura */
-        margin-bottom: 2rem;
-    }
-}
-/* src/components/ProductListPage.css - Adicionar ao final */
-
-/* --- ESTILOS PARA A BARRA DE BUSCA PRINCIPAL --- */
-.search-bar-container {
-    max-width: 600px; /* Ou a largura que preferir */
-    margin: 2rem auto 0 auto; /* Espaçamento abaixo do título */
+    padding: 4rem 2rem;
+    border-radius: 16px; /* Cantos arredondados */
+    color: var(--text-light); /* Texto branco */
     position: relative;
+    overflow: hidden; /* Para o gradiente */
+    
+    /* Altura solicitada por você */
+    height: 400px; 
+    
+    /* O banner agora é flex para centralizar o conteúdo */
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+
+    /* A Imagem de Fundo */
+    background-image: url('https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center 30%;
 }
 
-.search-input { /* Reutiliza a classe, mas pode ser específica se quiser */
+/* Overlay escuro para legibilidade do texto */
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 0.9rem 3rem 0.9rem 3rem; /* Espaço para ícones */
-    border-radius: 50px; /* Bordas arredondadas */
-    border: 1px solid var(--border-color);
-    font-size: 1rem;
-    background-color: #fff; /* Fundo branco */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra suave */
-}
-
-.search-icon {
-    position: absolute;
-    left: 18px; /* Posição do ícone de lupa */
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    z-index: 1; /* Para ficar acima do input */
-}
-
-.clear-search-btn {
-    position: absolute;
-    right: 18px; /* Posição do ícone de limpar */
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 1.1rem;
-    padding: 0;
-    transition: color 0.2s ease;
+    height: 100%;
+    background: linear-gradient(rgba(26, 32, 44, 0.7), rgba(26, 32, 44, 0.7));
     z-index: 1;
 }
 
-.clear-search-btn:hover {
-    color: var(--primary-color);
-}
-/* src/components/ProductListPage.css */
-
-/* --- Estilos do Cabeçalho e Busca --- */
-
-.page-header {
-    /* Usa a cor de fundo clara da sua imagem */
-    background-color: #f8f9fa; 
-    padding: 2rem 1.5rem; /* Mais espaço interno */
-    text-align: center;
-    border-bottom: 1px solid #e9ecef; /* Linha sutil */
-    margin-bottom: 1.5rem; /* Espaço antes do conteúdo */
+/* Posiciona o conteúdo ACIMA do overlay */
+.page-header h1,
+.page-header p {
+    position: relative;
+    z-index: 2;
 }
 
 .page-header h1 {
-    color: #212529; /* Cor de texto mais escura */
     font-size: 2.5rem;
-    font-weight: 600;
     margin-bottom: 0.5rem;
+    color: var(--text-light); /* Garante texto branco */
 }
-
 .page-header p {
-    color: #6c757d; /* Cor de texto mais suave */
     font-size: 1.1rem;
-    margin-bottom: 1.5rem; /* Espaço antes da busca */
+    color: #a0aec0; /* Cinza claro (muted) */
+    max-width: 600px;
+    margin: 0.5rem auto 0 auto;
 }
 
-/* Container da Barra de Busca */
-.search-bar-container {
+/* ------------------------------------------------------------------ */
+/* --- Barra de Busca (AGORA EM MODO CLARO) --- */
+/* ------------------------------------------------------------------ */
+.search-container {
     width: 100%;
-    max-width: 600px; /* Limita a largura da barra */
-    margin: 0 auto; /* Centraliza a barra */
-    position: relative; /* (Útil se quisermos adicionar um ícone depois) */
+    position: relative; 
+    
+    /* Espaço ENTRE o banner e a grid de produtos */
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
 }
 
-/* A BARRA DE BUSCA PRINCIPAL */
+/* A BARRA DE BUSCA (Estilo "Light Mode") */
+.search-container .search-icon {
+    position: absolute;
+    left: 24px; /* Distância da esquerda */
+    top: 50%;
+    transform: translateY(-50%); /* Centraliza verticalmente */
+    color: var(--text-muted); /* Cor cinza */
+    font-size: 0.9rem; /* Tamanho do ícone */
+}
+
 .main-search-bar {
-    width: 100%; /* Ocupa 100% do container */
-    padding: 14px 24px; /* Espaçamento interno (altura e texto) */
+    width: 100%; 
+    padding: 14px 24px 14px 50px;
     font-size: 1rem;
-    color: #495057;
-
-    /* Borda e Cantos */
-    border: 1px solid #ced4da;
-    border-radius: 50px; /* Deixa totalmente arredondado (pílula) */
-
-    /* Garante que padding não afete a largura total */
     box-sizing: border-box; 
-
-    /* Efeito suave na transição */
     transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    
+    /* --- MUDANÇAS (DE VOLTA AO PADRÃO) --- */
+    background-color: #fff; /* Fundo branco */
+    border: 1px solid var(--border-color); /* Borda padrão */
+    color: var(--text-dark); /* Texto escuro */
+    border-radius: 50px;
 }
 
 /* Efeito ao clicar (foco) */
 .main-search-bar:focus {
-    border-color: #007bff; /* Borda azul (pode mudar a cor) */
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Brilho suave */
-    outline: none; /* Remove a borda padrão feia do navegador */
+    /* Foco azul (padrão do site) */
+    border-color: var(--primary-color); 
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none; 
 }
 
 /* Texto 'placeholder' */
 .main-search-bar::placeholder {
-    color: #adb5bd;
+    color: var(--text-muted); /* Cinza padrão */
+    opacity: 1;
 }
 
-/* --- Layout Principal --- */
+/* ------------------------------------------------------------------ */
+/* --- Loading, Erro e Responsividade --- */
+/* ------------------------------------------------------------------ */
 
-.page-content-layout {
-    display: flex;
-    gap: 1.5rem;
-    padding: 0 1.5rem;
-    max-width: 1400px;
-    margin: 0 auto; /* Centraliza o conteúdo da página */
-}
-
-.main-content {
-    flex: 1; /* Faz a grade de produtos ocupar o espaço restante */
-}
-
-/* --- Estados de Loading/Erro --- */
 .loading-message, .error-message {
     text-align: center;
     font-size: 1.2rem;
-    padding: 4rem;
-    font-weight: 500;
+    color: var(--text-muted);
+    padding: 4rem 2rem;
+    background: #fff;
+    border-radius: 12px;
+}
+.loading-message i, .error-message i {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+.error-message i {
+    color: #e53e3e;
 }
 
-.error-message {
-    color: #dc3545; /* Vermelho para erro */
+/* Responsividade */
+@media (max-width: 768px) {
+    .page-content-layout {
+        grid-template-columns: 1fr; /* Sidebar e grid em coluna única */
+        padding: 1rem;
+    }
+    .page-header {
+        padding: 3rem 1.5rem;
+        height: 300px; /* Banner menor no mobile */
+    }
+    .search-container {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
 }

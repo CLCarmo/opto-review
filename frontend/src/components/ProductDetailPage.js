@@ -1,223 +1,292 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-// 1. IMPORTA O CSS (está correto)
+// 1. IMPORTA O CSS
 import './ProductDetailPage.css';
 
-// 2. FUNÇÃO DAS ESTRELAS (Mantida, está correta)
+// 2. FUNÇÃO DAS ESTRELAS (Mantida do seu código)
 function RenderRatingStars({ rating }) {
-  const stars = [];
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-  for (let i = 0; i < fullStars; i++) stars.push(<i className="fas fa-star" key={`full-${i}`}></i>);
-  if (halfStar) stars.push(<i className="fas fa-star-half-alt" key="half"></i>);
-  for (let i = 0; i < emptyStars; i++) stars.push(<i className="far fa-star" key={`empty-${i}`}></i>);
-  return <div className="rating-stars">{stars}</div>;
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+  for (let i = 0; i < fullStars; i++) stars.push(<i className="fas fa-star" key={`full-${i}`}></i>);
+  if (halfStar) stars.push(<i className="fas fa-star-half-alt" key="half"></i>);
+  for (let i = 0; i < emptyStars; i++) stars.push(<i className="far fa-star" key={`empty-${i}`}></i>);
+  return <div className="rating-stars">{stars}</div>;
 }
 
 /**
- * Componente ProductDetailPage
- * REFATORADO (AGORA CORRIGIDO)
- */
+ * Componente ProductDetailPage
+ * (VERSÃO ATUALIZADA COM FETCH DA API E WRAPPER CSS)
+ */
 function ProductDetailPage() {
 
-  // ESTADOS DA PÁGINA
-  const { produtoId } = useParams(); 
-  const [product, setProduct] = useState(null); 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('analysis'); 
-  const [mainImage, setMainImage] = useState('');
-  const [showImageModal, setShowImageModal] = useState(false);
+  // --- ESTADOS DA PÁGINA ---
+  const { produtoId } = useParams(); // Pega o ID da URL
+  const [product, setProduct] = useState(null); // Guarda os dados do produto
+  const [isLoading, setIsLoading] = useState(true); // Controla o "Carregando..."
+  const [error, setError] = useState(null); // Guarda mensagens de erro
 
-  // LÓGICA DE BUSCA DE DADOS
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(`http://localhost:8080/api/produtos/${produtoId}`);
-        if (!response.ok) {
-          throw new Error(`Produto não encontrado (ID: ${produtoId})`);
-        }
-        const data = await response.json();
+  const [activeTab, setActiveTab] = useState('overview'); // Controla as abas
+  const [showImageModal, setShowImageModal] = useState(false); // Controla o modal
+  const [modalImageUrl, setModalImageUrl] = useState('');
 
-        // O teu backend já envia 'pros' e 'cons' como arrays (TEXT[])
-        // e 'specs' e 'rating_breakdown' como JSON (JSONB).
-        const formattedData = {
-          ...data,
-          // A única coisa que simulamos é a galeria
-          gallery: [
-              data.main_image, 
-              data.main_image ? data.main_image.replace("gallery-1", "gallery-2") : data.main_image,
-              data.main_image ? data.main_image.replace("gallery-1", "gallery-3") : data.main_image
-          ]
-        };
+  // --- BUSCA DE DADOS DA API ---
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const response = await fetch(`http://localhost:8080/api/produtos/${produtoId}`);
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Falha ao buscar dados do produto');
+        }
+        
+        const data = await response.json();
+        
+        // A API já manda os dados no formato que precisamos
+        // (ex: data.ofertas, data.especificacoes)
+        setProduct(data); 
+        
+      } catch (err) {
+        console.error("Erro ao buscar produto:", err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false); // Termina o carregamento
+      }
+    };
 
-        setProduct(formattedData);
-        setMainImage(formattedData.main_image || 'https://via.placeholder.com/400'); // Define a imagem principal
+    fetchProduct();
+  }, [produtoId]); // Dependência: Busca de novo se o ID na URL mudar
 
-      } catch (err) {
-        console.error(err);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // --- Handlers do Modal de Imagem (Mantidos) ---
+  const handleImageClick = (imgUrl) => {
+    setModalImageUrl(imgUrl);
+    setShowImageModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowImageModal(false);
+  };
+  
+  // --- RENDERIZAÇÃO ---
+  
+  // 1. Estado de Carregamento
+  if (isLoading) {
+    return (
+      // Usamos o wrapper aqui também para consistência
+      <div className="product-detail-page-wrapper">
+        <div className="product-detail-container loading-state">
+          <i className="fas fa-spinner fa-spin"></i>
+          <h2>Carregando dados do produto...</h2>
+        </div>
+      </div>
+    );
+  }
 
-    fetchProduct();
-  }, [produtoId]); 
+  // 2. Estado de Erro
+  if (error) {
+    return (
+      <div className="product-detail-page-wrapper">
+        <div className="product-detail-container error-state">
+          <i className="fas fa-exclamation-triangle"></i>
+          <h2>Erro ao carregar produto</h2>
+          <p>{error}</p>
+          <Link to="/produtos" className="cta-button">Voltar para a lista</Link>
+        </div>
+      </div>
+    );
+  }
 
-  // --- HANDLERS (Funções) ---
-  const openImageModal = () => {
-    if (window.innerWidth > 768) setShowImageModal(true);
-  };
-  const closeImageModal = () => setShowImageModal(false);
+  // 3. Produto não encontrado (deveria ser pego pelo Erro, mas é uma segurança)
+  if (!product) {
+    return (
+      <div className="product-detail-page-wrapper">
+        <div className="product-detail-container error-state">
+          <h2>Produto não encontrado</h2>
+          <Link to="/produtos" className="cta-button">Voltar para a lista</Link>
+        </div>
+      </div>
+    );
+  }
 
-  // --- RENDERIZAÇÃO ---
+  // 4. SUCESSO - Renderiza o produto
+  return (
+    <div className="product-detail-page-wrapper"> {/* <-- CLASSE-MÃE ADICIONADA AQUI */}
+    
+      {/* Breadcrumb (Agora dinâmico) */}
+      <div className="breadcrumb">
+        <Link to="/">Home</Link>
+        <i className="fas fa-chevron-right"></i>
+        <Link to="/produtos">Produtos</Link>
+        <i className="fas fa-chevron-right"></i>
+        {product.categoria && (
+          <>
+            <Link to={`/produtos?categoria=${product.categoria}`}>{product.categoria}</Link>
+            <i className="fas fa-chevron-right"></i>
+          </>
+        )}
+        <span>{product.nome}</span>
+      </div>
 
-  if (isLoading) {
-    return <div className="loading-message" style={{ padding: '5rem', textAlign: 'center' }}>
-        Carregando produto... <i className="fas fa-spinner fa-spin"></i>
-    </div>;
-  }
+      {/* Layout Principal do Produto */}
+      <div className="product-detail">
+        {/* Galeria de Imagens */}
+        <div className="product-gallery">
+          <div className="main-image-container">
+            <img 
+              src={product.imagem_url || 'https://via.placeholder.com/400'} 
+              alt={product.nome} 
+              id="main-product-image"
+              onClick={() => handleImageClick(product.imagem_url)}
+            />
+          </div>
+          {/* (Lógica para galeria de thumbnails pode ser adicionada aqui) */}
+        </div>
 
-  if (error || !product) {
-    return (
-      <div className="product-detail" style={{ flexDirection: 'column', alignItems: 'center', padding: '3rem' }}>
-        <h1>Erro: Produto não encontrado</h1>
-        <p style={{textAlign: 'center'}}>{error ? error.message : `O ID "${produtoId}" não existe.`}</p>
-        <Link to="/produtos" className="cta-button primary">Voltar para a lista</Link>
-      </div>
-    );
-  }
+        {/* Informações do Produto */}
+        <div className="product-info">
+          <span className="product-brand">{product.fabricante || 'Marca Desconhecida'}</span>
+          <h1 className="product-title">{product.nome}</h1>
+          
+          <div className="product-rating">
+            {product.rating > 0 && <RenderRatingStars rating={product.rating} />}
+            <span className="review-count">
+              (Score: {(product.rating * 20).toFixed(1)})
+            </span>
+          </div>
 
-  // O JSX agora vai funcionar
-  return (
-    <>
-      <nav className="breadcrumb">
-        <Link to="/">Home</Link>
-        <i className="fas fa-chevron-right"></i>
-        <Link to="/produtos">Produtos</Link>
-        <i className="fas fa-chevron-right"></i>
-        <Link to={`/produtos?categoria=${product.categoria_id}`}>{product.categoria_nome}</Link>
-        <i className="fas fa-chevron-right"></i>
-        <span>{product.nome}</span>
-      </nav>
+          <p className="product-summary">
+            {product.descricao}
+          </p>
 
-      <section className="product-detail">
-        <div className="product-gallery">
-          <div className="main-image-container">
-            <img src={mainImage || 'https://via.placeholder.com/400'} alt={product.nome} id="main-product-image" onClick={openImageModal} />
-          </div>
-          <div className="thumbnail-container">
-            {(product.gallery || []).map((imgSrc, index) => (
-              <img key={index} src={imgSrc || 'https://via.placeholder.com/80'} alt={`Thumbnail ${index + 1}`} 
-                   className={`thumbnail ${mainImage === imgSrc ? 'active' : ''}`}
-                   onClick={() => setMainImage(imgSrc)} />
-            ))}
-          </div>
-        </div>
+          <div className="product-meta">
+            <div className="meta-item">
+              <strong>Categoria:</strong>
+              <span>{product.categoria || 'N/A'}</span>
+            </div>
+            <div className="meta-item">
+              <strong>Modelo:</strong>
+              <span>{product.modelo || 'N/A'}</span>
+            </div>
+          </div>
 
-        <div className="product-info">
-          <span className="product-category-tag">{product.categoria_nome}</span>
-          <h1 className="product-title">{product.nome}</h1>
-          <div className="product-rating">
-            <span className="rating-score">{product.overall_rating.toFixed(1)}</span>
-            <RenderRatingStars rating={product.overall_rating} />
-            <span className="rating-text">Avaliação Geral</span>
-          </div>
-          <p className="product-summary">{product.sumario}</p>
-          <div className="product-price-box">
-            <span className="price-label">A partir de</span>
-            <span className="price-value">R$ {product.price_low.toLocaleString('pt-BR')}</span>
-          </div>
-          <div className="product-actions-detail">
-            <button className="cta-button primary"><i className="fas fa-shopping-cart"></i> Ver Ofertas</button>
-            <button className="cta-button secondary"><i className="fas fa-plus"></i> Adicionar ao Comparador</button>
-          </div>
-        </div>
-      </section>
+          <div className="product-actions-detail">
+            {product.ofertas && product.ofertas.length > 0 && (
+              <div className="price-tag-detail">
+                <span className="price-label">A partir de</span>
+                <span className="price-value">
+                  {/* Pega o primeiro preço (mais barato) */}
+                  R$ {parseFloat(product.ofertas[0].preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+              </div>
+            )}
+            <a href="#offers-section" className="cta-button primary-cta">
+              <i className="fas fa-shopping-cart"></i> Ver Ofertas
+            </a>
+            <button className="cta-button secondary-cta" onClick={() => alert('Função "Adicionar à Comparação" em desenvolvimento!')}>
+              <i className="fas fa-columns"></i> Adicionar à Comparação
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <section className="product-tabs">
-        <nav className="tab-navigation">
-          <button className={`tab-btn ${activeTab === 'analysis' ? 'active' : ''}`} onClick={() => setActiveTab('analysis')}>Análise</button>
-          <button className={`tab-btn ${activeTab === 'specs' ? 'active' : ''}`} onClick={() => setActiveTab('specs')}>Especificações</button>
-          <button className={`tab-btn ${activeTab === 'alternatives' ? 'active' : ''}`} onClick={() => setActiveTab('alternatives')}>Alternativas</button>
-        </nav>
-        <div className="tab-content">
-          {activeTab === 'analysis' && (
-            <div className="tab-panel active">
-              <div className="rating-breakdown">
-                <div className="rating-chart-container">
-                  <h4>Pontuação Detalhada</h4>
-                  {product.rating_breakdown && Object.entries(product.rating_breakdown).map(([key, value]) => (
-                    <div className="rating-bar" key={key}>
-                      <span className="bar-label">{key}</span>
-                      <div className="bar-bg">
-                        {/* --- O 'D' FOI REMOVIDO DAQUI --- */}
-                        <div className="bar-fill" style={{ width: `${(value / 5) * 100}%` }} data-score={value.toFixed(1)}></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="pros-cons-container">
-                  <div className="pros-cons-box">
-                    <h4><i className="fas fa-check"></i> Prós</h4>
-                    <ul className="pros-list">
-                      {(product.pros || []).map((pro, i) => <li key={i}>{pro}</li>)}
-                    </ul>
-                  </div>
-                  <div className="pros-cons-box">
-                    <h4><i className="fas fa-times"></i> Contras</h4>
-                    <ul className="cons-list">
-                      {(product.cons || []).map((con, i) => <li key={i}>{con}</li>)}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="analysis-section">
-                <h4>Recomendação</h4>
-                <p>{product.recomendacao}</p>
-              </div>
-            </div>
-          )}
-          {activeTab === 'specs' && (
-            <div className="tab-panel active">
-              <h3>Especificações Completas</h3>
-              {product.specs ? (
-                <ul className="specs-grid">
-                  {Object.entries(product.specs).map(([key, value]) => (
-                    <li className="spec-item-detail" key={key}>
-                      <span className="spec-key">{key}</span>
-                      <span className="spec-value">{String(value)}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>Especificações detalhadas não disponíveis.</p>
-            )}
-            </div>
-          )}
-          {activeTab === 'alternatives' && (
-            <div className="tab-panel active">
-              <h3>Produtos Alternativos</h3><p>(Em breve...)</p>
-            </div>
-          )}
-        </div>
-      </section>
+      {/* Tabs (Visão Geral, Specs, Ofertas) */}
+      <div className="product-tabs-container">
+        <div className="tab-navigation">
+          <button 
+            className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+            Visão Geral
+          </button>
+          <button 
+            className={`tab-link ${activeTab === 'specs' ? 'active' : ''}`}
+            onClick={() => setActiveTab('specs')}
+          >
+            Especificações
+          </button>
+          <button 
+            className={`tab-link ${activeTab === 'offers' ? 'active' : ''}`}
+            onClick={() => setActiveTab('offers')}
+            id="offers-section" // ID para o link "Ver Ofertas"
+          >
+            Ofertas ({product.ofertas ? product.ofertas.length : 0})
+          </button>
+        </div>
 
-      {showImageModal && (
-        <div className="image-modal" style={{display: 'flex'}} onClick={closeImageModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <span className="modal-close" id="modal-close" onClick={closeImageModal}>&times;</span>
-            <img id="modal-image" src={mainImage} alt="Imagem ampliada" />
-          </div>
-        </div>
-      )}
-    </>
-  );
+        <div className="tab-content">
+          {activeTab === 'overview' && (
+            <div className="tab-panel active">
+              <h3>Visão Geral do Produto</h3>
+              <p>{product.descricao || 'Nenhuma descrição disponível.'}</p>
+              {/* (Lógica futura para Prós/Contras) */}
+            </div>
+          )}
+          {activeTab === 'specs' && (
+            <div className="tab-panel active">
+              <h3>Especificações Completas</h3>
+              {product.especificacoes && Object.keys(product.especificacoes).length > 0 ? (
+                <ul className="specs-grid">
+                  {Object.entries(product.especificacoes).map(([key, value]) => (
+                    <li className="spec-item-detail" key={key}>
+                      <span className="spec-key">{key}</span>
+                      <span className="spec-value">{String(value)}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Nenhuma especificação técnica detalhada disponível.</p>
+              )}
+            </div>
+          )}
+          {activeTab === 'offers' && (
+            <div className="tab-panel active">
+              <h3>Ofertas e Preços</h3>
+              {product.ofertas && product.ofertas.length > 0 ? (
+                <ul className="offers-list">
+                  {product.ofertas.map((offer, index) => (
+                    <li className="offer-item" key={index}>
+                      <div className="offer-store">
+                        <i className="fas fa-store"></i>
+                        <span>{offer.nome_loja}</span>
+                      </div>
+                      <div className="offer-price">
+                        R$ {parseFloat(offer.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </div>
+                      <a 
+                        href={offer.url_produto} 
+                        className="offer-link" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        Ir para a loja <i className="fas fa-external-link-alt"></i>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Nenhuma oferta encontrada para este produto no momento.</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Modal de Imagem (Mantido) */}
+      {showImageModal && (
+        <div className="image-modal" id="image-modal" onClick={handleCloseModal}>
+          <span className="modal-close" id="modal-close-btn">&times;</span>
+          <div className="modal-content">
+            <img src={modalImageUrl} alt="Imagem do produto em zoom" id="modal-image" />
+          </div>
+        </div>
+      )}
+    </div> // {/* <-- FECHAMENTO DO NOSSO WRAPPER */}
+  );
 }
 
 export default ProductDetailPage;

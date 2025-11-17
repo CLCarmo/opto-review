@@ -1,6 +1,6 @@
 // src/components/ProductListPage.js
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para navegar para a página de comparação
+import { useState, useEffect, useCallback, useMemo } from 'react'; // 1. Adiciona useMemo
+import { useNavigate } from 'react-router-dom';
 
 // Importar os componentes filhos
 import FiltersSidebar from './FiltersSidebar';
@@ -17,30 +17,26 @@ const normalizeText = (text) => {
 
 const ProductListPage = () => {
     // --- ESTADOS DO COMPONENTE ---
-    const [allProducts, setAllProducts] = useState([]); // Guarda todos os produtos da API
-    const [filteredProducts, setFilteredProducts] = useState([]); // Produtos a serem exibidos após filtros
-    const [categorias, setCategorias] = useState([]); // Categorias para a sidebar
-    const [activeFilters, setActiveFilters] = useState({ // Filtros selecionados
+    const [allProducts, setAllProducts] = useState([]); 
+    const [filteredProducts, setFilteredProducts] = useState([]); 
+    const [categorias, setCategorias] = useState([]); 
+    const [activeFilters, setActiveFilters] = useState({ 
         category: 'all',
         price_min: null,
         price_max: null,
-        // Futuro: brand: 'all', search: ''
     });
     const [selectedProducts, setSelectedProducts] = useState(() => {
-        // Inicializa a seleção com dados do localStorage, se existirem
          try {
              const saved = localStorage.getItem('compareProducts');
              const initialValue = JSON.parse(saved);
-             // Garante que é um array de números
              return Array.isArray(initialValue) ? initialValue.map(Number).filter(id => !isNaN(id)) : [];
          } catch (e) {
              return [];
          }
     }); 
-    const [loading, setLoading] = useState(true); // Estado de carregamento
-    const [error, setError] = useState(null); // Estado de erro
-    const [searchTerm, setSearchTerm] = useState(''); // Termo de busca (futuro)
-    // Hook para navegação programática (ex: ir para /comparar)
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState(null); 
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
     // --- BUSCA DE DADOS DA API ---
@@ -51,7 +47,8 @@ const ProductListPage = () => {
             try {
                 // Busca produtos e categorias em paralelo
                 const [productsResponse, categoriesResponse] = await Promise.all([
-                    fetch('http://localhost:8080/api/produtos'),
+                    // ATUALIZADO: Usando a rota de produtos que já busca tudo
+                    fetch('http://localhost:8080/api/produtos'), 
                     fetch('http://localhost:8080/api/categorias')
                 ]);
 
@@ -62,15 +59,22 @@ const ProductListPage = () => {
                 const productsData = await productsResponse.json();
                 const categoriesData = await categoriesResponse.json();
 
-                // Adiciona price_low simulado se não vier da API (baseado no schema.sql)
-                // O ideal é que a API já retorne isso (talvez buscando da tabela precos)
-                const productsWithPrice = productsData.map(p => ({
-                    ...p,
-                    price_low: p.price_avg ? p.price_avg * 0.85 : (Math.random() * 500 + 50)
+                // Mapeia os dados da API para o formato que o frontend espera
+                const mappedProducts = productsData.map(p => ({
+                    // (O 'p' é o objeto vindo do backend)
+                    id: p.id_produto, // (frontend espera 'id')
+                    nome: p.nome,
+                    fabricante: p.fabricante,
+                    categoria: p.categoria,
+                    descricao: p.descricao,
+                    imagem_url: p.imagem_url,
+                    especificacoes: p.especificacoes,
+                    // Garante que price_low seja um número
+                    price_low: parseFloat(p.price_low) || null 
                 }));
 
-                setAllProducts(productsWithPrice);
-                setFilteredProducts(productsWithPrice); // Inicialmente mostra todos
+                setAllProducts(mappedProducts);
+                setFilteredProducts(mappedProducts); // Inicialmente mostra todos
                 setCategorias(categoriesData);
 
             } catch (err) {
@@ -87,9 +91,9 @@ const ProductListPage = () => {
     // --- LÓGICA DE FILTRAGEM ---
     useEffect(() => {
         let currentProducts = [...allProducts];
-        const normalizedSearch = normalizeText(searchTerm); // ++ Normaliza o termo de busca ++
+        const normalizedSearch = normalizeText(searchTerm);
 
-        // ++ 1. Filtrar por Busca (Nome, Modelo, Fabricante) ++
+        // 1. Filtrar por Busca (Nome, Modelo, Fabricante)
         if (normalizedSearch) {
             currentProducts = currentProducts.filter(p =>
                 normalizeText(p.nome).includes(normalizedSearch) ||
@@ -105,128 +109,188 @@ const ProductListPage = () => {
 
         // 3. Filtrar por Preço Mínimo
         if (activeFilters.price_min !== null) {
-            currentProducts = currentProducts.filter(p => p.price_low >= activeFilters.price_min);
+            currentProducts = currentProducts.filter(p => p.price_low && p.price_low >= activeFilters.price_min);
         }
 
         // 4. Filtrar por Preço Máximo
         if (activeFilters.price_max !== null && activeFilters.price_max > 0) {
-            currentProducts = currentProducts.filter(p => p.price_low <= activeFilters.price_max);
+            currentProducts = currentProducts.filter(p => p.price_low && p.price_low <= activeFilters.price_max);
         }
-
-        // Futuro: Adicionar ordenação aqui
 
         setFilteredProducts(currentProducts);
 
-    // ++ Adiciona searchTerm às dependências ++
     }, [activeFilters, allProducts, searchTerm]);
 
-     // --- LÓGICA DE COMPARAÇÃO (Atualiza localStorage) ---
-     useEffect(() => {
-        // Salva a seleção atual no localStorage sempre que ela mudar
+    // --- LÓGICA DE COMPARAÇÃO (Atualiza localStorage) ---
+    useEffect(() => {
          try {
              localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
          } catch (e) {
-              console.error("Erro ao salvar seleção no localStorage:", e);
+             console.error("Erro ao salvar seleção no localStorage:", e);
          }
-     }, [selectedProducts]);
+    }, [selectedProducts]);
 
 
     // --- HANDLERS (Funções de Callback) ---
-
-    // Chamado pelo FiltersSidebar quando um filtro muda
     const handleFilterChange = useCallback((newFilters) => {
         setActiveFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
     }, []);
 
-    // Chamado pelo ProductCard quando o checkbox é marcado/desmarcado
     const handleProductSelect = useCallback((productId, isChecked) => {
+        // Usa o ID normalizado (que já deve ser número)
+        const idNum = Number(productId); 
+        
         setSelectedProducts(prevSelected => {
             if (isChecked) {
-                // Adiciona se não estiver presente e se houver espaço (máx 4)
-                if (!prevSelected.includes(productId) && prevSelected.length < 4) {
-                    return [...prevSelected, productId];
+                if (!prevSelected.includes(idNum) && prevSelected.length < 4) {
+                    return [...prevSelected, idNum];
                 }
             } else {
-                // Remove se estiver presente
-                return prevSelected.filter(id => id !== productId);
+                return prevSelected.filter(id => id !== idNum);
             }
-            return prevSelected; // Retorna o estado anterior se não houver mudança
+            return prevSelected; 
         });
     }, []);
 
-     // Chamado pela ComparisonBar para remover um item
-     const handleRemoveProduct = useCallback((productId) => {
+    const handleRemoveProduct = useCallback((productId) => {
         setSelectedProducts(prevSelected => prevSelected.filter(id => id !== productId));
-     }, []);
+    }, []);
 
-     // Chamado pela ComparisonBar para limpar tudo
-     const handleClearSelection = useCallback(() => {
+    const handleClearSelection = useCallback(() => {
         setSelectedProducts([]);
-     }, []);
+    }, []);
 
-     // Chamado pela ComparisonBar para ir à página de comparação
-     const handleGoToCompare = useCallback(() => {
-         // O localStorage já foi atualizado pelo useEffect. Apenas navega.
-         if (selectedProducts.length >= 2) {
-            // Assumindo que você tem uma rota '/comparar' no seu React Router
-            navigate('/comparar'); 
-         }
-     }, [selectedProducts, navigate]);
+    const handleGoToCompare = () => {
+        navigate(
+            '/compare', 
+            { 
+              state: { 
+                compareProducts: selectedProducts 
+              } 
+            }
+        );
+    };
 
-     //HANDLER para atualizar o estado da busca
-     const handleSearchChange = (event) => {
+    const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-     };
+    };
+
+
+    // 2. CORREÇÃO: Cria o título e descrição do banner dinamicamente
+    const { pageTitle, pageDescription } = useMemo(() => {
+        if (activeFilters.category === 'all') {
+            return {
+                pageTitle: "Todos os Produtos",
+                pageDescription: "Explore nosso catálogo completo de hardware e periféricos."
+            };
+        }
+        // Tenta encontrar o nome da categoria selecionada
+        const categoriaObj = categorias.find(c => c.nome === activeFilters.category);
+        if (categoriaObj) {
+            return {
+                pageTitle: categoriaObj.nome, // ex: "Mouses"
+                pageDescription: `Encontre os melhores ${categoriaObj.nome.toLowerCase()} do mercado.`
+            };
+        }
+        // Fallback
+        return {
+            pageTitle: "Produtos",
+            pageDescription: "Explore nosso catálogo."
+        };
+    }, [activeFilters.category, categorias]);
+
+    // 3. NOVO: Descobre qual categoria está "ativa" para a comparação
+    const activeCategory = useMemo(() => {
+        // Se não há produtos selecionados, nenhuma categoria está ativa
+        if (selectedProducts.length === 0) {
+            return null;
+        }
+        
+        // Pega o ID do *primeiro* produto selecionado
+        const firstProductId = selectedProducts[0];
+        
+        // Encontra o objeto completo desse produto
+        const firstProduct = allProducts.find(p => p.id === firstProductId);
+        
+        // Retorna a categoria dele (ex: "Mouse")
+        return firstProduct ? firstProduct.categoria : null;
+
+    }, [selectedProducts, allProducts]);
 
     // --- RENDERIZAÇÃO ---
-
     if (loading) {
-        return <div className="loading-message">Carregando produtos... <i className="fas fa-spinner fa-spin"></i></div>;
+        return (
+            <div className="product-list-page">
+                <div className="page-content-layout">
+                    {/* Mostra um "esqueleto" da sidebar enquanto carrega */}
+                    <div className="sidebar-filters is-loading">
+                        <h3><i className="fas fa-sliders-h"></i> Filtros</h3>
+                    </div> 
+                    <main className="main-content">
+                        <div className="loading-message">
+                            <i className="fas fa-spinner fa-spin"></i>
+                            Carregando produtos...
+                        </div>
+                    </main>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
-        return <div className="error-message">Erro ao carregar produtos: {error}</div>;
+        return (
+             <div className="product-list-page">
+                <div className="error-message">
+                     <i className="fas fa-exclamation-triangle"></i>
+                    Erro ao carregar produtos: {error}
+                </div>
+             </div>
+        );
     }
 
     return (
         <div className="product-list-page">
-            {/* Cabeçalho da Página (Opcional) */}
-            <header className="page-header">
-                <h1>Encontre Seu Produto Ideal</h1>
-                <p>Use os filtros para refinar sua busca.</p>
-                {/* Adicionando a barra de busca aqui */}
-                <div className="search-bar-container">
-                    <input 
-                        type="text" 
-                        placeholder="Buscar por nome, modelo..." 
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        className="main-search-bar" 
-                    />
-                </div>
-            </header>
-
-            {/* Layout Principal: Sidebar + Grid */}
+            
             <div className="page-content-layout">
                 <FiltersSidebar 
                     categorias={categorias} 
                     onFilterChange={handleFilterChange} 
                 />
+                
                 <main className="main-content">
-                    {/* Futuro: Adicionar ordenação (mais caro, mais barato, etc.) */}
+
+                    {/* 1. BANNER (Agora com as variáveis corretas) */}
+                    <header className="page-header">
+                        <h1>{pageTitle}</h1>
+                        <p>{pageDescription}</p>
+                    </header>
+
+                    {/* 2. BARRA DE BUSCA */}
+                    <div className="search-container">
+                        <i className="fas fa-search search-icon"></i>
+                        <input 
+                            type="search" 
+                            placeholder="Buscar por nome, modelo, fabricante..." 
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            className="main-search-bar" 
+                        />
+                    </div>
+                    
+                    {/* 3. A GRID DE PRODUTOS */}
                     <ProductGrid 
                         products={filteredProducts} 
                         selectedProducts={selectedProducts}
                         onProductSelect={handleProductSelect}
+                        activeCategory={activeCategory} 
                     />
-                     {/* Futuro: Adicionar paginação se houver muitos produtos */}
                 </main>
             </div>
 
             {/* Barra de Comparação Flutuante */}
             <ComparisonBar 
                 selectedProductIds={selectedProducts}
-                allProducts={allProducts} // Passa todos para a barra poder mostrar nome/imagem
+                allProducts={allProducts}
                 onRemoveProduct={handleRemoveProduct}
                 onClearSelection={handleClearSelection}
                 onGoToCompare={handleGoToCompare}

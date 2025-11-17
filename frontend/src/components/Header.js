@@ -27,7 +27,7 @@ function Header() {
           Ela diz ao router para só marcar este link como ativo se
           a URL for EXATAMENTE "/", e não "/products" ou "/compare".
         */}
-        <NavLink to="/" className="nav-link" end>Home</NavLink>
+        <NavLink to="/" className="nav-link" end >Home</NavLink>
         <NavLink to="/produtos" className="nav-link">Buscar Produtos</NavLink>
         <NavLink to="/compare" className="nav-link">Comparar</NavLink>
         

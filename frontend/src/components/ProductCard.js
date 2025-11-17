@@ -1,11 +1,11 @@
 // src/components/ProductCard.js
-// Versão robusta com normalização de IDs e logs de debug
+// Versão robusta com normalização de IDs e lógica de "travar"
 
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './ProductCard.css';
 
-const ProductCard = ({ product, onProductSelect, selectedProducts }) => {
+const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) => {
 
     // Normaliza o ID do produto (aceita product.id ou product.id_produto)
     const productId = useMemo(() => {
@@ -50,7 +50,9 @@ const ProductCard = ({ product, onProductSelect, selectedProducts }) => {
     };
 
     return (
-        <div className={`product-card ${isSelected ? 'selected' : ''}`} data-product-id={productId}>
+        
+        // 1. CORREÇÃO: Adiciona a classe 'is-locked' se a prop for verdadeira
+        <div className={`product-card ${isLocked ? 'is-locked' : ''} ${isSelected ? 'is-selected' : ''}`} data-product-id={productId}>
             <div className="product-image-container">
                 <Link to={`/produtos/${productId}`}>
                     <img
@@ -67,6 +69,8 @@ const ProductCard = ({ product, onProductSelect, selectedProducts }) => {
                         className="select-checkbox-input"
                         checked={isSelected}
                         onChange={handleSelectChange}
+                        // 2. CORREÇÃO: Desabilita o checkbox se 'isLocked' for verdadeiro
+                        disabled={isLocked}
                     />
                     <label htmlFor={`select-${productId}`} className="select-checkbox-label">
                         <i className="fas fa-check"></i>
@@ -97,6 +101,8 @@ const ProductCard = ({ product, onProductSelect, selectedProducts }) => {
                     <button
                         className="compare-button-card"
                         onClick={() => handleSelectChange({ target: { checked: !isSelected } })}
+                        // 3. CORREÇÃO: Desabilita o botão se 'isLocked' for verdadeiro
+                        disabled={isLocked}
                     >
                         <i className="fas fa-columns"></i>
                         {isSelected ? 'Remover' : 'Comparar'}
@@ -113,6 +119,7 @@ const ProductCard = ({ product, onProductSelect, selectedProducts }) => {
                 </div>
             </div>
         </div>
+        
     );
 };
 

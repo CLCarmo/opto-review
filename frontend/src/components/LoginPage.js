@@ -1,320 +1,489 @@
+// frontend/src/components/LoginPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Para o logo no topo
-
-// 1. Importa o CSS que já copiaste
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
 /**
  * Componente LoginPage
- * Substitui o login.html e o login.js 
+ * (VERSÃO FINAL - Com abas de Login E Registo)
  */
 function LoginPage() {
 
-  // --- ESTADOS (O novo 'login.js') ---
-  // Estados para os campos do formulário
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
-  // Estado para o "Lembrar-me"
-  const [rememberMe, setRememberMe] = useState(false);
+  // --- ESTADO GLOBAL DA PÁGINA ---
+  // 'login' ou 'register' - Controla qual formulário mostrar
+  const [mode, setMode] = useState('login'); 
+  const [isLoading, setIsLoading] = useState(false);
+  // Erro global do formulário (para erros da API)
+  const [formError, setFormError] = useState(''); 
+  const navigate = useNavigate();
 
-  // Estado para mostrar/esconder a senha
+  // --- ESTADOS DO FORMULÁRIO DE LOGIN ---
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
-  // Estados para controlar os modais
+  // --- ESTADOS DO FORMULÁRIO DE REGISTO ---
+  const [registerName, setRegisterName] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
+  const [registerConfirmPassword, setRegisterConfirmPassword] = useState('');
+
+  // --- ESTADOS DOS MODAIS (Mantidos) ---
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
-  // Estados para o formulário de "esqueci-me"
   const [resetEmail, setResetEmail] = useState('');
-
-  // Estado de loading (para o submit)
-  const [isLoading, setIsLoading] = useState(false);
-  
-  // Estado para mensagens de erro
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
   const [resetEmailError, setResetEmailError] = useState('');
+  
+  // --- ESTADOS DE ERRO DE VALIDAÇÃO (Separados) ---
+  const [loginEmailError, setLoginEmailError] = useState('');
+  const [loginPasswordError, setLoginPasswordError] = useState('');
+  const [registerNameError, setRegisterNameError] = useState('');
+  const [registerEmailError, setRegisterEmailError] = useState('');
+  const [registerPasswordError, setRegisterPasswordError] = useState('');
+  const [registerConfirmPasswordError, setRegisterConfirmPasswordError] = useState('');
 
-
-  // --- EFEITO PARA A CLASSE DO BODY ---
-  // O teu CSS tem a classe .login-page no BODY.
-  // Este 'useEffect' adiciona essa classe quando o componente
-  // "monta" (aparece) e remove-a quando ele "desmonta" (desaparece).
-  // // O array vazio [] significa que isto só corre 1 vez (ao montar/desmontar)
-
-
-  // --- HANDLERS (As funções do componente) ---
-
-  // Validação simples (como no teu login.js )
-  const validateLogin = () => {
-    let isValid = true;
-    setEmailError('');
-    setPasswordError('');
-    
-    if (!email) {
-      setEmailError('E-mail é obrigatório.');
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError('E-mail inválido.');
-      isValid = false;
+  // Tenta ler o e-mail salvo se "Lembrar-me" foi usado
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('savedEmail');
+    if (savedEmail) {
+      setLoginEmail(savedEmail);
+      setRememberMe(true);
     }
+  }, []);
 
-    if (!password) {
-      setPasswordError('Senha é obrigatória.');
-      isValid = false;
-    } else if (password.length < 6) {
-      setPasswordError('Senha deve ter no mínimo 6 caracteres.');
-      isValid = false;
-    }
-    return isValid;
+  // Função para limpar todos os erros
+  const clearAllErrors = () => {
+    setFormError('');
+    setLoginEmailError('');
+    setLoginPasswordError('');
+    setRegisterNameError('');
+    setRegisterEmailError('');
+    setRegisterPasswordError('');
+    setRegisterConfirmPasswordError('');
   };
 
-  // Lida com o submit do Login
-  const handleLoginSubmit = (e) => {
-    e.preventDefault(); // Impede o recarregamento da página
-    if (!validateLogin() || isLoading) return;
+  // --- FUNÇÃO DE LOGIN (A que já tínhamos) ---
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    clearAllErrors();
+
+    // Validação local
+    let isValid = true;
+    if (!loginEmail) {
+      setLoginEmailError('O e-mail é obrigatório.');
+      isValid = false;
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(loginEmail)) {
+      setLoginEmailError('Formato de e-mail inválido.');
+      isValid = false;
+    }
+    if (!loginPassword) {
+      setLoginPasswordError('A senha é obrigatória.');
+      isValid = false;
+    }
+    if (!isValid) return;
 
     setIsLoading(true);
-    // Simula uma chamada de API (como no teu login.js)
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:8080/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: loginEmail,
+          senha: loginPassword 
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Erro desconhecido no login');
+
+      // SUCESSO!
+      console.log('Login bem-sucedido!', data);
+      navigate('/'); // Redireciona para a Home
+
+    } catch (err) {
+      setFormError(err.message); // Mostra "E-mail ou senha inválidos."
+    } finally {
       setIsLoading(false);
-      console.log('Login:', { email, password, rememberMe });
-      // TODO: Lógica de login real (chamar API, guardar token)
-      // Se for sucesso:
-      // history.push('/'); // Redireciona para a Home (usar 'useNavigate' do React Router)
-      alert('Login (simulado) com sucesso! Redirecionando...');
-    }, 2000);
+    }
   };
-  
-  // Lida com o submit do "Esqueci-me da Senha"
+
+  // --- FUNÇÃO NOVA: REGISTO ---
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    clearAllErrors();
+
+    // Validação local
+    let isValid = true;
+    if (!registerName) {
+      setRegisterNameError('O nome é obrigatório.');
+      isValid = false;
+    }
+    if (!registerEmail) {
+      setRegisterEmailError('O e-mail é obrigatório.');
+      isValid = false;
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(registerEmail)) {
+      setRegisterEmailError('Formato de e-mail inválido.');
+      isValid = false;
+    }
+    if (!registerPassword) {
+      setRegisterPasswordError('A senha é obrigatória.');
+      isValid = false;
+    } else if (registerPassword.length < 6) {
+      setRegisterPasswordError('A senha deve ter pelo menos 6 caracteres.');
+      isValid = false;
+    }
+    if (registerPassword !== registerConfirmPassword) {
+      setRegisterConfirmPasswordError('As senhas não coincidem.');
+      isValid = false;
+    }
+    if (!isValid) return; // Para se a validação falhar
+
+    setIsLoading(true);
+    try {
+      // 4. Chama a API de Registo
+      const response = await fetch('http://localhost:8080/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome: registerName,
+          email: registerEmail,
+          senha: registerPassword
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Se a API retornar um erro (409, 500), 'data.error' virá
+        throw new Error(data.error || 'Erro desconhecido no registo');
+      }
+
+      // 5. SUCESSO!
+      console.log('Registo bem-sucedido!', data);
+      
+      // Muda para o modo 'login' e dá uma mensagem de sucesso
+      setMode('login');
+      // (Idealmente, aqui teríamos uma mensagem "Sucesso! Faça login.")
+      // Por agora, vamos apenas limpar os campos de registo:
+      setRegisterName('');
+      setRegisterEmail('');
+      setRegisterPassword('');
+      setRegisterConfirmPassword('');
+
+    } catch (err) {
+      // 6. ERRO
+      console.error('Erro no registo:', err.message);
+      // Mostra o erro da API (ex: "Este e-mail já está cadastrado.")
+      setFormError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  // --- FUNÇÕES DOS MODAIS (Mantidas) ---
+  const handleShowPassword = (e) => {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  };
+
   const handleForgotSubmit = (e) => {
     e.preventDefault();
     setResetEmailError('');
-
     if (!resetEmail) {
-      setResetEmailError('E-mail é obrigatório.');
+      setResetEmailError('Por favor, insira seu e-mail.');
       return;
     }
-
     setIsLoading(true);
-    // Simula chamada de API
     setTimeout(() => {
       setIsLoading(false);
-      setShowForgotModal(false); // Fecha o modal de "esqueci"
-      setShowSuccessModal(true); // Abre o modal de "sucesso"
-      setResetEmail(''); // Limpa o campo
-    }, 2000);
+      setShowForgotModal(false);
+      setShowSuccessModal(true);
+      setResetEmail('');
+    }, 1500);
   };
   
-  // --- RENDERIZAÇÃO (O JSX) ---
-  return (
-    // Esta div substitui o <body class="login-page">
-    // (Embora o useEffect já tenha adicionado a classe ao body real)
-    // Usamos <main> como no teu HTML original
-    <>
+  // --- FUNÇÃO PARA TROCAR DE MODO ---
+  const toggleMode = (newMode) => {
+    clearAllErrors();
+    setMode(newMode);
+  };
 
-      {/* --- O CONTAINER DO LOGIN --- */}
+
+  // --- RENDERIZAÇÃO (JSX) ---
+  return (
+    <div className="login-page-wrapper">
       <div className="login-container">
-        
-        {/* --- LADO ESQUERDO: CONTEÚDO (FORMULÁRIO) --- */}
+        {/* --- Lado Esquerdo: O Formulário --- */}
         <div className="login-content">
-          <div className="login-header">
-            {/* O Logo agora usa <Link> do React Router */}
-            <Link to="/" className="login-logo">
-              {/* Se tiveres a LogoOpto.png em /src/assets/images/,
-                  podes importá-la no topo e usá-la aqui.
-                  Por agora, vamos usar o texto. */}
-              {/* <img src={logoImage} alt="OPTO Review" className="logo-image" /> */}
-              <h2 className="login-title-logo">OPTO REVIEW</h2>
-            </Link>
-            <h1 className="login-title">Acesse sua Conta</h1>
-            <p className="login-subtitle">Bem-vindo de volta! Faça login para continuar.</p>
+          
+          {/* --- CABEÇALHO (Muda com o modo) --- */}
+          {mode === 'login' ? (
+            <div className="login-header">
+              <Link to="/" className="login-logo">OPTO REVIEW</Link>
+              <h2>Bem-vindo de volta!</h2>
+              <p>Faça login para continuar.</p>
+            </div>
+          ) : (
+            <div className="login-header">
+              <Link to="/" className="login-logo">OPTO REVIEW</Link>
+              <h2>Crie sua conta</h2>
+              <p>É rápido e fácil. Comece a montar seu setup.</p>
+            </div>
+          )}
+
+          {/* Erro Global da API */}
+          <div className={`form-global-error ${formError ? 'visible' : ''}`}>
+            {formError}
           </div>
 
-          <form id="login-form" onSubmit={handleLoginSubmit} noValidate>
-            
-            {/* --- GRUPO E-MAIL --- */}
-            <div className={`form-group ${emailError ? 'error' : ''}`}>
-              <label htmlFor="email">E-mail</label>
-              <div className="input-wrapper">
-                <i className="fas fa-envelope input-icon"></i>
+          {/* --- FORMULÁRIO DE LOGIN (Condicional) --- */}
+          {mode === 'login' && (
+            <form id="login-form" onSubmit={handleLoginSubmit}>
+              <div className={`form-group ${loginEmailError ? 'error' : ''}`}>
+                <label htmlFor="email">E-mail</label>
                 <input 
                   type="email" 
                   id="email" 
                   className="form-input" 
-                  placeholder="seu.email@exemplo.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="ex: seuemail@dominio.com"
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
                 />
+                <span className="form-error">{loginEmailError}</span>
               </div>
-              {emailError && <div className="error-message">{emailError}</div>}
-            </div>
 
-            {/* --- GRUPO SENHA --- */}
-            <div className={`form-group ${passwordError ? 'error' : ''}`}>
-              <label htmlFor="password">Senha</label>
-              <div className="input-wrapper">
-                <i className="fas fa-lock input-icon"></i>
-                <input 
-                  type={showPassword ? 'text' : 'password'} 
-                  id="password" 
-                  className="form-input" 
-                  placeholder="Sua senha"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button 
-                  type="button" 
-                  id="password-toggle" 
-                  className="password-toggle"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <i className={showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
-                </button>
+              <div className={`form-group ${loginPasswordError ? 'error' : ''}`}>
+                <div className="label-wrapper">
+                  <label htmlFor="password">Senha</label>
+                  <a href="#" className="forgot-link" onClick={() => setShowForgotModal(true)}>
+                    Esqueceu a senha?
+                  </a>
+                </div>
+                <div className="password-wrapper">
+                  <input 
+                    type={showPassword ? 'text' : 'password'}
+                    id="password" 
+                    className="form-input" 
+                    placeholder="Sua senha segura"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                  />
+                  <button className="toggle-password" onClick={handleShowPassword}>
+                    <i className={showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
+                  </button>
+                </div>
+                <span className="form-error">{loginPasswordError}</span>
               </div>
-              {passwordError && <div className="error-message">{passwordError}</div>}
-            </div>
 
-            {/* --- OPÇÕES (LEMBRAR / ESQUECI) --- */}
-            <div className="form-options">
-              <div className="checkbox-group">
-                <input 
-                  type="checkbox" 
-                  id="remember-me"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <label htmlFor="remember-me">Lembrar-me</label>
+              <div className="form-options">
+                <label className="checkbox-container">
+                  <input 
+                    type="checkbox" 
+                    id="remember-me"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <span className="checkmark"></span>
+                  Lembrar-me
+                </label>
               </div>
-              <button 
-                type="button" 
-                id="forgot-password" 
-                className="link-button"
-                onClick={() => setShowForgotModal(true)}
-              >
-                Esqueceu a senha?
+
+              <button type="submit" className="login-btn" disabled={isLoading}>
+                <span style={{ display: isLoading ? 'none' : 'block' }}>Entrar</span>
+                <span className="btn-loading" style={{ display: isLoading ? 'flex' : 'none' }}>
+                  <i className="fas fa-spinner fa-spin"></i>
+                  Entrando...
+                </span>
               </button>
-            </div>
+            </form>
+          )}
 
-            {/* --- BOTÃO SUBMIT --- */}
-            <button 
-              type="submit" 
-              id="login-btn" 
-              className={`login-btn ${isLoading ? 'loading' : ''}`}
-              disabled={isLoading}
-            >
-              <span className="btn-text">Entrar</span>
-              <span className="btn-loading" style={{ display: isLoading ? 'flex' : 'none' }}>
-                <i className="fas fa-spinner fa-spin"></i>
-                Entrando...
-              </span>
-            </button>
-          </form>
+          {/* --- FORMULÁRIO DE REGISTO (Condicional) --- */}
+          {mode === 'register' && (
+            <form id="register-form" onSubmit={handleRegisterSubmit}>
+              <div className={`form-group ${registerNameError ? 'error' : ''}`}>
+                <label htmlFor="register-name">Nome Completo</label>
+                <input 
+                  type="text" 
+                  id="register-name" 
+                  className="form-input" 
+                  placeholder="Seu nome"
+                  value={registerName}
+                  onChange={(e) => setRegisterName(e.target.value)}
+                />
+                <span className="form-error">{registerNameError}</span>
+              </div>
 
-          {/* --- DIVISOR E LOGIN SOCIAL --- */}
-          <div className="separator">
+              <div className={`form-group ${registerEmailError ? 'error' : ''}`}>
+                <label htmlFor="register-email">E-mail</label>
+                <input 
+                  type="email" 
+                  id="register-email" 
+                  className="form-input" 
+                  placeholder="ex: seuemail@dominio.com"
+                  value={registerEmail}
+                  onChange={(e) => setRegisterEmail(e.target.value)}
+                />
+                <span className="form-error">{registerEmailError}</span>
+              </div>
+
+              <div className={`form-group ${registerPasswordError ? 'error' : ''}`}>
+                <label htmlFor="register-password">Senha</label> 
+                <input 
+                  type="password"
+                  id="register-password" 
+                  className="form-input" 
+                  placeholder="Mínimo 6 caracteres"
+                  value={registerPassword}
+                  onChange={(e) => setRegisterPassword(e.target.value)}
+                />
+                <span className="form-error">{registerPasswordError}</span>
+              </div>
+              
+              <div className={`form-group ${registerConfirmPasswordError ? 'error' : ''}`}>
+                <label htmlFor="register-confirm-password">Confirmar Senha</label>
+                <input 
+                  type="password"
+                  id="register-confirm-password" 
+                  className="form-input" 
+                  placeholder="Repita a senha"
+                  value={registerConfirmPassword}
+                  onChange={(e) => setRegisterConfirmPassword(e.target.value)}
+                />
+                <span className="form-error">{registerConfirmPasswordError}</span>
+              </div>
+
+              <button type="submit" className="login-btn" disabled={isLoading}>
+                <span style={{ display: isLoading ? 'none' : 'block' }}>Criar Conta</span>
+                <span className="btn-loading" style={{ display: isLoading ? 'flex' : 'none' }}>
+                  <i className="fas fa-spinner fa-spin"></i>
+                  Criando...
+                </span>
+              </button>
+            </form>
+          )}
+
+
+          {/* --- RODAPÉ (Links sociais e troca de modo) --- */}
+          <div className="divider">
             <span>OU</span>
           </div>
+
           <div className="social-login">
-            <button id="google-login" className="social-btn google">
-              <i className="fab fa-google"></i>
-              <span>Entrar com Google</span>
+            <button className="social-btn google">
+              <i className="fab fa-google"></i> Continuar com Google
             </button>
-            <button id="facebook-login" className="social-btn facebook">
-              <i className="fab fa-facebook-f"></i>
-              <span>Entrar com Facebook</span>
+            <button className="social-btn discord">
+              <i className="fab fa-discord"></i> Continuar com Discord
             </button>
           </div>
-          <p className="register-link">
-            Não tem uma conta? <a href="#">Registre-se</a>
-          </p>
 
-        </div> {/* Fim .login-content */}
+          <div className="register-link">
+            {mode === 'login' ? (
+              <span>
+                Não tem uma conta?{' '}
+                <a href="#" onClick={(e) => { e.preventDefault(); toggleMode('register'); }}>
+                  Crie uma agora
+                </a>
+              </span>
+            ) : (
+              <span>
+                Já tem uma conta?{' '}
+                <a href="#" onClick={(e) => { e.preventDefault(); toggleMode('login'); }}>
+                  Faça login
+                </a>
+              </span>
+            )}
+          </div>
+        </div>
 
-        {/* --- LADO DIREITO: POR QUE FAZER LOGIN? --- */}
-        <div className="login-sidebar">
-          <h2 className="sidebar-title">Por que fazer login?</h2>
+        {/* --- Lado Direito: A Imagem --- */}
+        <div className="login-promo-banner">
           
-          {/* Lista de features (baseada no teu login.html ) */}
-          <ul className="feature-list">
-            <li className="feature-item">
-              <i className="fas fa-heart"></i>
-              <div>
-                <h3>Lista de Favoritos</h3>
-                <p>Salve produtos que você gostou para consultar depois</p>
+          {/* Título principal do banner */}
+          <h3>Por que fazer login?</h3>
+          
+          {/* A lista de features CORRETA */}
+          <ul className="promo-features">
+            
+            <li className="promo-feature-item">
+              <div className="feature-item-header">
+                <i className="fas fa-heart"></i>
+                <span className="feature-item-title">Lista de Favoritos</span>
               </div>
+              <p className="feature-item-description">
+                Salve produtos que você gostou para consultar depois.
+              </p>
             </li>
-            <li className="feature-item">
-              {/* Nota: fa-balance-scale é do FontAwesome v5. Se usas v6, o ícone é fa-scale-balanced */}
-              <i className="fas fa-scale-balanced"></i> 
-              <div>
-                <h3>Comparações Salvas</h3>
-                <p>Mantenha suas comparações de produtos organizadas</p>
+
+            <li className="promo-feature-item">
+              <div className="feature-item-header">
+                <i className="fas fa-columns"></i>
+                <span className="feature-item-title">Comparações Salvas</span>
               </div>
+              <p className="feature-item-description">
+                Mantenha suas comparações de produtos organizadas.
+              </p>
             </li>
-            <li className="feature-item">
-              <i className="fas fa-cogs"></i>
-              <div>
-                <h3>Setup Personalizado</h3>
-                <p>Receba recomendações baseadas no seu perfil</p>
+
+            <li className="promo-feature-item">
+              <div className="feature-item-header">
+                <i className="fas fa-cogs"></i>
+                <span className="feature-item-title">Setup Personalizado</span>
               </div>
+              <p className="feature-item-description">
+                Receba recomendações baseadas no seu perfil.
+              </p>
             </li>
-            <li className="feature-item">
-              <i className="fas fa-bell"></i>
-              <div>
-                <h3>Alertas de Preço</h3>
-                <p>Seja notificado quando produtos baixarem de preço</p>
+
+            <li className="promo-feature-item">
+              <div className="feature-item-header">
+                <i className="fas fa-bell"></i>
+                <span className="feature-item-title">Alertas de Preço</span>
               </div>
+              <p className="feature-item-description">
+                Seja notificado quando produtos baixarem de preço.
+              </p>
             </li>
+
           </ul>
         </div>
-        
-      </div> {/* Fim .login-container */}
+      </div>
 
-
-      {/* --- MODAIS --- */}
-      {/* A visibilidade deles é controlada pelo 'useState' */}
-
-      {/* --- MODAL ESQUECI A SENHA --- */}
+      {/* --- MODAIS (Mantidos - Sem alteração) --- */}
       {showForgotModal && (
-        <div className="modal" id="forgot-password-modal" style={{ display: 'block' }}>
+        <div className="modal" id="forgot-modal" style={{ display: 'block' }}>
           <div className="modal-content">
             <div className="modal-header">
               <h3>Recuperar Senha</h3>
-              <button 
-                className="modal-close" 
-                id="close-forgot-modal"
-                onClick={() => setShowForgotModal(false)}
-              >
+              <button className="modal-close" id="close-forgot-modal" onClick={() => setShowForgotModal(false)}>
                 <i className="fas fa-times"></i>
               </button>
             </div>
-            
-            <form id="forgot-password-form" onSubmit={handleForgotSubmit} noValidate>
-              <div className="modal-body">
-                <p>Digite seu e-mail e enviaremos as instruções para redefinir sua senha.</p>
-                <div className={`form-group ${resetEmailError ? 'error' : ''}`}>
-                  <label htmlFor="reset-email">E-mail de Recuperação</label>
-                  <div className="input-wrapper">
-                    <i className="fas fa-envelope input-icon"></i>
-                    <input 
-                      type="email" 
-                      id="reset-email" 
-                      className="form-input" 
-                      placeholder="seu.email@exemplo.com"
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
-                    />
-                  </div>
-                  {resetEmailError && <div className="error-message" id="reset-email-error">{resetEmailError}</div>}
-                </div>
-                <button 
-                  type="submit" 
-                  className={`login-btn ${isLoading ? 'loading' : ''}`}
-                  disabled={isLoading}
-                >
-                  <span className="btn-text">Enviar Instruções</span>
+            <form className="modal-body" id="forgot-form" onSubmit={handleForgotSubmit}>
+              <p>Insira seu e-mail e enviaremos um link para redefinir sua senha.</p>
+              <div className={`form-group ${resetEmailError ? 'error' : ''}`}>
+                <label htmlFor="reset-email">E-mail de recuperação</label>
+                <input 
+                  type="email" 
+                  id="reset-email" 
+                  className="form-input" 
+                  placeholder="Seu e-mail cadastrado"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                />
+                <span className="form-error">{resetEmailError}</span>
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="wizard-btn secondary" onClick={() => setShowForgotModal(false)}>
+                  Cancelar
+                </button>
+                <button type="submit" className="login-btn" id="send-reset-btn" disabled={isLoading}>
+                  <span style={{ display: isLoading ? 'none' : 'block' }}>Enviar</span>
                   <span className="btn-loading" style={{ display: isLoading ? 'flex' : 'none' }}>
                     <i className="fas fa-spinner fa-spin"></i>
                     Enviando...
@@ -326,17 +495,12 @@ function LoginPage() {
         </div>
       )}
 
-      {/* --- MODAL DE SUCESSO --- */}
       {showSuccessModal && (
         <div className="modal" id="success-modal" style={{ display: 'block' }}>
           <div className="modal-content success-modal">
             <div className="modal-header">
               <h3>E-mail Enviado!</h3>
-              <button 
-                className="modal-close" 
-                id="close-success-modal"
-                onClick={() => setShowSuccessModal(false)}
-              >
+              <button className="modal-close" id="close-success-modal" onClick={() => setShowSuccessModal(false)}>
                 <i className="fas fa-times"></i>
               </button>
             </div>
@@ -345,18 +509,14 @@ function LoginPage() {
                 <i className="fas fa-check-circle"></i>
               </div>
               <p>Enviamos as instruções de recuperação de senha para o seu e-mail. Verifique sua caixa de entrada e spam.</p>
-              <button 
-                className="login-btn" 
-                id="close-success-btn"
-                onClick={() => setShowSuccessModal(false)}
-              >
+              <button className="login-btn" id="close-success-btn" onClick={() => setShowSuccessModal(false)}>
                 Entendi
               </button>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div> 
   );
 }
 

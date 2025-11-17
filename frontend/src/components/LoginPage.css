@@ -1,311 +1,343 @@
 /* frontend/src/components/LoginPage.css */
-/* VERSÃO ADAPTADA PARA FUNCIONAR DENTRO DO LAYOUT.JS */
+/* Arquivo de Estilo Completo para a Página de Login */
 
-/* As regras .login-page e .login-main FORAM REMOVIDAS 
-   porque o Layout.js agora controla o fundo e o centro. */
+/* ------------------------------------------------------------------ */
+/* --- Wrapper de Escopo --- */
+/* ------------------------------------------------------------------ */
+/* O .login-page-wrapper é a classe-mãe (adicionada no LoginPage.js)
+   que "isola" todos os estilos desta página. 
+   Isso evita que o .modal, .form-group, etc.,
+   afetem outras páginas do site (como a ComparePage). */
 
 /* O container principal do login (o card branco) */
-.login-container {
+.login-page-wrapper .login-container {
     display: grid;
-    /* ESTA É A REGRA QUE CORRIGE O TEU LAYOUT QUEBRADO */
+    /* Define o layout de 2 colunas: 1fr (formulário) e 1fr (banner) */
     grid-template-columns: 1fr 1fr; 
     max-width: 1200px;
     width: 100%;
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    min-height: 700px; /* Aumentado um pouco */
-    /* Adiciona margem para centrar dentro do Layout.js */
-    margin: 2rem auto; 
+    overflow: hidden; /* Garante que os cantos arredondados sejam aplicados */
+    min-height: 700px;
+    margin: 2rem auto; /* Centraliza o card na página */
 }
 
-/* Conteúdo Principal do Login */
-.login-content {
+/* ------------------------------------------------------------------ */
+/* --- Lado Esquerdo: Conteúdo (Formulários) --- */
+/* ------------------------------------------------------------------ */
+
+/* Coluna esquerda que contém o cabeçalho e os formulários */
+.login-page-wrapper .login-content {
     padding: 3rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* Centraliza verticalmente o conteúdo */
 }
 
-.login-header {
+/* Cabeçalho (Logo, Título, Subtítulo) */
+.login-page-wrapper .login-header {
     text-align: center;
     margin-bottom: 3rem;
 }
 
-.login-logo {
+.login-page-wrapper .login-logo {
     margin-bottom: 1rem;
     display: inline-block;
-    text-decoration: none;
-}
-.login-title-logo {
     font-size: 1.5rem;
+    font-weight: 700;
     color: var(--text-dark);
-    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
 }
-.login-title {
+.login-page-wrapper .login-header h2 {
     font-size: 2.2rem;
-    font-weight: 700;
     margin-bottom: 0.5rem;
     color: var(--text-dark);
 }
-.login-subtitle {
+.login-page-wrapper .login-header p {
     font-size: 1.1rem;
     color: var(--text-muted);
 }
 
-/* --- ESTILOS DO FORMULÁRIO (DO login.css ORIGINAL) --- */
-#login-form {
-    width: 100%;
+/* --- Formulários (Login e Registro) --- */
+
+.login-page-wrapper #login-form,
+.login-page-wrapper #register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Espaçamento entre os campos (ex: email, senha) */
 }
-.form-group {
-    margin-bottom: 1.5rem;
+
+/* Grupo de formulário (Label + Input + Erro) */
+.login-page-wrapper .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Espaço entre a label e o input */
     position: relative;
 }
-.form-group label {
-    display: block;
+
+/* Wrapper para a label de Senha e o link "Esqueceu a senha?" */
+.login-page-wrapper .label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-page-wrapper .form-group label {
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    color: var(--text-dark);
 }
-.input-wrapper {
-    position: relative;
+.login-page-wrapper .forgot-link {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-decoration: none;
 }
-.input-icon {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-}
-.form-input {
+.login-page-wrapper .forgot-link:hover { text-decoration: underline; }
+
+/* Campos de Input (Email, Senha, Nome) */
+.login-page-wrapper .form-input {
     width: 100%;
-    padding: 1rem 1rem 1rem 3rem; /* 3rem à esquerda para o ícone */
+    padding: 0.9rem 1rem;
     font-size: 1rem;
     font-family: 'Poppins', sans-serif;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
-.form-input:focus {
+.login-page-wrapper .form-input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
     outline: none;
 }
-.password-toggle {
+
+/* Wrapper do campo de senha (Input + Ícone de olho) */
+.login-page-wrapper .password-wrapper {
+    position: relative;
+    display: flex;
+}
+.login-page-wrapper .password-wrapper .form-input {
+    padding-right: 3rem; /* Espaço para o ícone de olho */
+}
+.login-page-wrapper .toggle-password {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3rem;
     background: none;
     border: none;
     cursor: pointer;
     color: var(--text-muted);
     font-size: 1.1rem;
 }
-.form-options {
+
+/* Opções (Lembrar-me) */
+.login-page-wrapper .form-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-top: -0.5rem;
 }
-.checkbox-group {
+.login-page-wrapper .checkbox-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-}
-.checkbox-group label {
-    margin-bottom: 0;
-    font-weight: 500;
-    color: var(--text-muted);
-}
-.link-button {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    font-weight: 600;
-    cursor: pointer;
     font-size: 0.9rem;
+    color: var(--text-muted);
+    cursor: pointer;
 }
-.login-btn {
-    width: 100%;
+.login-page-wrapper .checkbox-container input {
+    margin-right: 0.5rem;
+}
+
+/* Botão principal (Entrar / Criar Conta) */
+.login-page-wrapper .login-btn {
     padding: 1rem;
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 600;
     color: #fff;
     background-color: var(--primary-color);
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex;
+    transition: all 0.3s ease;
+    display: flex; /* Para centralizar o spinner de loading */
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
 }
-.login-btn:hover {
-    background-color: #0056b3;
+.login-page-wrapper .login-btn:hover:not(:disabled) {
+    background-color: #0056b3; /* Tom mais escuro de azul */
+    transform: translateY(-2px);
 }
-.separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 2rem 0;
-    color: var(--text-muted);
+.login-page-wrapper .login-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
-.separator::before,
-.separator::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid var(--border-color);
-}
-.separator:not(:empty)::before { margin-right: 1em; }
-.separator:not(:empty)::after { margin-left: 1em; }
 
-.social-login {
+/* --- Divisor e Links Sociais --- */
+.login-page-wrapper .divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.login-page-wrapper .social-login {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-.social-btn {
-    padding: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
+.login-page-wrapper .social-btn {
+    padding: 0.9rem 1rem;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     background-color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
 }
-.social-btn:hover {
-    background-color: #f8f9fa;
+.login-page-wrapper .social-btn:hover {
+    border-color: #aaa;
 }
-.social-btn .fab {
-    font-size: 1.2rem;
+.login-page-wrapper .social-btn i {
+    font-size: 1.4rem;
 }
-.social-btn.google .fab { color: #DB4437; }
-.social-btn.facebook .fab { color: #4267B2; }
+.login-page-wrapper .social-btn.google i { color: #DB4437; }
+.login-page-wrapper .social-btn.discord i { color: #5865F2; }
 
-.register-link {
+/* Link de alternância (Login <-> Registro) */
+.login-page-wrapper .register-link {
     text-align: center;
     margin-top: 2rem;
     color: var(--text-muted);
 }
-.register-link a {
+.login-page-wrapper .register-link a {
     color: var(--primary-color);
     font-weight: 600;
     text-decoration: none;
 }
 
-/* --- LADO DIREITO (IMAGEM/SLOGAN) --- */
-/* --- LADO DIREITO (POR QUE FAZER LOGIN?) --- */
-.login-sidebar {
-    background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-bg-secondary) 100%);
+/* ------------------------------------------------------------------ */
+/* --- Lado Direito: Banner Promocional --- */
+/* ------------------------------------------------------------------ */
+
+.login-page-wrapper .login-promo-banner {
+    background: linear-gradient(135deg, var(--dark-bg-secondary), var(--dark-bg));
     color: var(--text-light);
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza a lista verticalmente */
-    align-items: flex-start; /* Alinha o conteúdo à esquerda */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 4rem;
-    text-align: left; /* Alinha o texto à esquerda */
-    
-    /* Removemos a imagem de fundo e o overlay ::before */
 }
 
-.sidebar-title {
+.login-page-wrapper .login-promo-banner h3 {
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 2.5rem; /* Mais espaço para a lista */
-    position: relative;
-    z-index: 2; /* Garante que fica acima de qualquer resquício de overlay */
+    margin-bottom: 1rem;
 }
 
-/* Nova lista de features */
-.feature-list {
-    list-style: none; /* Remove bolinhas */
+/* Lista de Benefícios (Fiel à Imagem) */
+.login-page-wrapper .promo-features {
+    list-style: none;
     padding: 0;
-    margin: 0;
+    margin-top: 2.5rem; /* Espaço do título "Por que fazer login?" */
+    text-align: left; /* Alinha todo o bloco de texto à esquerda */
     width: 100%;
-    position: relative;
-    z-index: 2;
 }
 
-.feature-item {
-    display: flex;
-    align-items: flex-start; /* Alinha ícone com o topo do texto */
-    gap: 1.5rem; /* Espaço entre ícone e texto */
+/* Cada item da lista (ex: Favoritos) */
+.login-page-wrapper .promo-feature-item {
     margin-bottom: 2rem;
 }
 
-.feature-item:last-child {
-    margin-bottom: 0;
+/* O cabeçalho (Ícone + Título) */
+.login-page-wrapper .feature-item-header {
+    display: flex;
+    align-items: center; /* Alinha o ícone e o título verticalmente */
+    gap: 0.75rem;      /* Espaço entre o ícone e o título */
+    margin-bottom: 0.5rem; /* Espaço entre o título e a descrição */
 }
 
-/* Estilo dos ícones da lista */
-.feature-item i {
-    font-size: 1.5rem; /* Tamanho do ícone */
-    color: var(--secondary-color); /* Cor verde (pode mudar se preferir) */
-    margin-top: 0.25rem; /* Alinhamento fino */
-    width: 30px; /* Garante alinhamento */
+/* O ícone de cada item */
+.login-page-wrapper .feature-item-header i {
+    font-size: 1.1rem; /* Tamanho do ícone */
+    color: var(--secondary-color); /* Ícone verde (variável global) */
+    width: 20px; /* Largura fixa para alinhar os títulos */
     text-align: center;
 }
 
-.feature-item h3 {
+/* O título de cada item (ex: "Lista de Favoritos") */
+.login-page-wrapper .feature-item-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--text-light);
-    margin-bottom: 0.25rem;
+    color: var(--text-light); /* Texto claro */
 }
 
-.feature-item p {
+/* A descrição de cada item (o <p>) */
+.login-page-wrapper .feature-item-description {
     font-size: 0.95rem;
-    color: #a0aec0; /* text-muted light */
+    color: #a0aec0; /* Cor mais suave (cinza-azulado) */
     line-height: 1.6;
-}
-.sidebar-text {
-    font-size: 1.1rem;
-    color: #a0aec0; /* text-muted light */
-    line-height: 1.6;
+    margin: 0; /* Reseta a margem padrão do <p> */
+    
+    /* Alinha a descrição com o TÍTULO (não com o ícone) */
+    /* (Largura do ícone 20px + gap 0.75rem ~ 12px) = 32px */
+    padding-left: 32px; 
 }
 
-/* --- ESTILOS DOS MODAIS (DO login.css ORIGINAL) --- */
-.modal {
-    display: block; /* Controlado pelo React, não mais 'none' */
+/* ------------------------------------------------------------------ */
+/* --- Modais (Esqueci Senha / Sucesso) --- */
+/* ------------------------------------------------------------------ */
+
+/* Estas regras SÓ se aplicam a modais DENTRO da página de login */
+.login-page-wrapper .modal {
+    display: block; /* Controlado pelo JS com {showModal && (...)} */
     position: fixed;
-    z-index: 2000;
+    z-index: 1000; /* Garante que o modal fique acima de tudo */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo escurecido */
+    animation: fadeIn 0.3s; /* Animação de entrada */
 }
-.modal-content {
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.login-page-wrapper .modal-content {
     background-color: #fff;
-    margin: 15% auto;
-    padding: 0;
-    border: 1px solid #888;
+    margin: 15vh auto; /* 15% do topo e centralizado */
     width: 90%;
-    max-width: 500px;
+    max-width: 500px; /* Largura máxima */
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    overflow: hidden; /* Para os cantos arredondados */
 }
-.modal-header {
+
+.login-page-wrapper .modal-header {
     padding: 1.5rem 2rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.modal-header h3 {
+.login-page-wrapper .modal-header h3 {
     font-size: 1.5rem;
     margin: 0;
 }
-.modal-close {
+.login-page-wrapper .modal-close {
     font-size: 1.5rem;
     font-weight: 700;
     color: #aaa;
@@ -313,48 +345,92 @@
     border: none;
     cursor: pointer;
 }
-.modal-close:hover { color: #000; }
-.modal-body {
+.login-page-wrapper .modal-close:hover { color: #000; }
+
+.login-page-wrapper .modal-body {
     padding: 2rem;
 }
-.modal-body p {
+.login-page-wrapper .modal-body p {
     margin-bottom: 1.5rem;
     color: var(--text-muted);
 }
-.success-modal .modal-body {
+.login-page-wrapper .modal-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha botões à direita */
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Estilos específicos do Modal de Sucesso */
+.login-page-wrapper .success-modal .modal-body {
     text-align: center;
 }
-.success-icon {
+.login-page-wrapper .success-icon {
     font-size: 4rem;
-    color: var(--secondary-color);
+    color: var(--secondary-color); /* Ícone verde */
     margin-bottom: 1.5rem;
 }
 
-/* --- ERROS E LOADING (DO login.css ORIGINAL) --- */
-.form-group.error .form-input {
-    border-color: #e53e3e;
+/* ------------------------------------------------------------------ */
+/* --- Estilos de Erro e Validação --- */
+/* ------------------------------------------------------------------ */
+
+/* Borda vermelha no input quando há erro */
+.login-page-wrapper .form-group.error .form-input {
+    border-color: #e53e3e; /* Vermelho de erro */
 }
-.error-message {
+
+/* Mensagem de erro abaixo do input (ex: "Senha obrigatória") */
+.login-page-wrapper .form-error {
     color: #e53e3e;
     font-size: 0.9rem;
     font-weight: 500;
-    margin-top: 0.5rem;
 }
-.loading { pointer-events: none; }
-.loading .btn-text { display: none; }
-.loading .btn-loading { display: flex !important; }
-.btn-loading {
-    display: none; /* Escondido por padrão */
+
+/* Erro global da API (ex: "E-mail já existe") */
+.login-page-wrapper .form-global-error {
+    display: none; /* Começa escondido */
+    background-color: #fff5f5;
+    color: #c53030;
+    border: 1px solid #fc8181;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+.login-page-wrapper .form-global-error.visible {
+    display: block; /* JS controla esta classe */
+}
+
+/* Estado de Loading do botão (spinner) */
+.login-page-wrapper .btn-loading {
+    display: none; /* Controlado pelo JS */
     align-items: center;
     gap: 0.5rem;
 }
 
-/* --- O REMÉDIO DOS ÍCONES (PARA GARANTIR) --- */
-.fas {
-    font-family: "Font Awesome 6 Free" !important;
-    font-weight: 900 !important;
-}
-.fab {
-    font-family: "Font Awesome 6 Brands" !important;
-    font-weight: 400 !important;
+/* ------------------------------------------------------------------ */
+/* --- Responsividade (Telas Pequenas) --- */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+    /* Transforma o grid de 2 colunas em 1 coluna só */
+    .login-page-wrapper .login-container {
+        grid-template-columns: 1fr; /* Coluna única */
+        margin: 1rem auto;
+        min-height: auto;
+    }
+    
+    /* Esconde o banner roxo em telas pequenas */
+    .login-page-wrapper .login-promo-banner {
+        display: none; 
+    }
+    
+    .login-page-wrapper .login-content {
+        padding: 2rem 1.5rem;
+    }
+    
+    .login-page-wrapper .login-header {
+        margin-bottom: 2rem;
+    }
 }

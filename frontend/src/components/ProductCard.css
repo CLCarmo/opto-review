@@ -237,3 +237,28 @@
    outline: 3px solid var(--primary-color);
    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
 }
+/* ... (todo o seu CSS de .product-card existente) ... */
+
+/* --- NOVO: ESTILO DE CARD TRAVADO (CATEGORIA DIFERENTE) --- */
+
+.product-card.is-locked {
+    /* Deixa o card cinza e semi-transparente */
+    opacity: 0.6;
+    filter: grayscale(80%);
+    
+    /* Remove os efeitos de hover */
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.04); 
+}
+
+/* Faz o cursor mudar para "não permitido" */
+.product-card.is-locked .select-checkbox,
+.product-card.is-locked .compare-button-card {
+    cursor: not-allowed;
+}
+
+/* Impede o hover no botão de comparar travado */
+.product-card.is-locked .compare-button-card:hover {
+    background-color: var(--light-bg);
+    color: var(--text-muted);
+}
