@@ -1,20 +1,28 @@
 import React from 'react';
-// Importamos o Link e o NavLink do React Router
-import { Link, NavLink } from 'react-router-dom';
+// 1. Importamos o Link, NavLink, e o NOVO useNavigate (para o logout)
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+
+// 2. Importamos o nosso "cérebro" (o AuthContext)
+import { useAuth } from '../context/AuthContext';
 
 /**
  * Componente Header
  * Renderiza o cabeçalho principal e a navegação do site.
- * * Usamos <Link> para o logo, pois é um link simples para a home.
- * * Usamos <NavLink> para os links de navegação porque ele automaticamente
- * adiciona uma classe "active" ao link da página que está 
- * sendo visitada, exatamente como o teu HTML original fazia .
+ * AGORA É DINÂMICO: Mostra o estado de login do utilizador.
  */
 function Header() {
+  
+  // 3. Acedemos aos dados e funções do nosso cérebro
+  const { isLoggedIn, user, logout } = useAuth();
+  const navigate = useNavigate(); // Para redirecionar após o logout
+
+  // 4. Criamos uma função para o botão "Sair"
+  const handleLogout = () => {
+    logout(); // Chama a função de logout do cérebro
+    navigate('/'); // Redireciona o utilizador para a Home
+  };
+
   return (
-    // Estamos a usar as classes CSS exatas (app-header, logo, etc.)
-    // que já definiste no teu ficheiro /common/base.css ,
-    // assim os estilos serão aplicados automaticamente.
     <header className="app-header">
       
       {/* O logo é um <Link> para a raiz do site */}
@@ -23,21 +31,40 @@ function Header() {
       <nav className="navigation">
         {/* Usamos NavLink para que a classe "active" seja gerida */}
         
-        {/* A propriedade 'end' no NavLink da "Home" é importante.
-          Ela diz ao router para só marcar este link como ativo se
-          a URL for EXATAMENTE "/", e não "/products" ou "/compare".
-        */}
-        <NavLink to="/" className="nav-link" end >Home</NavLink>
+        <NavLink to="/" className="nav-link" end>Home</NavLink>
         <NavLink to="/produtos" className="nav-link">Buscar Produtos</NavLink>
         <NavLink to="/compare" className="nav-link">Comparar</NavLink>
         
-        {/* Links baseados no teu index.html original */}
         <NavLink to="/upgrade" className="nav-link">Upgrade/Criar Setup</NavLink>
         <NavLink to="/glossary" className="nav-link">Glossário</NavLink>
-        <NavLink to="/about" className="nav-link">Sobre</NavLink>
         
-        {/* Link de Login */}
-        <NavLink to="/login" className="nav-link login-button">Login</NavLink>
+        {/* =================================================== */}
+        {/* 5. AQUI ESTÁ A LÓGICA (Renderização Condicional) */}
+        {/* =================================================== */}
+        
+        {isLoggedIn ? (
+          // --- SE ESTIVER LOGADO ---
+          <>
+            <NavLink to="/favoritos" className="nav-link">
+              <i className="fas fa-heart"></i> Favoritos
+            </NavLink>
+
+            <span className="nav-link welcome-user">
+              {/* Mostra o nome do utilizador (ex: "Olá, Caio") */}
+              Olá, {user.nome}!
+            </span>
+            <button onClick={handleLogout} className="nav-link logout-button">
+              <i className="fas fa-sign-out-alt"></i> Sair
+            </button>
+          </>
+
+        ) : (
+          // --- SE NÃO ESTIVER LOGADO ---
+          <NavLink to="/login" className="nav-link login-button">
+            Login
+          </NavLink>
+        )}
+        
       </nav>
     </header>
   );

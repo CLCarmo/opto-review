@@ -55,6 +55,7 @@ CREATE TABLE usuarios (
     perfil JSONB   -- respostas do formulário (ex.: {"orcamento":5000,"uso":"gamer"})
 );
 
+
 -- ========================
 -- BLOCO 8: RECOMENDAÇÕES
 -- ========================
@@ -70,6 +71,31 @@ CREATE TABLE itens_recomendacao (
     id_produto INT REFERENCES produtos(id_produto),
     quantidade INT DEFAULT 1,
     PRIMARY KEY (id_recomendacao, id_produto)
+);
+-- ========================
+-- BLOCO 8: FAVORITOS DO USUÁRIO
+-- ========================
+CREATE TABLE usuario_favoritos (
+    id_favorito SERIAL PRIMARY KEY,
+    
+    -- Chave estrangeira para o usuário
+    id_usuario INT NOT NULL,
+    
+    -- Chave estrangeira para o produto
+    id_produto INT NOT NULL,
+    
+    -- Data em que foi favoritado
+    data_criacao TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Referências (Foreign Keys)
+    -- Se um usuário for deletado, seus favoritos somem
+    FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario) ON DELETE CASCADE,
+    
+    -- Se um produto for deletado, a entrada de favorito some
+    FOREIGN KEY (id_produto) REFERENCES produtos (id_produto) ON DELETE CASCADE,
+    
+    -- Garante que um usuário só pode favoritar um produto UMA vez
+    UNIQUE (id_usuario, id_produto)
 );
 
 -- ========================

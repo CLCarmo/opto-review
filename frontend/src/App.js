@@ -11,13 +11,15 @@ import UpgradePage from './components/UpgradePage';
 import GlossaryPage from './components/GlossaryPage';
 import AboutPage from './components/AboutPage'; 
 import LoginPage from './components/LoginPage';
+import { AuthProvider } from './context/AuthContext';
+import FavoritesPage from './components/FavoritesPage';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="produtos" element={<ProductListPage />} />
           <Route path="produtos/:produtoId" element={<ProductDetailPage />} />
@@ -26,11 +28,12 @@ function App() {
           <Route path="about" element={<AboutPage />} />
           <Route path="glossary" element={<GlossaryPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="/favoritos" element={<FavoritesPage />} />
           {/* ... resto das rotas ... */}
 
-        </Route> 
-        
-      </Routes>
+          </Route> 
+       </Routes>
+      </AuthProvider>
     </Router>
   );
 }

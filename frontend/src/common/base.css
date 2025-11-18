@@ -37,16 +37,14 @@ body {
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    padding: 1rem 5%; 
-    background-color: var(--dark-bg); 
-    position: sticky; 
-    top: 0; 
-    z-index: 1000; 
+    padding: 1rem 5%; /* Ajustado para mais padding */
+    background-color: var(--dark-bg);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 .logo { 
     font-size: 1.5rem; 
     font-weight: 700; 
-    color: var(--secondary-color); 
+    color: var(--text-light); 
     text-decoration: none; 
 }
 .navigation { 
@@ -55,19 +53,110 @@ body {
     gap: 1.5rem; 
 }
 .nav-link { 
-    color: var(--text-light); 
     text-decoration: none; 
-    font-weight: 500; 
-    transition: color 0.3s ease; 
+    color: var(--text-muted); 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
-.nav-link:hover, .nav-link.active { 
-    color: #fff; 
+.nav-link:hover { 
+    background-color: var(--dark-bg-secondary); 
+    color: var(--text-light); 
+}
+.nav-link.active { 
+    color: var(--secondary-color); /* Verde */
+    font-weight: 700; 
 }
 
-/* --- RODAPÉ PADRÃO --- */
+/* --- BOTÃO DE LOGIN (ESPECÍFICO) --- */
+.nav-link.login-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 0.5rem 1.2rem; /* Mais padding horizontal */
+    border-radius: 6px;
+}
+.nav-link.login-button:hover {
+    background-color: #0056b3; /* Azul mais escuro */
+    color: #fff;
+}
+
+/* =================================================== */
+/* --- (NOVOS) ESTILOS DE AUTENTICAÇÃO --- */
+/* =================================================== */
+
+/* Estilo para a saudação "Olá, Caio!" */
+.nav-link.welcome-user {
+    color: var(--text-light);
+    font-weight: 500;
+    cursor: default;
+}
+.nav-link.welcome-user:hover {
+    background-color: transparent; /* Remove o efeito hover */
+}
+
+/* Estilo para o botão "Sair" */
+.logout-button {
+    background-color: var(--text-muted); /* Um cinza */
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    border: none;
+    font-family: 'Poppins', sans-serif; /* Garante a mesma fonte */
+    font-weight: 600;
+    font-size: 0.9rem; /* Garante o mesmo tamanho */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.logout-button:hover {
+    background-color: #e53e3e; /* Vermelho no hover */
+}
+.logout-button i {
+    margin-right: 0.5rem;
+}
+
+
+/* --- FOOTER PADRÃO --- */
 .app-footer { 
-    text-align: center; 
-    padding: 2rem; 
     background-color: var(--dark-bg); 
-    color: var(--text-light); 
+    color: var(--text-muted); 
+    padding: 2rem 5%; 
+    margin-top: 4rem; 
+    border-top: 1px solid var(--dark-bg-secondary);
+}
+
+.footer-content {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* Texto na esq, Links na dir */
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--secondary-color); /* Verde ao passar o mouse */
+    text-decoration: underline;
+}
+
+/* Responsividade do Footer (Celular) */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
 }

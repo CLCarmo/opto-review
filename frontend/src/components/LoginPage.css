@@ -211,6 +211,30 @@
 .login-page-wrapper .social-btn.google i { color: #DB4437; }
 .login-page-wrapper .social-btn.discord i { color: #5865F2; }
 
+/* --- ESTILO DE BOTÕES DESABILITADOS (EM BREVE) --- */
+
+/* Estado base do botão desabilitado */
+.login-page-wrapper .social-btn:disabled {
+    background-color: #f7fafc; /* Fundo muito claro */
+    color: #a0aec0; /* Texto cinza */
+    border-color: #e2e8f0; /* Borda cinza clara */
+    cursor: not-allowed; /* Ícone de bloqueio no mouse */
+    box-shadow: none;
+    transform: none; /* Remove animação de clique */
+}
+
+/* Remove o efeito de hover */
+.login-page-wrapper .social-btn:disabled:hover {
+    border-color: #e2e8f0;
+    background-color: #f7fafc;
+    transform: none;
+}
+
+/* Força os ícones (Google/Discord) a ficarem cinzas também */
+.login-page-wrapper .social-btn:disabled i {
+    color: #a0aec0 !important; /* Sobrescreve as cores originais */
+}
+
 /* Link de alternância (Login <-> Registro) */
 .login-page-wrapper .register-link {
     text-align: center;

@@ -1,7 +1,9 @@
-// frontend/src/components/LoginPage.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './LoginPage.css';
+
+// (NOVO) 1. Importa o nosso "hook" de autenticação
+import { useAuth } from '../context/AuthContext';
 
 /**
  * Componente LoginPage
@@ -10,12 +12,13 @@ import './LoginPage.css';
 function LoginPage() {
 
   // --- ESTADO GLOBAL DA PÁGINA ---
-  // 'login' ou 'register' - Controla qual formulário mostrar
   const [mode, setMode] = useState('login'); 
   const [isLoading, setIsLoading] = useState(false);
-  // Erro global do formulário (para erros da API)
   const [formError, setFormError] = useState(''); 
   const navigate = useNavigate();
+
+  // (NOVO) 2. Pega as funções e o estado do nosso "cérebro" (AuthContext)
+  const { login, isLoggedIn } = useAuth();
 
   // --- ESTADOS DO FORMULÁRIO DE LOGIN ---
   const [loginEmail, setLoginEmail] = useState('');
@@ -52,6 +55,16 @@ function LoginPage() {
     }
   }, []);
 
+  // (NOVO) 3. Efeito que redireciona se o utilizador já estiver logado
+  useEffect(() => {
+    if (isLoggedIn) {
+        // Se o utilizador já está logado (lido do localStorage pelo Contexto),
+        // não o deixamos ver a página de login.
+        navigate('/'); // Volta para a Home
+    }
+  }, [isLoggedIn, navigate]);
+
+
   // Função para limpar todos os erros
   const clearAllErrors = () => {
     setFormError('');
@@ -63,12 +76,12 @@ function LoginPage() {
     setRegisterConfirmPasswordError('');
   };
 
-  // --- FUNÇÃO DE LOGIN (A que já tínhamos) ---
+  // --- FUNÇÃO DE LOGIN (ATUALIZADA) ---
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     clearAllErrors();
 
-    // Validação local
+    // Validação local...
     let isValid = true;
     if (!loginEmail) {
       setLoginEmailError('O e-mail é obrigatório.');
@@ -97,23 +110,27 @@ function LoginPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Erro desconhecido no login');
 
-      // SUCESSO!
+      // 5. SUCESSO!
+      // (CORREÇÃO) 4. Chamamos a função login do Contexto com os dados do utilizador
+      login(data); 
+      
       console.log('Login bem-sucedido!', data);
-      navigate('/'); // Redireciona para a Home
+      navigate('/'); // Redireciona para a Home (Isto pode ser removido, já que o useEffect acima vai tratar disso)
 
     } catch (err) {
-      setFormError(err.message); // Mostra "E-mail ou senha inválidos."
+      setFormError(err.message); 
     } finally {
       setIsLoading(false);
     }
   };
 
-  // --- FUNÇÃO NOVA: REGISTO ---
+  // --- FUNÇÃO DE REGISTO (Sem alteração) ---
+  // (Não queremos logar o utilizador automaticamente após o registo)
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     clearAllErrors();
 
-    // Validação local
+    // Validação local...
     let isValid = true;
     if (!registerName) {
       setRegisterNameError('O nome é obrigatório.');
@@ -137,11 +154,10 @@ function LoginPage() {
       setRegisterConfirmPasswordError('As senhas não coincidem.');
       isValid = false;
     }
-    if (!isValid) return; // Para se a validação falhar
+    if (!isValid) return; 
 
     setIsLoading(true);
     try {
-      // 4. Chama a API de Registo
       const response = await fetch('http://localhost:8080/api/register', {
         method: 'POST',
         headers: {
@@ -155,9 +171,7 @@ function LoginPage() {
       });
 
       const data = await response.json();
-
       if (!response.ok) {
-        // Se a API retornar um erro (409, 500), 'data.error' virá
         throw new Error(data.error || 'Erro desconhecido no registo');
       }
 
@@ -166,17 +180,17 @@ function LoginPage() {
       
       // Muda para o modo 'login' e dá uma mensagem de sucesso
       setMode('login');
-      // (Idealmente, aqui teríamos uma mensagem "Sucesso! Faça login.")
-      // Por agora, vamos apenas limpar os campos de registo:
+      // Limpa os campos de registo:
       setRegisterName('');
       setRegisterEmail('');
       setRegisterPassword('');
       setRegisterConfirmPassword('');
+      // (Idealmente, mostramos uma mensagem de sucesso aqui)
+      setFormError('Registo concluído com sucesso! Faça o login.');
+
 
     } catch (err) {
-      // 6. ERRO
       console.error('Erro no registo:', err.message);
-      // Mostra o erro da API (ex: "Este e-mail já está cadastrado.")
       setFormError(err.message);
     } finally {
       setIsLoading(false);
@@ -215,6 +229,7 @@ function LoginPage() {
 
   // --- RENDERIZAÇÃO (JSX) ---
   return (
+    // Usamos o wrapper de escopo de CSS
     <div className="login-page-wrapper">
       <div className="login-container">
         {/* --- Lado Esquerdo: O Formulário --- */}
@@ -332,7 +347,7 @@ function LoginPage() {
               </div>
 
               <div className={`form-group ${registerPasswordError ? 'error' : ''}`}>
-                <label htmlFor="register-password">Senha</label> 
+                <label htmlFor="register-password">Senha</label>
                 <input 
                   type="password"
                   id="register-password" 
@@ -374,11 +389,11 @@ function LoginPage() {
           </div>
 
           <div className="social-login">
-            <button className="social-btn google">
-              <i className="fab fa-google"></i> Continuar com Google
+            <button className="social-btn google" disabled title="Funcionalidade em desenvolvimento">
+              <i className="fab fa-google"></i> Google (Em breve)
             </button>
-            <button className="social-btn discord">
-              <i className="fab fa-discord"></i> Continuar com Discord
+            <button className="social-btn discord" disabled title="Funcionalidade em desenvolvimento">
+              <i className="fab fa-discord"></i> Discord (Em breve)
             </button>
           </div>
 
@@ -401,15 +416,10 @@ function LoginPage() {
           </div>
         </div>
 
-        {/* --- Lado Direito: A Imagem --- */}
+        {/* --- Lado Direito: A Imagem (Mantido) --- */}
         <div className="login-promo-banner">
-          
-          {/* Título principal do banner */}
           <h3>Por que fazer login?</h3>
-          
-          {/* A lista de features CORRETA */}
           <ul className="promo-features">
-            
             <li className="promo-feature-item">
               <div className="feature-item-header">
                 <i className="fas fa-heart"></i>
@@ -419,7 +429,6 @@ function LoginPage() {
                 Salve produtos que você gostou para consultar depois.
               </p>
             </li>
-
             <li className="promo-feature-item">
               <div className="feature-item-header">
                 <i className="fas fa-columns"></i>
@@ -429,7 +438,6 @@ function LoginPage() {
                 Mantenha suas comparações de produtos organizadas.
               </p>
             </li>
-
             <li className="promo-feature-item">
               <div className="feature-item-header">
                 <i className="fas fa-cogs"></i>
@@ -439,7 +447,6 @@ function LoginPage() {
                 Receba recomendações baseadas no seu perfil.
               </p>
             </li>
-
             <li className="promo-feature-item">
               <div className="feature-item-header">
                 <i className="fas fa-bell"></i>
@@ -449,7 +456,6 @@ function LoginPage() {
                 Seja notificado quando produtos baixarem de preço.
               </p>
             </li>
-
           </ul>
         </div>
       </div>

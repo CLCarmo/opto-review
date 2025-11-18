@@ -1,21 +1,25 @@
 // src/components/ProductCard.js
-// Versão robusta com normalização de IDs e lógica de "travar"
-
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // (NOVO) Importa useNavigate
 import './ProductCard.css';
+
+// (NOVO) 1. Importa o nosso "cérebro" de autenticação
+import { useAuth } from '../context/AuthContext'; 
 
 const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) => {
 
-    // Normaliza o ID do produto (aceita product.id ou product.id_produto)
+    // (NOVO) 2. Pega os dados de login e favoritos do "cérebro"
+    const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
+    const navigate = useNavigate(); // (NOVO) Para redirecionar para o login
+
+    // Normaliza o ID do produto (código antigo)
     const productId = useMemo(() => {
         const rawId = product?.id ?? product?.id_produto ?? product?.sku ?? product?.codigo;
-        // Se não for convertível para número, usamos string fallback
         const asNumber = Number(rawId);
         return Number.isNaN(asNumber) ? String(rawId) : asNumber;
     }, [product]);
 
-    // Normaliza array de selectedProducts para números (ou strings coerentes)
+    // Normaliza array de selectedProducts (código antigo)
     const normalizedSelected = useMemo(() => {
         if (!Array.isArray(selectedProducts)) return [];
         return selectedProducts.map(id => {
@@ -24,12 +28,18 @@ const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) =
         });
     }, [selectedProducts]);
 
-    // isSelected agora compara valores normalizados (número com número)
+    // Verifica se este card está selecionado (código antigo)
     const isSelected = normalizedSelected.includes(productId);
 
-    // Função que notifica o pai com o ID normalizado (numérico se possível)
+    // (NOVO) 3. Verifica se este card está FAVORITADO
+    // O useMemo garante que isto só é recalculado se a lista de favoritos mudar
+    const isFavorited = useMemo(() => {
+        return favorites.includes(productId);
+    }, [favorites, productId]); // Dependências: a lista global e o ID deste card
+
+    
+    // Handler para o Checkbox de Comparação (código antigo)
     const handleSelectChange = (eventOrObj) => {
-        // eventOrObj pode ser um event real ou o objeto simulado do botão "Comparar"
         const checked = typeof eventOrObj === 'object' && 'target' in eventOrObj
             ? eventOrObj.target.checked
             : Boolean(eventOrObj);
@@ -39,11 +49,27 @@ const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) =
         } else {
             console.warn('onProductSelect não recebido pelo ProductCard', { product, productId, onProductSelect });
         }
-
-        // Log de debug (remova em produção)
-        // eslint-disable-next-line no-console
-        console.debug('ProductCard.handleSelectChange', { productId, checked, isSelected, normalizedSelected });
     };
+
+    // (NOVO) 4. Handler para o Botão de Favorito (Coração)
+    const handleFavoriteClick = () => {
+        // Se não estiver logado, redireciona para a página de login
+        if (!isLoggedIn) {
+            alert("Você precisa estar logado para favoritar produtos.");
+            navigate('/login'); // Redireciona
+            return;
+        }
+
+        // Se já estiver favoritado, chama a função de remover
+        if (isFavorited) {
+            removeFavorite(productId);
+        } 
+        // Se não estiver, chama a função de adicionar
+        else {
+            addFavorite(productId);
+        }
+    };
+
 
     const formatPrice = (price) => {
         return price ? `R$ ${Number(price).toFixed(2).replace('.', ',')}` : 'N/A';
@@ -51,7 +77,6 @@ const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) =
 
     return (
         
-        // 1. CORREÇÃO: Adiciona a classe 'is-locked' se a prop for verdadeira
         <div className={`product-card ${isLocked ? 'is-locked' : ''} ${isSelected ? 'is-selected' : ''}`} data-product-id={productId}>
             <div className="product-image-container">
                 <Link to={`/produtos/${productId}`}>
@@ -69,7 +94,6 @@ const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) =
                         className="select-checkbox-input"
                         checked={isSelected}
                         onChange={handleSelectChange}
-                        // 2. CORREÇÃO: Desabilita o checkbox se 'isLocked' for verdadeiro
                         disabled={isLocked}
                     />
                     <label htmlFor={`select-${productId}`} className="select-checkbox-label">
@@ -101,7 +125,6 @@ const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) =
                     <button
                         className="compare-button-card"
                         onClick={() => handleSelectChange({ target: { checked: !isSelected } })}
-                        // 3. CORREÇÃO: Desabilita o botão se 'isLocked' for verdadeiro
                         disabled={isLocked}
                     >
                         <i className="fas fa-columns"></i>
@@ -110,11 +133,18 @@ const ProductCard = ({ product, onProductSelect, selectedProducts, isLocked }) =
                 </div>
 
                 <div className="product-action-row">
-                    <Link to={`/produtos/${productId}#ofertas`} className="buy-button-card">
+                    <Link to={`/produtos/${productId}#offers-section`} className="buy-button-card">
                         <i className="fas fa-shopping-cart"></i> Comprar
                     </Link>
-                    <button className="favorite-button-card" onClick={() => alert('Função de favorito ainda em desenvolvimento!')}>
-                        <i className="far fa-heart"></i>
+                    
+                    {/* 5. (CORRIGIDO) O Botão de Favorito agora é dinâmico */}
+                    <button 
+                        className="favorite-button-card" 
+                        onClick={handleFavoriteClick} // (NOVO) Chama o novo handler
+                        title={isFavorited ? "Remover dos Favoritos" : "Adicionar aos Favoritos"} // (NOVO) Dica
+                    >
+                        {/* (NOVO) Muda o ícone se estiver favoritado (coração cheio vs. vazio) */}
+                        <i className={isFavorited ? 'fas fa-heart' : 'far fa-heart'}></i>
                     </button>
                 </div>
             </div>

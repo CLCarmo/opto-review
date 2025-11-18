@@ -1,18 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-/**
- * Componente Footer
- * Renderiza o rodapé padrão do site.
- */
 function Footer() {
   return (
-    // Estamos a usar a mesma classe "app-footer" que tinhas
-    // no teu HTML original .
-    // O teu CSS em /common/base.css já tem os 
-    // estilos para esta classe, então ele será estilizado
-    // automaticamente.
     <footer className="app-footer">
-      <p>&copy; 2025 OPTO Review. Todos os direitos reservados.</p>
+      <div className="footer-content">
+        <p>&copy; 2025 OPTO REVIEW. Todos os direitos reservados.</p>
+        
+        <div className="footer-links">
+            {/* O Link agora vive aqui */}
+            <Link to="/about" className="footer-link">Sobre o Projeto</Link>
+        </div>
+      </div>
     </footer>
   );
 }

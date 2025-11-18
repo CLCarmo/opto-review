@@ -198,6 +198,115 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// ROTA: Buscar detalhes de múltiplos produtos por ID
+// Útil para a página de favoritos e carrinho
+app.post('/api/produtos/detalhes', async (req, res) => {
+  const { ids } = req.body; // Espera um body assim: { ids: [1, 2, 3] }
+
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    return res.status(200).json([]); // Retorna lista vazia se não houver IDs
+  }
+
+  try {
+    // O operador ANY($1) permite buscar onde o id_produto está dentro do array fornecido
+    const query = "SELECT * FROM produtos WHERE id_produto = ANY($1::int[])";
+    const result = await db.query(query, [ids]);
+
+    // Mapeamos para converter string numérica em float (como nas outras rotas)
+    const mappedProducts = result.rows.map(p => ({
+        ...p,
+        price_avg: parseFloat(p.price_avg),
+        price_low: parseFloat(p.price_low)
+    }));
+
+    res.json(mappedProducts);
+  } catch (err) {
+    console.error('Erro ao buscar detalhes dos produtos:', err);
+    res.status(500).json({ error: 'Erro ao buscar produtos.' });
+  }
+});
+
+// ROTA 1: BUSCAR TODOS OS FAVORITOS DE UM UTILIZADOR
+// Usamos :id_usuario na URL (parâmetro)
+app.get('/api/favoritos/:id_usuario', async (req, res) => {
+  const { id_usuario } = req.params; // Pega o ID da URL
+
+  if (!id_usuario) {
+    return res.status(400).json({ error: 'ID do utilizador é obrigatório.' });
+  }
+
+  try {
+    const query = "SELECT id_produto FROM usuario_favoritos WHERE id_usuario = $1";
+    const result = await db.query(query, [id_usuario]);
+    
+    // Em vez de retornar o objeto [{id_produto: 5}, {id_produto: 10}],
+    // retornamos um array simples de IDs: [5, 10]
+    // Fica mais fácil para o frontend consumir.
+    const favoriteIds = result.rows.map(row => row.id_produto);
+    
+    res.status(200).json(favoriteIds);
+
+  } catch (err) {
+    console.error('Erro ao buscar favoritos:', err);
+    res.status(500).json({ error: 'Erro interno ao buscar favoritos.' });
+  }
+});
+
+
+// ROTA 2: ADICIONAR UM NOVO FAVORITO
+// Usamos o body (corpo) da requisição
+app.post('/api/favoritos', async (req, res) => {
+  // O frontend vai enviar o ID do utilizador (do AuthContext) e do produto
+  const { id_usuario, id_produto } = req.body;
+
+  if (!id_usuario || !id_produto) {
+    return res.status(400).json({ error: 'ID do utilizador e ID do produto são obrigatórios.' });
+  }
+
+  try {
+    const query = "INSERT INTO usuario_favoritos (id_usuario, id_produto) VALUES ($1, $2) RETURNING *";
+    const result = await db.query(query, [id_usuario, id_produto]);
+    
+    res.status(201).json(result.rows[0]); // Retorna o favorito que foi criado
+
+  } catch (err) {
+    // Código '23505' = unique_violation (utilizador tentou favoritar o mesmo produto 2x)
+    if (err.code === '23505') { 
+      return res.status(409).json({ error: 'Este produto já está nos favoritos.' });
+    }
+    console.error('Erro ao adicionar favorito:', err);
+    res.status(500).json({ error: 'Erro interno ao adicionar favorito.' });
+  }
+});
+
+
+// ROTA 3: REMOVER UM FAVORITO
+// Usamos o body também (poderia ser query params, mas body é mais limpo)
+app.delete('/api/favoritos', async (req, res) => {
+  const { id_usuario, id_produto } = req.body;
+
+  if (!id_usuario || !id_produto) {
+    return res.status(400).json({ error: 'ID do utilizador e ID do produto são obrigatórios.' });
+  }
+
+  try {
+    // Deleta a linha que combina EXATAMENTE este utilizador e este produto
+    const query = "DELETE FROM usuario_favoritos WHERE id_usuario = $1 AND id_produto = $2 RETURNING *";
+    const result = await db.query(query, [id_usuario, id_produto]);
+
+    if (result.rowCount === 0) {
+      // Se rowCount é 0, significa que não encontrou o favorito para deletar
+      return res.status(404).json({ error: 'Favorito não encontrado.' });
+    }
+
+    res.status(200).json({ message: 'Favorito removido com sucesso.' });
+
+  } catch (err) {
+    console.error('Erro ao remover favorito:', err);
+    res.status(500).json({ error: 'Erro interno ao remover favorito.' });
+  }
+});
+
 // Inicia o servidor e o faz "escutar" por requisições na porta definida
 app.listen(PORT, () => {
   console.log(`🚀 Servidor backend do OPTO Review está no ar em http://localhost:${PORT}`);
