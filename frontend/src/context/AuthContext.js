@@ -6,7 +6,7 @@ const AuthContext = createContext(null);
 // 2. Cria o "Provedor" (Provider)
 export const AuthProvider = ({ children }) => {
     
-    // 3. O Estado Principal (User)
+    // --- ESTADOS ---
     const [user, setUser] = useState(() => {
         try {
             const storedUser = localStorage.getItem('user');
@@ -17,11 +17,11 @@ export const AuthProvider = ({ children }) => {
         }
     });
 
-    // 4. (NOVO) Estado para os Favoritos
-    // Vai guardar um array de IDs de produtos, ex: [5, 12, 23]
     const [favorites, setFavorites] = useState([]);
 
-    // 5. Efeito que salva o USER no localStorage (código antigo)
+    // --- EFEITOS ---
+
+    // 1. Salva User no localStorage
     useEffect(() => {
         if (user) {
             localStorage.setItem('user', JSON.stringify(user));
@@ -30,107 +30,103 @@ export const AuthProvider = ({ children }) => {
         }
     }, [user]);
 
-    // 6. (NOVO) Efeito que busca os FAVORITOS quando o user muda
+    // 2. Busca Favoritos na API
     useEffect(() => {
-        // Se o user fizer login...
         if (user && user.id_usuario) {
             const fetchFavorites = async () => {
                 try {
                     const response = await fetch(`http://localhost:8080/api/favoritos/${user.id_usuario}`);
                     if (!response.ok) throw new Error('Falha ao buscar favoritos');
                     
-                    const favoriteIds = await response.json(); // Espera [5, 12, 23]
+                    const favoriteIds = await response.json();
                     setFavorites(favoriteIds);
-                    console.log("Favoritos carregados:", favoriteIds);
                 } catch (error) {
                     console.error("Erro ao carregar favoritos:", error.message);
                 }
             };
             fetchFavorites();
-        } 
-        // Se o user fizer logout...
-        else {
-            setFavorites([]); // Limpa a lista de favoritos
+        } else {
+            setFavorites([]);
         }
-    }, [user]); // Dependência: Roda sempre que 'user' mudar
+    }, [user]);
 
-    // 7. Função de Login (código antigo)
+    // --- FUNÇÕES ---
+
     const login = (userData) => {
         const { senha_hash, ...userToSave } = userData;
         setUser(userToSave);
-        console.log("Utilizador logado:", userToSave);
     };
 
-    // 8. Função de Logout (código antigo)
     const logout = () => {
         setUser(null);
-        // O useEffect acima (item 6) vai limpar os favoritos
-        console.log("Utilizador deslogado.");
     };
 
-    // 9. (NOVO) Função para ADICIONAR favorito
-    // Usamos useCallback para otimização
+    // Adicionar Favorito
     const addFavorite = useCallback(async (productId) => {
-        if (!user) return; // Não faz nada se não estiver logado
-
-        // Atualização Otimista: Adiciona o ID à lista *antes* de esperar a API
-        // Isto faz a UI (o coração) parecer instantânea
-        setFavorites(prevFavorites => [...prevFavorites, productId]);
+        if (!user) return;
+        setFavorites(prev => [...prev, productId]); // Otimista
 
         try {
-            // Chama a nossa nova API (POST)
             await fetch('http://localhost:8080/api/favoritos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    id_usuario: user.id_usuario, 
-                    id_produto: productId 
-                }),
+                body: JSON.stringify({ id_usuario: user.id_usuario, id_produto: productId }),
             });
         } catch (error) {
-            console.error("Erro ao adicionar favorito:", error.message);
-            // Reverte se a API falhar (remove o ID que adicionámos)
-            setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
+            setFavorites(prev => prev.filter(id => id !== productId)); // Reverte erro
         }
-    }, [user]); // Dependência: 'user'
+    }, [user]);
 
-    // 10. (NOVO) Função para REMOVER favorito
+    // Remover Favorito
     const removeFavorite = useCallback(async (productId) => {
         if (!user) return;
-
-        // Atualização Otimista: Remove o ID da lista
-        setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
+        setFavorites(prev => prev.filter(id => id !== productId)); // Otimista
 
         try {
-            // Chama a nossa nova API (DELETE)
             await fetch('http://localhost:8080/api/favoritos', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    id_usuario: user.id_usuario, 
-                    id_produto: productId 
-                }),
+                body: JSON.stringify({ id_usuario: user.id_usuario, id_produto: productId }),
             });
         } catch (error) {
-            console.error("Erro ao remover favorito:", error.message);
-            // Reverte se a API falhar (adiciona o ID de volta)
-            setFavorites(prevFavorites => [...prevFavorites, productId]);
+            setFavorites(prev => [...prev, productId]); // Reverte erro
         }
-    }, [user]); // Dependência: 'user'
+    }, [user]);
 
+    // (NOVO) Atualizar Usuário (Avatar/Setup)
+    // Esta função estava fora do lugar no seu código anterior
+    const updateUser = async (newData) => {
+        if (!user) return;
+        
+        try {
+            const response = await fetch(`http://localhost:8080/api/usuarios/${user.id_usuario}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newData)
+            });
+            
+            if (response.ok) {
+                const updatedUser = await response.json();
+                setUser(updatedUser); // Atualiza estado
+                localStorage.setItem('user', JSON.stringify(updatedUser)); // Atualiza storage
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar usuário:", error);
+        }
+    };
 
-    // 11. O que o Contexto vai partilhar
+    // --- VALOR DO CONTEXTO ---
     const value = {
         user,
         isLoggedIn: !!user,
         login,
         logout,
-        favorites, // <-- NOVO
-        addFavorite, // <-- NOVO
-        removeFavorite // <-- NOVO
+        favorites,
+        addFavorite,
+        removeFavorite,
+        updateUser // Agora está incluído corretamente
     };
 
-    // 12. Retorna o Provedor com o valor partilhado
     return (
         <AuthContext.Provider value={value}>
             {children}
@@ -138,7 +134,7 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-// 13. Hook Personalizado (código antigo)
+// Hook Personalizado
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (context === undefined) {

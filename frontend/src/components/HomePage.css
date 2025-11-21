@@ -1,147 +1,219 @@
-/* /css/index.css */
+/* frontend/src/components/HomePage.css */
 
-.hero { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    background-color: var(--dark-bg-secondary); 
-    color: var(--text-light); 
-    max-width: 1400px; 
-    width: 90%; 
-    margin: 4rem auto; 
-    padding: 4rem; 
-    border-radius: 16px; 
-    box-shadow: 0 10px 25px rgba(45, 55, 72, 0.1); 
-    min-height: 400px;
-    position: relative;
-}
-.hero-logo .logo-icon { 
-    font-size: 12rem; 
-    color: var(--secondary-color); 
-    opacity: 0.8; 
-}
-.hero-banner {
-    flex: 1;
-    height: 300px;
-    background-image: url('../assets/images/Banner.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin-right: 2rem;
-}
+.home-page-wrapper { width: 100%; }
 
-.hero-content { 
-    flex: 1;
-    max-width: 500px; 
-    text-align: left;
+/* --- HERO BANNER --- */
+.home-page-wrapper .hero-section {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: white;
+    padding: 5rem 2rem;
+    text-align: center;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 4rem;
 }
-.hero-title { 
-    font-size: 3rem; 
-    font-weight: 800; 
-    line-height: 1.2; 
-    margin-bottom: 1.5rem; 
-}
-.hero-subtitle { 
-    font-size: 1.1rem; 
-    margin-bottom: 2rem; 
-    color: #a0aec0; 
-}
-.hero-logo-img{
-    width: 250px;
-    height: auto;
+.home-page-wrapper .hero-content h1 {
+    font-size: 3rem;
+    font-weight: 800;
     margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
 }
-.features { padding: 4rem 5% 6rem 5%; }
-.feature-cards-container { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    gap: 2rem; 
+.home-page-wrapper .hero-content p {
+    font-size: 1.2rem;
+    color: #cbd5e0;
+    margin-bottom: 2.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
-.features-row { 
-    display: grid; 
-    gap: 2rem; 
-    width: 100%; 
-    max-width: 1200px; 
-    grid-template-columns: repeat(3, 1fr); 
+.home-page-wrapper .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
 }
-.features-row.two-items { 
-    grid-template-columns: repeat(2, 1fr); 
-    max-width: 800px; 
+.home-page-wrapper .cta-button {
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
 }
-.feature-card { 
-    background-color: #fff; 
-    padding: 2.5rem 2rem; 
-    text-align: center; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-    text-decoration: none; 
-    color: var(--text-dark); 
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
-    border: 1px solid var(--border-color); 
+.home-page-wrapper .cta-button:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
-.feature-card:hover { 
-    transform: translateY(-10px); 
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-    border-color: var(--primary-color); 
+.home-page-wrapper .cta-button.primary {
+    background-color: var(--secondary-color);
+    color: var(--text-dark);
 }
-.feature-icon { 
-    font-size: 3.5rem; 
-    color: var(--primary-color); 
-    margin-bottom: 1.5rem; 
+.home-page-wrapper .cta-button.secondary {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
 }
-.feature-card h3 { 
-    font-size: 1.5rem; 
-    margin-bottom: 0.5rem; 
+
+/* --- SECÇÃO DE FERRAMENTAS (Acesso Rápido) --- */
+.home-page-wrapper .tools-section {
+    max-width: 1200px;
+    margin: 0 auto 5rem auto;
+    padding: 0 1.5rem;
 }
-.feature-card p { color: var(--text-muted); }
-.how-it-works { padding: 6rem 5%; background-color: #fff; }
-.steps-container { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: flex-start; 
-    gap: 2rem; 
+
+.home-page-wrapper .section-header-center {
+    text-align: center;
+    margin-bottom: 3rem;
 }
-.step { flex: 1; text-align: center; }
-.step-icon-wrapper { 
-    position: relative; 
-    display: inline-block; 
-    margin-bottom: 1.5rem; 
+.home-page-wrapper .section-header-center h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
 }
-.step-icon { 
-    font-size: 4rem; 
-    color: #fff; 
-    background-color: var(--dark-bg); 
-    padding: 2rem; 
-    border-radius: 50%; 
+.home-page-wrapper .section-header-center p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
 }
-.step-number { 
-    position: absolute; 
-    top: -10px; 
-    left: -10px; 
-    background-color: var(--secondary-color); 
-    color: var(--text-dark); 
-    font-weight: 700; 
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 1.2rem; 
-    border: 3px solid #fff; 
+
+/* Grid Inteligente */
+.home-page-wrapper .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Colunas padrão */
+    gap: 1.5rem;
 }
-.step h3 { 
-    font-size: 1.5rem; 
-    margin-bottom: 0.5rem; 
+
+/* O Cartão Genérico */
+.home-page-wrapper .tool-card {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center; /* Alinha ícone e texto horizontalmente */
+    gap: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
-.step p { 
-    color: var(--text-muted); 
-    max-width: 300px; 
-    margin: 0 auto; 
+.home-page-wrapper .tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border-color: var(--primary-color);
 }
-.step-arrow { 
-    font-size: 2.5rem; 
-    color: var(--text-muted); 
-    margin-top: 4rem; 
+
+/* Estilo Destaque (Para Upgrade e Montar PC) */
+.home-page-wrapper .tool-card.highlight {
+    grid-column: span 3; /* Ocupa a largura total em telas pequenas */
+    background: linear-gradient(to right, #fff, #f8fbff);
+    border-color: #cce5ff;
+}
+@media (min-width: 768px) {
+    .home-page-wrapper .tool-card.highlight {
+        grid-column: span 1; /* Volta a ocupar 1 coluna se houver espaço */
+        flex-direction: column; /* Ícone em cima */
+        text-align: center;
+        padding: 2.5rem 1.5rem;
+    }
+    /* Faz os dois primeiros ocuparem mais espaço visual */
+    .home-page-wrapper .tools-grid {
+        grid-template-columns: 1fr 1fr; /* Começa com 2 colunas grandes */
+    }
+    /* Os 3 botões menores em baixo */
+    .home-page-wrapper .tool-card:nth-child(n+3) {
+        grid-column: span 1; /* Ocupam 1/3 da linha se mudarmos o grid */
+    }
+}
+
+/* Ícones */
+.home-page-wrapper .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+.home-page-wrapper .icon-wrapper.green { background-color: #e6fffa; color: #00e676; }
+.home-page-wrapper .icon-wrapper.blue { background-color: #ebf8ff; color: #3182ce; }
+.home-page-wrapper .icon-wrapper.gray { background-color: #f7fafc; color: #718096; }
+.home-page-wrapper .icon-wrapper.red { background-color: #fff5f5; color: #e53e3e; }
+
+/* Texto */
+.home-page-wrapper .tool-info h3 {
+    color: var(--text-dark);
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+}
+.home-page-wrapper .tool-info p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+.home-page-wrapper .arrow-icon {
+    margin-left: auto;
+    color: var(--border-color);
+}
+
+/* --- DESTAQUES (Igual) --- */
+.home-page-wrapper .featured-section {
+    max-width: 1200px;
+    margin: 0 auto 4rem auto;
+    padding: 0 1.5rem;
+}
+.home-page-wrapper .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+.home-page-wrapper .section-header h2 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin: 0;
+}
+.home-page-wrapper .view-all-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+.home-page-wrapper .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Responsividade Fina */
+@media (min-width: 900px) {
+    .home-page-wrapper .tools-grid {
+        grid-template-columns: repeat(6, 1fr); /* Grid de 6 colunas para layout complexo */
+    }
+    /* Upgrade e Montar PC: Grandes (3 colunas cada) */
+    .home-page-wrapper .tool-card:nth-child(1),
+    .home-page-wrapper .tool-card:nth-child(2) {
+        grid-column: span 3; 
+        flex-direction: row; /* Ícone ao lado */
+        text-align: left;
+        padding: 2rem;
+    }
+    /* Outros 3: Pequenos (2 colunas cada) */
+    .home-page-wrapper .tool-card:nth-child(n+3) {
+        grid-column: span 2;
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    .home-page-wrapper .tool-card:nth-child(n+3) .icon-wrapper {
+        margin-bottom: 0.5rem;
+    }
 }

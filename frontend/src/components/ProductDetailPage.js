@@ -1,10 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-
-// 1. IMPORTA O CSS
+import React, { useState, useEffect, useMemo } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './ProductDetailPage.css';
 
-// 2. FUNÇÃO DAS ESTRELAS (Mantida do seu código)
+// --- DICIONÁRIO DE TRADUÇÃO (CORRIGIDO) ---
+const specLabels = {
+    // Chaves exatas do seu banco de dados
+    'botoes': 'Botões',
+    'peso_g': 'Peso em Gramas',
+    'sensor': 'Sensor',
+    'dpi_max': 'DPI Máximo',
+    'sem_fio': 'Sem Fio',
+    'conexao': 'Conexão',
+    'cor': 'Cor',
+    'iluminacao': 'Iluminação',
+    'tipo_switch': 'Switch',
+    'layout': 'Layout',
+    'resolucao': 'Resolução',
+    'taxa_atualizacao': 'Taxa de Atualização',
+    'tempo_resposta': 'Tempo de Resposta',
+    'tipo_painel': 'Painel',
+    'tamanho_tela': 'Tamanho',
+    'garantia': 'Garantia',
+    'marca': 'Marca',
+    'modelo': 'Modelo'
+};
+
+// Formata os valores (True/False, g, DPI)
+const formatSpecValue = (key, value) => {
+    if (value === true || value === 'true') return 'Sim';
+    if (value === false || value === 'false') return 'Não';
+    if (key === 'peso_g') return `${value}g`;
+    if (key === 'dpi_max') return `${value} DPI`;
+    return value;
+};
+
 function RenderRatingStars({ rating }) {
   const stars = [];
   const fullStars = Math.floor(rating);
@@ -16,276 +46,281 @@ function RenderRatingStars({ rating }) {
   return <div className="rating-stars">{stars}</div>;
 }
 
-/**
- * Componente ProductDetailPage
- * (VERSÃO ATUALIZADA COM FETCH DA API E WRAPPER CSS)
- */
 function ProductDetailPage() {
+  const { produtoId } = useParams();
+  const navigate = useNavigate();
+  const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
 
-  // --- ESTADOS DA PÁGINA ---
-  const { produtoId } = useParams(); // Pega o ID da URL
-  const [product, setProduct] = useState(null); // Guarda os dados do produto
-  const [isLoading, setIsLoading] = useState(true); // Controla o "Carregando..."
-  const [error, setError] = useState(null); // Guarda mensagens de erro
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  const [activeTab, setActiveTab] = useState('specs'); 
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(''); 
 
-  const [activeTab, setActiveTab] = useState('overview'); // Controla as abas
-  const [showImageModal, setShowImageModal] = useState(false); // Controla o modal
-  const [modalImageUrl, setModalImageUrl] = useState('');
+  const isFavorited = useMemo(() => {
+      if (!favorites) return false;
+      return favorites.map(Number).includes(Number(produtoId));
+  }, [favorites, produtoId]);
 
-  // --- BUSCA DE DADOS DA API ---
   useEffect(() => {
     const fetchProduct = async () => {
       setIsLoading(true);
-      setError(null);
-      
       try {
         const response = await fetch(`http://localhost:8080/api/produtos/${produtoId}`);
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Falha ao buscar dados do produto');
-        }
-        
+        if (!response.ok) throw new Error('Produto não encontrado');
         const data = await response.json();
         
-        // A API já manda os dados no formato que precisamos
-        // (ex: data.ofertas, data.especificacoes)
-        setProduct(data); 
-        
+        setProduct(data);
+        setSelectedImage(data.imagem_url);
+        fetchRelatedProducts(data.categoria, data.id_produto);
+
       } catch (err) {
-        console.error("Erro ao buscar produto:", err);
         setError(err.message);
       } finally {
-        setIsLoading(false); // Termina o carregamento
+        setIsLoading(false);
       }
     };
-
     fetchProduct();
-  }, [produtoId]); // Dependência: Busca de novo se o ID na URL mudar
+  }, [produtoId]);
 
-  // --- Handlers do Modal de Imagem (Mantidos) ---
-  const handleImageClick = (imgUrl) => {
-    setModalImageUrl(imgUrl);
-    setShowImageModal(true);
+  const fetchRelatedProducts = async (category, currentId) => {
+      try {
+          const res = await fetch('http://localhost:8080/api/produtos');
+          const all = await res.json();
+          const related = all
+            .filter(p => p.categoria === category && p.id_produto !== currentId)
+            .slice(0, 5);
+          setRelatedProducts(related);
+      } catch (e) {
+          console.error("Erro ao carregar relacionados", e);
+      }
   };
-  const handleCloseModal = () => {
-    setShowImageModal(false);
+
+  const handleFavoriteClick = () => {
+    if (!isLoggedIn) {
+        alert("Faça login para salvar favoritos.");
+        navigate('/login');
+        return;
+    }
+    const idNum = Number(produtoId);
+    if (isFavorited) removeFavorite(idNum);
+    else addFavorite(idNum);
   };
-  
-  // --- RENDERIZAÇÃO ---
-  
-  // 1. Estado de Carregamento
-  if (isLoading) {
-    return (
-      // Usamos o wrapper aqui também para consistência
-      <div className="product-detail-page-wrapper">
-        <div className="product-detail-container loading-state">
-          <i className="fas fa-spinner fa-spin"></i>
-          <h2>Carregando dados do produto...</h2>
-        </div>
-      </div>
-    );
-  }
 
-  // 2. Estado de Erro
-  if (error) {
-    return (
-      <div className="product-detail-page-wrapper">
-        <div className="product-detail-container error-state">
-          <i className="fas fa-exclamation-triangle"></i>
-          <h2>Erro ao carregar produto</h2>
-          <p>{error}</p>
-          <Link to="/produtos" className="cta-button">Voltar para a lista</Link>
-        </div>
-      </div>
-    );
-  }
+  const handleCompareClick = () => {
+      try {
+          const saved = localStorage.getItem('compareProducts');
+          let currentList = saved ? JSON.parse(saved) : [];
+          const idNum = Number(produtoId);
 
-  // 3. Produto não encontrado (deveria ser pego pelo Erro, mas é uma segurança)
-  if (!product) {
-    return (
-      <div className="product-detail-page-wrapper">
-        <div className="product-detail-container error-state">
-          <h2>Produto não encontrado</h2>
-          <Link to="/produtos" className="cta-button">Voltar para a lista</Link>
-        </div>
-      </div>
-    );
-  }
+          if (!currentList.includes(idNum)) {
+              if (currentList.length >= 4) {
+                  alert("A lista de comparação já está cheia.");
+                  return;
+              }
+              currentList.push(idNum);
+              localStorage.setItem('compareProducts', JSON.stringify(currentList));
+          }
+          navigate('/compare', { state: { compareProducts: currentList } });
+      } catch (e) {
+          console.error(e);
+      }
+  };
 
-  // 4. SUCESSO - Renderiza o produto
+  if (isLoading) return <div className="product-detail-page-wrapper"><div className="loading-state"><i className="fas fa-spinner fa-spin"></i> Carregando...</div></div>;
+  if (error || !product) return <div className="product-detail-page-wrapper"><div className="error-state"><h2>Produto não encontrado</h2><Link to="/produtos" className="cta-button">Voltar</Link></div></div>;
+
+  const lowestPrice = product.ofertas && product.ofertas.length > 0 
+    ? parseFloat(product.ofertas[0].preco) 
+    : null;
+
+  const galleryImages = [product.imagem_url, product.imagem_url, product.imagem_url];
+
   return (
-    <div className="product-detail-page-wrapper"> {/* <-- CLASSE-MÃE ADICIONADA AQUI */}
-    
-      {/* Breadcrumb (Agora dinâmico) */}
+    <div className="product-detail-page-wrapper">
+      
       <div className="breadcrumb">
-        <Link to="/">Home</Link>
-        <i className="fas fa-chevron-right"></i>
-        <Link to="/produtos">Produtos</Link>
-        <i className="fas fa-chevron-right"></i>
-        {product.categoria && (
-          <>
-            <Link to={`/produtos?categoria=${product.categoria}`}>{product.categoria}</Link>
-            <i className="fas fa-chevron-right"></i>
-          </>
-        )}
+        <Link to="/">Home</Link> <i className="fas fa-chevron-right"></i>
+        <Link to="/produtos">Produtos</Link> <i className="fas fa-chevron-right"></i>
         <span>{product.nome}</span>
       </div>
 
-      {/* Layout Principal do Produto */}
       <div className="product-detail">
-        {/* Galeria de Imagens */}
-        <div className="product-gallery">
-          <div className="main-image-container">
-            <img 
-              src={product.imagem_url || 'https://via.placeholder.com/400'} 
-              alt={product.nome} 
-              id="main-product-image"
-              onClick={() => handleImageClick(product.imagem_url)}
-            />
+        
+        {/* GALERIA */}
+        <div className="product-gallery-section">
+          <div className="main-image-container" onClick={() => setShowImageModal(true)}>
+             <img src={selectedImage || 'https://via.placeholder.com/400'} alt={product.nome} />
+             <div className="zoom-hint"><i className="fas fa-expand"></i></div>
           </div>
-          {/* (Lógica para galeria de thumbnails pode ser adicionada aqui) */}
+          <div className="thumbnail-list">
+              {galleryImages.map((img, index) => (
+                  <div 
+                    key={index} 
+                    className={`thumbnail-item ${selectedImage === img && index === 0 ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(img)}
+                  >
+                      <img src={img} alt={`Thumb ${index}`} />
+                  </div>
+              ))}
+          </div>
         </div>
 
-        {/* Informações do Produto */}
+        {/* INFO */}
         <div className="product-info">
-          <span className="product-brand">{product.fabricante || 'Marca Desconhecida'}</span>
+          <div className="info-header">
+              <span className="brand-tag">{product.fabricante}</span>
+              <span className="sku-tag">ID: {product.id_produto}</span>
+          </div>
+          
           <h1 className="product-title">{product.nome}</h1>
           
           <div className="product-rating">
             {product.rating > 0 && <RenderRatingStars rating={product.rating} />}
-            <span className="review-count">
-              (Score: {(product.rating * 20).toFixed(1)})
-            </span>
+            <span className="review-count">(Score: {(product.rating * 20).toFixed(0)})</span>
           </div>
 
-          <p className="product-summary">
-            {product.descricao}
-          </p>
-
-          <div className="product-meta">
-            <div className="meta-item">
-              <strong>Categoria:</strong>
-              <span>{product.categoria || 'N/A'}</span>
-            </div>
-            <div className="meta-item">
-              <strong>Modelo:</strong>
-              <span>{product.modelo || 'N/A'}</span>
-            </div>
+          <div className="price-highlight">
+             <span className="price-label">Melhor preço encontrado</span>
+             <div className="price-value-row">
+                <span className="currency">R$</span>
+                <span className="value">{lowestPrice ? lowestPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '---'}</span>
+             </div>
           </div>
 
-          <div className="product-actions-detail">
-            {product.ofertas && product.ofertas.length > 0 && (
-              <div className="price-tag-detail">
-                <span className="price-label">A partir de</span>
-                <span className="price-value">
-                  {/* Pega o primeiro preço (mais barato) */}
-                  R$ {parseFloat(product.ofertas[0].preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </span>
-              </div>
-            )}
-            <a href="#offers-section" className="cta-button primary-cta">
-              <i className="fas fa-shopping-cart"></i> Ver Ofertas
-            </a>
-            <button className="cta-button secondary-cta" onClick={() => alert('Função "Adicionar à Comparação" em desenvolvimento!')}>
-              <i className="fas fa-columns"></i> Adicionar à Comparação
+          {/* --- GRID DE BOTÕES (ESTRUTURA AJUSTADA) --- */}
+          <div className="action-buttons-grid">
+            
+            {/* 1. LINHA SUPERIOR: Ver Ofertas (100% Width) */}
+            <button 
+                className="action-btn primary-btn full-width-btn"
+                onClick={() => {
+                    setActiveTab('offers');
+                    document.getElementById('tabs-section').scrollIntoView({ behavior: 'smooth' });
+                }}
+            >
+                <i className="fas fa-shopping-bag"></i> Ver Ofertas
             </button>
+
+            {/* 2. LINHA INFERIOR: Comparar e Salvar (50% / 50%) */}
+            <div className="secondary-actions-row">
+                <button className="action-btn compare-btn half-width-btn" onClick={handleCompareClick}>
+                    <i className="fas fa-balance-scale"></i> Comparar
+                </button>
+
+                <button 
+                    className={`action-btn favorite-btn half-width-btn ${isFavorited ? 'favorited' : ''}`} 
+                    onClick={handleFavoriteClick}
+                >
+                    <i className={isFavorited ? "fas fa-heart" : "far fa-heart"}></i>
+                    {isFavorited ? "Salvo" : "Salvar"}
+                </button>
+            </div>
+          </div>
+
+          <div className="short-description">
+              <p>{product.descricao}</p>
           </div>
         </div>
       </div>
 
-      {/* Tabs (Visão Geral, Specs, Ofertas) */}
-      <div className="product-tabs-container">
-        <div className="tab-navigation">
-          <button 
-            className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
-          >
-            Visão Geral
-          </button>
-          <button 
-            className={`tab-link ${activeTab === 'specs' ? 'active' : ''}`}
-            onClick={() => setActiveTab('specs')}
-          >
-            Especificações
-          </button>
-          <button 
-            className={`tab-link ${activeTab === 'offers' ? 'active' : ''}`}
-            onClick={() => setActiveTab('offers')}
-            id="offers-section" // ID para o link "Ver Ofertas"
-          >
-            Ofertas ({product.ofertas ? product.ofertas.length : 0})
-          </button>
-        </div>
+      <div className="content-tabs-wrapper" id="tabs-section">
+          <div className="tabs-header">
+              <button 
+                className={`tab-trigger ${activeTab === 'specs' ? 'active' : ''}`} 
+                onClick={() => setActiveTab('specs')}
+              >
+                  <i className="fas fa-list-ul"></i> Especificações
+              </button>
+              <button 
+                className={`tab-trigger ${activeTab === 'offers' ? 'active' : ''}`} 
+                onClick={() => setActiveTab('offers')}
+              >
+                  <i className="fas fa-tags"></i> Ofertas ({product.ofertas ? product.ofertas.length : 0})
+              </button>
+          </div>
 
-        <div className="tab-content">
-          {activeTab === 'overview' && (
-            <div className="tab-panel active">
-              <h3>Visão Geral do Produto</h3>
-              <p>{product.descricao || 'Nenhuma descrição disponível.'}</p>
-              {/* (Lógica futura para Prós/Contras) */}
-            </div>
-          )}
-          {activeTab === 'specs' && (
-            <div className="tab-panel active">
-              <h3>Especificações Completas</h3>
-              {product.especificacoes && Object.keys(product.especificacoes).length > 0 ? (
-                <ul className="specs-grid">
-                  {Object.entries(product.especificacoes).map(([key, value]) => (
-                    <li className="spec-item-detail" key={key}>
-                      <span className="spec-key">{key}</span>
-                      <span className="spec-value">{String(value)}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>Nenhuma especificação técnica detalhada disponível.</p>
-              )}
-            </div>
-          )}
-          {activeTab === 'offers' && (
-            <div className="tab-panel active">
-              <h3>Ofertas e Preços</h3>
-              {product.ofertas && product.ofertas.length > 0 ? (
-                <ul className="offers-list">
-                  {product.ofertas.map((offer, index) => (
-                    <li className="offer-item" key={index}>
-                      <div className="offer-store">
-                        <i className="fas fa-store"></i>
-                        <span>{offer.nome_loja}</span>
+          <div className="tabs-body">
+              {/* SPECS COM TRADUÇÃO */}
+              {activeTab === 'specs' && (
+                  <div className="specs-container fade-in">
+                      <h3>Ficha Técnica</h3>
+                      <div className="specs-table">
+                          {product.especificacoes && Object.entries(product.especificacoes).map(([key, value], index) => (
+                              <div className="spec-row" key={key}>
+                                  <div className="spec-label">
+                                    {/* Usa o dicionário. Se não achar, usa a chave original formatada */}
+                                    {specLabels[key] || key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+                                  </div>
+                                  <div className="spec-data">
+                                    {formatSpecValue(key, value)}
+                                  </div>
+                              </div>
+                          ))}
                       </div>
-                      <div className="offer-price">
-                        R$ {parseFloat(offer.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      </div>
-                      <a 
-                        href={offer.url_produto} 
-                        className="offer-link" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        Ir para a loja <i className="fas fa-external-link-alt"></i>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>Nenhuma oferta encontrada para este produto no momento.</p>
+                  </div>
               )}
-            </div>
-          )}
-        </div>
+
+              {activeTab === 'offers' && (
+                  <div className="offers-container fade-in">
+                      <h3>Lojas Disponíveis</h3>
+                      <div className="offers-grid">
+                        {product.ofertas && product.ofertas.map((offer, index) => (
+                            <div className="offer-card-row" key={index}>
+                                <div className="store-info">
+                                    <i className="fas fa-store store-icon"></i>
+                                    <span className="store-name">{offer.nome_loja}</span>
+                                </div>
+                                <div className="price-info">
+                                    R$ {parseFloat(offer.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                </div>
+                                <a href={offer.url_produto} target="_blank" rel="noopener noreferrer" className="go-store-btn">
+                                    Ir à Loja <i className="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        ))}
+                        {(!product.ofertas || product.ofertas.length === 0) && (
+                            <p className="no-offers">Nenhuma oferta encontrada.</p>
+                        )}
+                      </div>
+                  </div>
+              )}
+          </div>
       </div>
 
-      {/* Modal de Imagem (Mantido) */}
+      {relatedProducts.length > 0 && (
+          <div className="related-products-section">
+              <h3><i className="fas fa-random"></i> Produtos Relacionados</h3>
+              <div className="related-grid">
+                  {relatedProducts.map(rel => (
+                      <Link to={`/produtos/${rel.id_produto}`} key={rel.id_produto} className="related-card">
+                          <div className="related-img-box">
+                              <img src={rel.imagem_url || 'https://via.placeholder.com/150'} alt={rel.nome} />
+                          </div>
+                          <div className="related-info">
+                              <h4>{rel.nome}</h4>
+                              <span className="related-price">
+                                  R$ {parseFloat(rel.price_low).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                              </span>
+                          </div>
+                      </Link>
+                  ))}
+              </div>
+          </div>
+      )}
+
       {showImageModal && (
-        <div className="image-modal" id="image-modal" onClick={handleCloseModal}>
-          <span className="modal-close" id="modal-close-btn">&times;</span>
+        <div className="image-modal" onClick={() => setShowImageModal(false)}>
+          <span className="modal-close">&times;</span>
           <div className="modal-content">
-            <img src={modalImageUrl} alt="Imagem do produto em zoom" id="modal-image" />
+             <img src={selectedImage} alt={product.nome} />
           </div>
         </div>
       )}
-    </div> // {/* <-- FECHAMENTO DO NOSSO WRAPPER */}
+    </div>
   );
 }
 

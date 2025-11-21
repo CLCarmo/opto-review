@@ -49,10 +49,16 @@ function Header() {
               <i className="fas fa-heart"></i> Favoritos
             </NavLink>
 
-            <span className="nav-link welcome-user">
-              {/* Mostra o nome do utilizador (ex: "Olá, Caio") */}
-              Olá, {user.nome}!
-            </span>
+            <Link to="/perfil" className="user-menu-item">
+                <div className="header-avatar">
+                    {user.avatar_url ? (
+                        <img src={user.avatar_url} alt="Avatar" />
+                    ) : (
+                        <span>{user.nome.charAt(0).toUpperCase()}</span>
+                    )}
+                </div>
+                <span className="header-username">Olá, {user.nome.split(' ')[0]}</span>
+            </Link>
             <button onClick={handleLogout} className="nav-link logout-button">
               <i className="fas fa-sign-out-alt"></i> Sair
             </button>

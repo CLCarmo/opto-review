@@ -152,6 +152,50 @@ body {
     text-decoration: underline;
 }
 
+/* Header User Area */
+.user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    background-color: rgba(255,255,255,0.05); /* Fundo sutil */
+    border: 1px solid transparent;
+}
+
+.user-menu-item:hover {
+    background-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+}
+
+.header-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-weight: bold;
+    color: #1a202c;
+    font-size: 0.9rem;
+}
+
+.header-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header-username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
 /* Responsividade do Footer (Celular) */
 @media (max-width: 768px) {
     .footer-content {

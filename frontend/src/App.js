@@ -13,6 +13,7 @@ import AboutPage from './components/AboutPage';
 import LoginPage from './components/LoginPage';
 import { AuthProvider } from './context/AuthContext';
 import FavoritesPage from './components/FavoritesPage';
+import ProfilePage from './components/ProfilePage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="glossary" element={<GlossaryPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="/favoritos" element={<FavoritesPage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
           {/* ... resto das rotas ... */}
 
           </Route> 

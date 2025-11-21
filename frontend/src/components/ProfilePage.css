@@ -1,0 +1,156 @@
+/* frontend/src/components/ProfilePage.css */
+
+/* ... (Mantenha todo o CSS anterior do container, header, etc.) ... */
+.profile-page-wrapper { padding: 4rem 2rem; min-height: 70vh; background-color: #f8f9fa; }
+.profile-container { max-width: 900px; margin: 0 auto; }
+
+/* AVATAR GRANDE */
+.avatar-section { position: relative; }
+.avatar-circle-large {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    /* A cor de fundo agora vem inline do React */
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; color: #fff;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra na letra */
+}
+.avatar-circle-large img { width: 100%; height: 100%; object-fit: cover; }
+.edit-avatar-btn {
+    position: absolute; bottom: 0; right: 0;
+    background-color: var(--primary-color); color: #fff;
+    border: none; border-radius: 50%;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+.edit-avatar-btn:hover { transform: scale(1.1); }
+
+/* HEADER E OUTROS (Mantenha igual) */
+.profile-header {
+    display: flex; align-items: center; gap: 2rem;
+    background-color: #fff; padding: 2rem;
+    border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+.profile-info { flex-grow: 1; }
+.profile-info h1 { margin: 0; color: #333; }
+.profile-info .email { color: #666; margin: 0.5rem 0 1rem 0; }
+.member-badge { background: #e6fffa; color: #047857; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+.logout-btn-profile { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+
+/* MODAL GERAL */
+.avatar-modal-overlay {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
+    animation: fadeIn 0.3s;
+}
+.avatar-modal {
+    background: #fff; padding: 2rem; border-radius: 12px;
+    text-align: center; max-width: 450px; width: 90%;
+    max-height: 90vh; overflow-y: auto;
+}
+.avatar-modal h3 { margin-bottom: 1.5rem; color: var(--text-dark); }
+
+/* UPLOAD DE IMAGEM */
+.upload-section { margin-bottom: 1.5rem; }
+.file-input { display: none; }
+.upload-btn {
+    display: inline-block; background: #f1f5f9; color: #475569;
+    padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer;
+    border: 2px dashed #cbd5e0; font-weight: 600; width: 100%;
+    transition: all 0.2s;
+}
+.upload-btn:hover { border-color: var(--primary-color); color: var(--primary-color); background: #f0f9ff; }
+
+/* DIVIDER */
+.divider-text { 
+    display: flex; align-items: center; margin: 1.5rem 0; font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; 
+}
+.divider-text::before, .divider-text::after { content: ""; flex: 1; border-bottom: 1px solid #e2e8f0; }
+.divider-text span { padding: 0 10px; }
+
+/* GRID DE AVATARES */
+.avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.avatar-option { cursor: pointer; border-radius: 50%; border: 3px solid transparent; transition: transform 0.2s; }
+.avatar-option:hover { transform: scale(1.1); border-color: var(--primary-color); }
+.avatar-option img { width: 100%; border-radius: 50%; background-color: #f1f5f9; }
+
+/* GRID DE CORES */
+.color-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 2rem; }
+.color-circle { 
+    width: 35px; height: 35px; border-radius: 50%; cursor: pointer; 
+    border: 3px solid transparent; transition: transform 0.2s; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.color-circle:hover { transform: scale(1.2); }
+.color-circle.selected { border-color: #333; transform: scale(1.1); }
+
+.close-modal-btn { background: #e2e8f0; border: none; padding: 0.7rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; }
+
+/* FORMULÁRIO DE CONFIGURAÇÕES */
+.settings-modal { text-align: left; }
+.settings-form .form-group { margin-bottom: 1rem; }
+.settings-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+.settings-form input {
+    width: 100%; padding: 0.8rem; border: 1px solid #cbd5e0; border-radius: 8px;
+    font-family: inherit; font-size: 1rem;
+}
+.settings-form input:focus { border-color: var(--primary-color); outline: none; }
+.modal-actions { display: flex; gap: 1rem; margin-top: 2rem; justify-content: flex-end; }
+.cancel-btn { background: transparent; border: none; color: #666; cursor: pointer; font-weight: 600; }
+.save-btn { 
+    background: var(--secondary-color); color: #1a202c; border: none; 
+    padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; 
+}
+.success-msg { 
+    background: #dcfce7; color: #166534; padding: 0.8rem; border-radius: 8px; 
+    margin-top: 1rem; font-size: 0.9rem; text-align: center;
+}
+
+/* SETUP, DASHBOARD E RECOMENDAÇÕES (Iguais ao anterior) */
+.profile-section { margin-bottom: 2rem; }
+.section-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.section-title-row h2 { font-size: 1.4rem; color: #333; display: flex; gap: 0.5rem; align-items: center; }
+.edit-setup-link { color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+
+.current-setup-card {
+    background: #fff; padding: 1.5rem; border-radius: 12px;
+    border: 1px solid #e2e8f0; display: flex; gap: 2rem; align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+.setup-item { display: flex; align-items: center; gap: 1rem; }
+.setup-item i { font-size: 1.5rem; color: #718096; background: #f7fafc; padding: 10px; border-radius: 8px; }
+.setup-item strong { display: block; font-size: 0.85rem; color: #666; }
+.setup-item p { margin: 0; font-weight: 600; color: #333; }
+.setup-status { margin-left: auto; color: #059669; font-weight: 600; display: flex; gap: 0.5rem; align-items: center; }
+
+.empty-setup-state { background: #fff; padding: 2rem; border-radius: 12px; text-align: center; border: 1px dashed #cbd5e0; }
+.btn-create-setup { display: inline-block; margin-top: 1rem; background: var(--secondary-color); color: #1a202c; padding: 0.6rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; }
+
+.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+.dashboard-card { background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 1rem; }
+.card-icon { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 1.2rem; }
+.card-icon.red { background: #fff5f5; color: #e53e3e; }
+.card-icon.blue { background: #ebf8ff; color: #3182ce; }
+.card-link { color: var(--primary-color); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; border: none; background: none; font-size: 0.9rem; padding: 0; cursor: pointer; }
+
+.recommendations-section h2 { font-size: 1.4rem; margin-bottom: 1rem; color: #333; }
+.rec-carousel { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+.rec-card { background: #fff; border-radius: 12px; padding: 1rem; text-align: center; text-decoration: none; color: inherit; border: 1px solid #e2e8f0; transition: transform 0.2s; }
+.rec-card:hover { transform: translateY(-5px); border-color: var(--primary-color); }
+.rec-card img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 0.5rem; }
+.rec-card h4 { font-size: 0.95rem; margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rec-card span { color: var(--secondary-color); font-weight: 700; }
+
+@media (max-width: 768px) {
+    .profile-header { flex-direction: column; text-align: center; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .current-setup-card { flex-direction: column; align-items: flex-start; }
+    .setup-status { margin-left: 0; margin-top: 1rem; }
+}

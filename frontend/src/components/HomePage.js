@@ -1,112 +1,144 @@
-import React from 'react';
-// 1. Importa o Link para usarmos nos cartões de features
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ProductCard from './ProductCard';
+import './HomePage.css';
 
-// 2. Importa o CSS que acabámos de criar.
-// O React (via Webpack) vai garantir que este CSS é carregado
-// juntamente com este componente.
-import './HomePage.css'; 
-
-/**
- * Componente HomePage
- * Renderiza o conteúdo principal da página inicial.
- *
- * Nota: Não usamos a tag <main> aqui dentro.
- * Porquê? Porque o nosso componente <Layout /> (que criámos antes)
- * já tem uma tag <main> que "envolve" o <Outlet />.
- * Este componente (HomePage) é renderizado DENTRO do <Outlet />,
- * por isso começamos direto com as <section>.
- */
 function HomePage() {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/produtos');
+        const data = await response.json();
+        setFeaturedProducts(data.slice(0, 4)); 
+      } catch (error) {
+        console.error("Erro ao carregar destaques:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
   return (
-    // Usamos um Fragment (<>...</>) para agrupar as secções
-    // sem adicionar uma <div> extra no HTML final.
-    <>
-      {/* --- Secção Hero --- */}
-      {/* Baseado na secção 'hero' do index.html */}
-      <section className="hero">
-        <div className="hero-banner"></div>
+    <div className="home-page-wrapper">
+      
+      {/* 1. HERO BANNER (O Seu Texto Original + Visual Novo) */}
+      <section className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">Sua fonte confiável para o setup perfeito.</h1>
-          <p className="hero-subtitle">Chega de dúvidas. Ajudamos você a escolher os melhores periféricos gamers com base em dados técnicos reais e comparações imparciais.</p>
-          
-          {/* Este é um link de âncora (mesma página), por isso
-            mantemos a tag <a> normal. Está correto! */}
-          <a href="#features" className="cta-button">Começar Agora</a>
+          <h1>Encontre o Hardware Ideal pelo Melhor Preço</h1>
+          <p>Análise imparcial, comparação técnica e recomendação inteligente para o seu setup gamer.</p>
+          <div className="hero-buttons">
+            <Link to="/upgrade" className="cta-button primary">
+              <i className="fas fa-magic"></i> Criar Setup
+            </Link>
+            <Link to="/produtos" className="cta-button secondary">
+              <i className="fas fa-search"></i> Buscar Peças
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* --- Secção Features --- */}
-      {/* Baseado na secção 'features' */}
-      <section id="features" className="features">
-        <h2 className="section-title">Encontre o que você precisa</h2>
-        <div className="feature-cards-container">
-          <div className="features-row">
+      {/* 2. SECÇÃO DE FERRAMENTAS (O Coração do Projeto) */}
+      <section className="tools-section">
+        
+        {/* A frase que você gosta, usada como âncora visual */}
+        <div className="section-header-center">
+            <h2>Nosso sistema de recomendação transparente</h2>
+            <p>Escolha como quer começar a sua jornada.</p>
+        </div>
+        
+        <div className="tools-grid">
             
-            {/* Links convertidos de <a> para <Link> */}
-            <Link to="/produtos" className="feature-card">
-              <i className="fas fa-magnifying-glass feature-icon"></i>
-              <h3>Buscar Produto</h3>
-              <p>Já sabe o que quer? Encontre análises e especificações de produtos específicos.</p>
+            {/* CARD 1: Montar PC (Destaque) */}
+            <Link to="/upgrade" className="tool-card highlight">
+                <div className="icon-wrapper green">
+                    <i className="fas fa-tools"></i>
+                </div>
+                <div className="tool-info">
+                    <h3>Montar PC do Zero</h3>
+                    <p>Responda nosso questionário e receba uma build completa para o seu orçamento.</p>
+                </div>
+                <i className="fas fa-chevron-right arrow-icon"></i>
             </Link>
-            <Link to="/compare" className="feature-card">
-              <i className="fas fa-balance-scale feature-icon"></i>
-              <h3>Comparar Produtos</h3>
-              <p>Compare especificações técnicas e preços lado a lado para uma decisão informada.</p>
+
+            {/* CARD 2: Upgrade (Destaque) */}
+            <Link to="/upgrade" className="tool-card highlight">
+                <div className="icon-wrapper blue">
+                    <i className="fas fa-level-up-alt"></i>
+                </div>
+                <div className="tool-info">
+                    <h3>Fazer um Upgrade</h3>
+                    <p>Diga-nos suas peças atuais e encontre o melhor componente para sua performance.</p>
+                </div>
+                <i className="fas fa-chevron-right arrow-icon"></i>
             </Link>
-            <Link to="/upgrade" className="feature-card">
-              <i className="fas fa-arrow-up-right-dots feature-icon"></i>
-              <h3>Fazer um Upgrade</h3>
-              <p>Diga-nos suas peças atuais e encontre o melhor componente para sua performance.</p>
+
+            {/* CARD 3: Buscar */}
+            <Link to="/produtos" className="tool-card">
+                <div className="icon-wrapper gray">
+                    <i className="fas fa-search"></i>
+                </div>
+                <div className="tool-info">
+                    <h3>Buscar Produto</h3>
+                    <p>Já sabe o que quer? Encontre análises e especificações.</p>
+                </div>
             </Link>
-          </div>
-          <div className="features-row two-items">
-            <Link to="/upgrade" className="feature-card">
-              <i className="fas fa-desktop feature-icon"></i>
-              <h3>Montar PC do Zero</h3>
-              <p>Responda nosso questionário e receba uma build completa para o seu orçamento.</p>
+
+            {/* CARD 4: Comparar */}
+            <Link to="/compare" className="tool-card">
+                <div className="icon-wrapper gray">
+                    <i className="fas fa-columns"></i>
+                </div>
+                <div className="tool-info">
+                    <h3>Comparar Produtos</h3>
+                    <p>Compare especificações técnicas e preços lado a lado.</p>
+                </div>
             </Link>
-            <Link to="/about" className="feature-card">
-              <i className="fas fa-info-circle feature-icon"></i>
-              <h3>Sobre Nós</h3>
-              <p>Conheça nossa missão, nossos valores e a equipe por trás do OPTO Review.</p>
+
+            {/* CARD 5: Favoritos */}
+            <Link to="/favoritos" className="tool-card">
+                <div className="icon-wrapper red">
+                    <i className="fas fa-heart"></i>
+                </div>
+                <div className="tool-info">
+                    <h3>Favoritos</h3>
+                    <p>Acesse sua lista de desejos e produtos salvos.</p>
+                </div>
             </Link>
-          </div>
+
         </div>
       </section>
 
-      {/* --- Secção How It Works --- */}
-      {/* Baseado na secção 'how-it-works' */}
-      <section className="how-it-works">
-        <h2 className="section-title">
-          Nosso sistema de recomendação transparente para 
-          {/* O 'style' em React é escrito como um objeto JavaScript.
-            Repara nos {{ ... }} duplos.
-          */}
-          <span style={{ color: 'var(--primary-color)' }}> Upgrade</span> e 
-          <span style={{ color: 'var(--primary-color)' }}> Criar Setup</span>
-        </h2>
-        <div className="steps-container">
-          <div className="step">
-            <div className="step-icon-wrapper"><i className="fas fa-list-check step-icon"></i><span className="step-number">1</span></div>
-            <h3>Responda o Questionário</h3>
-            <p>Você nos informa seu orçamento, jogos preferidos e seu objetivo principal.</p>
-          </div>
-          <div className="step-arrow"><i className="fas fa-arrow-right"></i></div>
-          <div className="step">
-            <div className="step-icon-wrapper"><i className="fas fa-robot step-icon"></i><span className="step-number">2</span></div>
-            <h3>Analisamos os Dados</h3>
-            <p>Nosso sistema cruza suas respostas com nossa base de dados e benchmarks.</p>
-          </div>
-          <div className="step-arrow"><i className="fas fa-arrow-right"></i></div>
-          <div className="step">
-            <div className="step-icon-wrapper"><i className="fas fa-gift step-icon"></i><span className="step-number">3</span></div>
-            <h3>Receba a Recomendação</h3>
-            <p>Apresentamos a melhor combinação de componentes, explicando cada escolha.</p>
-          </div>
+      {/* 3. DESTAQUES DA SEMANA */}
+      <section className="featured-section">
+        <div className="section-header">
+          <h2>Destaques da Semana</h2>
+          <Link to="/produtos" className="view-all-link">Ver tudo <i className="fas fa-arrow-right"></i></Link>
         </div>
+
+        {loading ? (
+          <div className="loading-state"><i className="fas fa-spinner fa-spin"></i> Carregando...</div>
+        ) : (
+          <div className="featured-grid">
+            {featuredProducts.map(product => (
+              <ProductCard 
+                key={product.id_produto} 
+                product={{
+                    ...product,
+                    id: product.id_produto,
+                    price_low: parseFloat(product.price_low)
+                }} 
+                selectedProducts={[]} 
+                isLocked={false}
+              />
+            ))}
+          </div>
+        )}
       </section>
-    </>
+    </div>
   );
 }
 

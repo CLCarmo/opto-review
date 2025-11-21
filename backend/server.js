@@ -20,7 +20,6 @@ app.get('/', (req, res) => {
 // Rota de Produtos - Buscando do Banco de Dados
 app.get('/api/produtos', async (req, res) => {
   try {
-    // Comando SQL ATUALIZADO para buscar tudo o que precisamos
     const result = await db.query(
       `SELECT 
          p.id_produto,
@@ -28,24 +27,26 @@ app.get('/api/produtos', async (req, res) => {
          p.modelo,
          p.descricao,
          p.especificacoes,
-         p.imagem_url, -- ESSENCIAL: Adicionado a imagem
+         p.imagem_url,
          c.nome AS categoria,
          f.nome AS fabricante,
-         -- Sub-query para buscar o menor preço na tabela 'precos'
-         (SELECT MIN(pr.preco) 
-          FROM precos pr 
-          WHERE pr.id_produto = p.id_produto) AS price_low
+         -- AQUI ESTÁ A MÁGICA:
+         -- Tenta pegar o menor preço da tabela 'precos'. 
+         -- Se não existir, usa o 'p.price_low' da tabela 'produtos'.
+         COALESCE(
+            (SELECT MIN(pr.preco) FROM precos pr WHERE pr.id_produto = p.id_produto),
+            p.price_low
+         ) AS price_low
        FROM produtos p
        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
        LEFT JOIN fabricantes f ON p.id_fabricante = f.id_fabricante`
     );
     
-    // Retorna as linhas encontradas como resposta JSON
     res.json(result.rows);
 
   } catch (err) {
     console.error('Erro ao buscar produtos:', err);
-    res.status(500).json({ error: 'Erro ao buscar produtos no banco de dados.' });
+    res.status(500).json({ error: 'Erro ao buscar produtos.' });
   }
 });
 
@@ -304,6 +305,49 @@ app.delete('/api/favoritos', async (req, res) => {
   } catch (err) {
     console.error('Erro ao remover favorito:', err);
     res.status(500).json({ error: 'Erro interno ao remover favorito.' });
+  }
+});
+
+// ROTA: Atualizar Perfil (Com tratamento de Senha e Cor)
+app.put('/api/usuarios/:id', async (req, res) => {
+  const { id } = req.params;
+  // Recebemos tudo o que pode ser mudado
+  const { nome, email, senha, avatar_url, avatar_bg, setup_atual } = req.body;
+
+  try {
+    let query = "UPDATE usuarios SET ";
+    const values = [];
+    let count = 1;
+
+    // Constrói a query dinamicamente (só atualiza o que foi enviado)
+    if (nome) { query += `nome = $${count}, `; values.push(nome); count++; }
+    if (email) { query += `email = $${count}, `; values.push(email); count++; }
+    if (avatar_url) { query += `avatar_url = $${count}, `; values.push(avatar_url); count++; }
+    if (avatar_bg) { query += `avatar_bg = $${count}, `; values.push(avatar_bg); count++; }
+    if (setup_atual) { query += `setup_atual = $${count}, `; values.push(setup_atual); count++; }
+    
+    // Se enviou senha, CRIPTOGRAFA antes de salvar
+    if (senha) {
+       const salt = await bcrypt.genSalt(10);
+       const senha_hash = await bcrypt.hash(senha, salt);
+       query += `senha_hash = $${count}, `;
+       values.push(senha_hash);
+       count++;
+    }
+
+    // Finaliza a query
+    query = query.slice(0, -2) + ` WHERE id_usuario = $${count} RETURNING id_usuario, nome, email, avatar_url, avatar_bg, setup_atual`;
+    values.push(id);
+
+    const result = await db.query(query, values);
+    
+    if (result.rows.length === 0) return res.status(404).json({ error: "Usuário não encontrado" });
+
+    res.json(result.rows[0]);
+
+  } catch (err) {
+    console.error("Erro ao atualizar perfil:", err);
+    res.status(500).json({ error: "Erro interno ao atualizar." });
   }
 });
 

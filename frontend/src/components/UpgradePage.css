@@ -1,307 +1,165 @@
 /* frontend/src/components/UpgradePage.css */
-/* VERSÃO RECRIADA E LIMPA PARA O NOSSO PROJETO REACT */
 
-/* --- Container Principal --- */
-.wizard-container { 
-    max-width: 900px;
-    margin: 2rem auto; /* Já está dentro do page-container do Layout */
-    background-color: #fff; 
-    padding: 2rem 3rem; 
-    border-radius: 16px; 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.07);
-    border: 1px solid var(--border-color);
-    overflow: hidden; 
-}
-
-/* --- Cabeçalho --- */
-.wizard-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 2rem;
-}
-.wizard-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-}
-.wizard-header p {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    max-width: 600px;
-    margin: 0.5rem auto 0;
-}
-
-/* --- Barra de Progresso --- */
-.progress-bar {
+/* Wrapper Principal */
+.upgrade-page-wrapper {
+    min-height: 80vh;
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 3rem;
-    max-width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-.progress-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0.4;
-    transition: opacity 0.4s ease;
-    text-align: center;
-    position: relative;
-    flex-basis: 100px; /* Garante espaço */
-}
-.progress-step .step-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--light-bg);
-    border: 3px solid var(--border-color);
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    transition: all 0.4s ease;
-}
-.progress-step .step-label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-.progress-line {
-    flex-grow: 1;
-    height: 4px;
-    background-color: var(--border-color);
-    margin-top: 25px; /* Alinha com o centro dos ícones */
-    max-width: 150px;
+    align-items: flex-start;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
-/* Estado Ativo da Barra de Progresso */
-.progress-step.active {
-    opacity: 1;
-}
-.progress-step.active .step-icon {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: #fff;
-    transform: scale(1.1);
-}
-.progress-step.active .step-label {
-    color: var(--text-dark);
+/* Container do Wizard (Caixa Central) */
+.wizard-container {
+    background-color: #fff;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
-/* --- Conteúdo dos Passos --- */
-.wizard-step-content {
-    /* O React já mostra/esconde. Só precisamos de uma animação. */
+/* --- BARRA DE PROGRESSO --- */
+.wizard-progress-bar {
+    background-color: #f7fafc;
+    padding: 2rem 3rem 0 3rem;
+}
+.progress-track {
+    height: 6px;
+    background-color: #e2e8f0;
+    border-radius: 3px;
+    position: relative;
+}
+.progress-fill {
+    height: 100%;
+    background-color: var(--secondary-color); /* Verde */
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+/* --- CONTEÚDO DO PASSO --- */
+.wizard-content {
+    padding: 3rem;
+    text-align: center;
     animation: fadeIn 0.5s ease;
 }
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.step-title {
+.wizard-question h2 {
     font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem; 
-    text-align: center;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
 }
-.step-subtitle {
-    text-align: center; 
-    margin-bottom: 2.5rem; 
-    color: var(--text-muted); 
+.wizard-question p {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
     font-size: 1.1rem;
 }
 
-/* --- Grelha de Cartões (Passo 1 e 4) --- */
-.card-selection-grid {
+/* --- GRID DE OPÇÕES (CARTÕES) --- */
+.options-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
-}
-.card-selection-grid.two-cols {
-    grid-template-columns: 1fr 1fr;
-}
-.card-selection-grid.three-cols {
-    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 2rem;
 }
 
-.card-option {
-    display: block; /* Para o <label> funcionar */
-    position: relative;
-}
-.card-option input[type="radio"],
-.card-option input[type="checkbox"] {
-    display: none; /* Esconde o input real */
-}
-.card-option-content {
-    padding: 2rem 1.5rem;
+/* O Cartão de Opção */
+.option-card {
+    background-color: #fff;
     border: 2px solid var(--border-color);
     border-radius: 12px;
-    background-color: #fff;
+    padding: 2rem 1.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    text-align: center;
-    height: 100%;
-}
-.card-option-content:hover {
-    border-color: var(--primary-color);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
-}
-.card-option input:checked + .card-option-content {
-    border-color: var(--primary-color);
-    background-color: #f0f7ff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
-}
-.card-icon {
-    font-size: 2rem;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
-.card-option h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-.card-option p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin: 0;
-    text-align: center;
-}
-.card-option.small h3 { font-size: 1.1rem; }
-.card-option.small p { font-size: 0.8rem; }
-.card-option.small .card-icon { font-size: 1.5rem; }
-
-/* --- Slider de Orçamento (Passo 2) --- */
-.form-group-range {
-    max-width: 600px;
-    margin: 2rem auto;
-}
-.form-group-range label {
-    font-size: 1.2rem;
-    font-weight: 500;
-    display: block;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-.form-group-range strong {
-    color: var(--primary-color);
-    font-weight: 700;
-}
-.budget-slider {
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 10px;
-    background: var(--border-color);
-    outline: none;
-    border-radius: 5px;
-}
-.budget-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    cursor: pointer;
-}
-.budget-slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    cursor: pointer;
-}
-.range-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-}
-
-/* --- Grelha de Formulário (Passo 3) --- */
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    max-width: 700px;
-    margin: 0 auto;
-}
-.form-group {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-.form-input {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    font-family: 'Poppins', sans-serif;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-.form-input:focus {
+
+.option-card:hover {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-    outline: none;
-}
-/* Adaptação para .form-grid .form-group (como no seu original) */
-.form-grid .form-group:nth-child(3),
-.form-grid .form-group:nth-child(4) {
-    /* grid-column: span 2; (Se quiséssemos que ocupassem a largura toda) */
-    /* Por agora, mantemos 2 colunas */
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+/* Estado Selecionado */
+.option-card.selected {
+    border-color: var(--secondary-color);
+    background-color: #f0fff4; /* Fundo verde muito claro */
+    box-shadow: 0 0 0 4px rgba(0, 230, 118, 0.1);
+}
 
-/* --- Botões de Navegação --- */
-.wizard-navigation {
+.option-icon {
+    font-size: 2.5rem;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+.option-card.selected .option-icon {
+    color: var(--secondary-color);
+}
+
+.option-label {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+/* --- BOTÕES DE NAVEGAÇÃO --- */
+.wizard-actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
 }
+
 .wizard-btn {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
     font-weight: 600;
-    border: none;
-    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
+    border: none;
+    font-size: 1rem;
+}
+
+.wizard-btn.back {
+    background-color: transparent;
+    color: var(--text-muted);
+}
+.wizard-btn.back:hover {
+    background-color: #f7fafc;
+    color: var(--text-dark);
+}
+
+.wizard-btn.next {
+    background-color: var(--primary-color);
+    color: #fff;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
-.wizard-btn.secondary {
-    background-color: var(--light-bg);
-    color: var(--text-dark);
-    border: 1px solid var(--border-color);
+.wizard-btn.next:hover {
+    background-color: #0069d9;
+    transform: translateX(2px);
 }
-.wizard-btn.secondary:hover {
-    background-color: #e2e8f0;
+.wizard-btn.next:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
 }
-.wizard-btn {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-.wizard-btn:hover {
-    background-color: #0056b3;
-}
-.wizard-btn.submit {
-    background-color: var(--secondary-color);
-    color: var(--text-dark);
-}
-.wizard-btn.submit:hover {
-    background-color: #00b359;
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .wizard-content { padding: 1.5rem; }
+    .options-grid { grid-template-columns: 1fr; }
+    .wizard-question h2 { font-size: 1.5rem; }
 }
