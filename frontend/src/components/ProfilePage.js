@@ -40,9 +40,18 @@ function ProfilePage() {
 
   const [recommendations, setRecommendations] = useState([]);
 
-  if (!user) { navigate('/login'); return null; }
-
+  // Redirecionamento dentro de useEffect ---
   useEffect(() => {
+      if (!user) {
+          navigate('/login');
+      }
+  }, [user, navigate]);
+
+  //  useEffect principal seguro ---
+  useEffect(() => {
+    // Se não tiver user, paramos aqui (o redirect acima vai lidar com isso)
+    if (!user) return;
+
     // Preenche os campos de edição com os dados atuais
     setEditName(user.nome || '');
     setEditEmail(user.email || '');
@@ -59,63 +68,45 @@ function ProfilePage() {
     fetchRecs();
   }, [user]);
 
+  // Handlers
   const handleLogout = () => { logout(); navigate('/'); };
 
-  // --- LÓGICA DE AVATAR E CORES ---
-  const handleSelectAvatar = (url) => {
-    updateUser({ avatar_url: url });
-  };
+  const handleSelectAvatar = (url) => { updateUser({ avatar_url: url }); };
+  const handleColorSelect = (color) => { updateUser({ avatar_bg: color }); };
 
-  const handleColorSelect = (color) => {
-      updateUser({ avatar_bg: color });
-  };
-
-  // --- LÓGICA DE UPLOAD (ATUALIZADA PARA 100KB) ---
   const handleImageUpload = (e) => {
       const file = e.target.files[0];
       if (file) {
-          // Limite aumentado para 100.000 bytes (100KB)
           if (file.size > 100000) { 
-              alert("A imagem é muito grande! O limite é 100KB. Tente uma imagem menor ou comprimida.");
+              alert("A imagem é muito grande! O limite é 100KB.");
               return;
           }
           const reader = new FileReader();
-          reader.onloadend = () => {
-              updateUser({ avatar_url: reader.result }); // Salva a string Base64
-          };
+          reader.onloadend = () => { updateUser({ avatar_url: reader.result }); };
           reader.readAsDataURL(file);
       }
   };
 
-  // --- LÓGICA DE CONFIGURAÇÕES ---
   const handleSaveSettings = async (e) => {
       e.preventDefault();
       setMsg('');
       
-      const dataToUpdate = {
-          nome: editName,
-          email: editEmail
-      };
-      // Só envia a senha se o usuário digitou algo
+      const dataToUpdate = { nome: editName, email: editEmail };
       if (editPassword) {
-          if (editPassword.length < 6) {
-              setMsg('A senha deve ter pelo menos 6 caracteres.');
-              return;
-          }
+          if (editPassword.length < 6) { setMsg('Senha muito curta.'); return; }
           dataToUpdate.senha = editPassword;
       }
 
       await updateUser(dataToUpdate);
-      setMsg('Dados atualizados com sucesso!');
-      setEditPassword(''); // Limpa campo de senha
-      setTimeout(() => {
-          setShowSettingsModal(false);
-          setMsg('');
-      }, 1500);
+      setMsg('Dados atualizados!');
+      setEditPassword('');
+      setTimeout(() => { setShowSettingsModal(false); setMsg(''); }, 1500);
   };
 
+  // --- CORREÇÃO 3: O retorno antecipado (Loading/Null) fica APÓS todos os Hooks ---
+  if (!user) return null;
 
-  const memberSince = new Date().getFullYear(); // Simulação (ou pegar do banco se tiver)
+  const memberSince = new Date().getFullYear();
 
   return (
     <div className="profile-page-wrapper">
@@ -124,7 +115,6 @@ function ProfilePage() {
         {/* HEADER */}
         <div className="profile-header">
           <div className="avatar-section">
-            {/* O Círculo agora usa a cor do banco (user.avatar_bg) */}
             <div className="avatar-circle-large" style={{ backgroundColor: user.avatar_bg || '#cccccc' }}>
                 {user.avatar_url ? (
                     <img src={user.avatar_url} alt="Perfil" />
@@ -150,24 +140,17 @@ function ProfilePage() {
           </button>
         </div>
 
-        {/* --- MODAL AVATAR (UPLOAD + PRESETS + CORES) --- */}
+        {/* MODAIS */}
         {showAvatarModal && (
             <div className="avatar-modal-overlay" onClick={() => setShowAvatarModal(false)}>
                 <div className="avatar-modal" onClick={e => e.stopPropagation()}>
                     <h3>Personalize seu Avatar</h3>
-                    
-                    {/* 1. Upload Próprio */}
                     <div className="upload-section">
                         <p>Envie sua imagem (Máx 100KB):</p>
                         <input type="file" accept="image/*" onChange={handleImageUpload} id="file-upload" className="file-input"/>
-                        <label htmlFor="file-upload" className="upload-btn">
-                            <i className="fas fa-upload"></i> Escolher Arquivo
-                        </label>
+                        <label htmlFor="file-upload" className="upload-btn"><i className="fas fa-upload"></i> Escolher Arquivo</label>
                     </div>
-
                     <div className="divider-text"><span>OU escolha um pronto</span></div>
-
-                    {/* 2. Lista de Avatares */}
                     <div className="avatar-grid">
                         {AVATAR_OPTIONS.map((url, index) => (
                             <div key={index} className="avatar-option" onClick={() => handleSelectAvatar(url)}>
@@ -175,100 +158,52 @@ function ProfilePage() {
                             </div>
                         ))}
                     </div>
-
                     <div className="divider-text"><span>Cor de Fundo</span></div>
-
-                    {/* 3. Seletor de Cores */}
                     <div className="color-grid">
                         {COLOR_OPTIONS.map((color) => (
-                            <div 
-                                key={color} 
-                                className={`color-circle ${user.avatar_bg === color ? 'selected' : ''}`}
-                                style={{ backgroundColor: color }}
-                                onClick={() => handleColorSelect(color)}
-                            ></div>
+                            <div key={color} className={`color-circle ${user.avatar_bg === color ? 'selected' : ''}`}
+                                style={{ backgroundColor: color }} onClick={() => handleColorSelect(color)}></div>
                         ))}
                     </div>
-
                     <button className="close-modal-btn" onClick={() => setShowAvatarModal(false)}>Fechar</button>
                 </div>
             </div>
         )}
 
-        {/* --- MODAL CONFIGURAÇÕES (EDITAR PERFIL) --- */}
         {showSettingsModal && (
             <div className="avatar-modal-overlay" onClick={() => setShowSettingsModal(false)}>
                 <div className="avatar-modal settings-modal" onClick={e => e.stopPropagation()}>
                     <h3><i className="fas fa-cog"></i> Editar Dados</h3>
-                    
                     <form onSubmit={handleSaveSettings} className="settings-form">
-                        <div className="form-group">
-                            <label>Nome</label>
-                            <input type="text" value={editName} onChange={e => setEditName(e.target.value)} required />
-                        </div>
-                        <div className="form-group">
-                            <label>E-mail</label>
-                            <input type="email" value={editEmail} onChange={e => setEditEmail(e.target.value)} required />
-                        </div>
-                        <div className="form-group">
-                            <label>Nova Senha (Opcional)</label>
-                            <input 
-                                type="password" 
-                                placeholder="Deixe em branco para manter a atual" 
-                                value={editPassword} 
-                                onChange={e => setEditPassword(e.target.value)} 
-                            />
-                        </div>
-                        
+                        <div className="form-group"><label>Nome</label><input type="text" value={editName} onChange={e => setEditName(e.target.value)} required /></div>
+                        <div className="form-group"><label>E-mail</label><input type="email" value={editEmail} onChange={e => setEditEmail(e.target.value)} required /></div>
+                        <div className="form-group"><label>Nova Senha</label><input type="password" placeholder="Opcional" value={editPassword} onChange={e => setEditPassword(e.target.value)} /></div>
                         {msg && <div className="success-msg">{msg}</div>}
-                        
                         <div className="modal-actions">
                             <button type="button" className="cancel-btn" onClick={() => setShowSettingsModal(false)}>Cancelar</button>
-                            <button type="submit" className="save-btn">Salvar Alterações</button>
+                            <button type="submit" className="save-btn">Salvar</button>
                         </div>
                     </form>
                 </div>
             </div>
         )}
 
-
         {/* SETUP ATUAL */}
         <section className="profile-section">
             <div className="section-title-row">
                 <h2><i className="fas fa-desktop"></i> Setup Atual</h2>
-                {user.setup_atual && (
-                    <Link to="/upgrade" className="edit-setup-link">
-                        <i className="fas fa-pen"></i> Mudar Setup
-                    </Link>
-                )}
+                {user.setup_atual && <Link to="/upgrade" className="edit-setup-link"><i className="fas fa-pen"></i> Mudar Setup</Link>}
             </div>
-
             {user.setup_atual ? (
                 <div className="current-setup-card">
-                    <div className="setup-item">
-                        <i className="fas fa-microchip"></i>
-                        <div>
-                            <strong>Processador</strong>
-                            <p>{user.setup_atual.cpu?.nome || user.setup_atual.cpu || "Genérico"}</p>
-                        </div>
-                    </div>
-                    <div className="setup-item">
-                        <i className="fas fa-video"></i>
-                        <div>
-                            <strong>Placa de Vídeo</strong>
-                            <p>{user.setup_atual.gpu?.nome || user.setup_atual.gpu || "Genérica"}</p>
-                        </div>
-                    </div>
-                    <div className="setup-status">
-                        <i className="fas fa-check-circle"></i> Setup Definido
-                    </div>
+                    <div className="setup-item"><i className="fas fa-microchip"></i><div><strong>Processador</strong><p>{user.setup_atual.cpu?.nome || user.setup_atual.cpu || "Genérico"}</p></div></div>
+                    <div className="setup-item"><i className="fas fa-video"></i><div><strong>Placa de Vídeo</strong><p>{user.setup_atual.gpu?.nome || user.setup_atual.gpu || "Genérica"}</p></div></div>
+                    <div className="setup-status"><i className="fas fa-check-circle"></i> Setup Definido</div>
                 </div>
             ) : (
                 <div className="empty-setup-state">
                     <p>Você ainda não definiu seu setup atual.</p>
-                    <Link to="/upgrade" className="btn-create-setup">
-                        <i className="fas fa-plus"></i> Definir meu Setup
-                    </Link>
+                    <Link to="/upgrade" className="btn-create-setup"><i className="fas fa-plus"></i> Definir meu Setup</Link>
                 </div>
             )}
         </section>
@@ -283,21 +218,17 @@ function ProfilePage() {
               <Link to="/favoritos" className="card-link">Ver Lista <i className="fas fa-arrow-right"></i></Link>
             </div>
           </div>
-          
-          {/* Botão Configurações */}
           <div className="dashboard-card">
             <div className="card-icon blue"><i className="fas fa-cog"></i></div>
             <div className="card-content">
               <h3>Configurações</h3>
-              <p>Gerencie seus dados e senha.</p>
-              <button className="card-link" onClick={() => setShowSettingsModal(true)}>
-                  Editar Perfil <i className="fas fa-pen"></i>
-              </button>
+              <p>Gerencie seus dados.</p>
+              <button className="card-link" onClick={() => setShowSettingsModal(true)}>Editar Perfil <i className="fas fa-pen"></i></button>
             </div>
           </div>
         </div>
 
-        {/* CARROSSEL DE RECOMENDAÇÕES */}
+        {/* RECOMENDAÇÕES */}
         <section className="recommendations-section">
             <h2><i className="fas fa-star"></i> Recomendado para você</h2>
             <div className="rec-carousel">
@@ -310,7 +241,6 @@ function ProfilePage() {
                 ))}
             </div>
         </section>
-
       </div>
     </div>
   );

@@ -69,8 +69,7 @@ function Header() {
           <NavLink to="/login" className="nav-link login-button">
             Login
           </NavLink>
-        )}
-        
+        )}        
       </nav>
     </header>
   );
