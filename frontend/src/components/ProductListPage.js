@@ -43,47 +43,48 @@ const ProductListPage = () => {
 
     // --- BUSCA DE DADOS DA API ---
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const [productsResponse, categoriesResponse] = await Promise.all([
-                    fetch(`${process.env.REACT_APP_API_URL}api/produtos`), 
-                    fetch(`${process.env.REACT_APP_API_URL}api/categorias`)
-                ]);
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            // MUDANÇA AQUI: Links diretos do Railway
+            const [productsResponse, categoriesResponse] = await Promise.all([
+                fetch('https://opto-review-production.up.railway.app/api/produtos'), 
+                fetch('https://opto-review-production.up.railway.app/api/categorias')
+            ]);
 
-                if (!productsResponse.ok || !categoriesResponse.ok) {
-                    throw new Error('Falha ao buscar dados da API');
-                }
-
-                const productsData = await productsResponse.json();
-                const categoriesData = await categoriesResponse.json();
-
-                const mappedProducts = productsData.map(p => ({
-                    id: p.id_produto,
-                    nome: p.nome,
-                    fabricante: p.fabricante,
-                    categoria: p.categoria,
-                    descricao: p.descricao,
-                    imagem_url: p.imagem_url,
-                    especificacoes: p.especificacoes,
-                    price_low: parseFloat(p.price_low) || null 
-                }));
-
-                setAllProducts(mappedProducts);
-                setFilteredProducts(mappedProducts);
-                setCategorias(categoriesData);
-
-            } catch (err) {
-                console.error("Erro ao buscar dados:", err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
+            if (!productsResponse.ok || !categoriesResponse.ok) {
+                throw new Error('Falha ao buscar dados da API');
             }
-        };
 
-        fetchData();
-    }, []); 
+            const productsData = await productsResponse.json();
+            const categoriesData = await categoriesResponse.json();
+
+            const mappedProducts = productsData.map(p => ({
+                id: p.id_produto,
+                nome: p.nome,
+                fabricante: p.fabricante,
+                categoria: p.categoria,
+                descricao: p.descricao,
+                imagem_url: p.imagem_url,
+                especificacoes: p.especificacoes,
+                price_low: parseFloat(p.price_low) || null 
+            }));
+
+            setAllProducts(mappedProducts);
+            setFilteredProducts(mappedProducts);
+            setCategorias(categoriesData);
+
+        } catch (err) {
+            console.error("Erro ao buscar dados:", err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchData();
+}, []);
 
     // --- LÓGICA DE FILTRAGEM ATUALIZADA ---
     useEffect(() => {

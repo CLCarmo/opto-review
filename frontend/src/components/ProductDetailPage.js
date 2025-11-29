@@ -69,7 +69,7 @@ function ProductDetailPage() {
     const fetchProduct = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://opto-review-production.up.railway.app/api/produtos/${produtoId}`);
+        const res = await fetch(`https://opto-review-production.up.railway.app/api/produtos/${produtoId}`);
         if (!response.ok) throw new Error('Produto não encontrado');
         const data = await response.json();
         
@@ -88,7 +88,7 @@ function ProductDetailPage() {
 
   const fetchRelatedProducts = async (category, currentId) => {
       try {
-          const res = await fetch('https://opto-review-production.up.railway.app/api/produtos');
+          const res = await fetch(`https://opto-review-production.up.railway.app/api/produtos/`);
           const all = await res.json();
           const related = all
             .filter(p => p.categoria === category && p.id_produto !== currentId)
