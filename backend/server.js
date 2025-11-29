@@ -10,7 +10,7 @@ const scraper = require('./scraperService');
 const PORT = process.env.PORT || 8080;
 
 // Middlewares para permitir requisições de outras origens (CORS) e para entender JSON
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({origin: 'https://opto-review-production.up.railway.app'}));
 app.use(express.json());
 
 // Rota Raiz (Página de Teste)

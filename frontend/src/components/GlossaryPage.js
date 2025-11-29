@@ -70,7 +70,7 @@ function GlossaryPage() {
     useEffect(() => {
         const fetchGlossary = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/glossario');
+                const response = await fetch('https://opto-review-production.up.railway.app/api/glossario');
                 if (!response.ok) {
                     throw new Error('Falha ao buscar dados do glossário');
                 }

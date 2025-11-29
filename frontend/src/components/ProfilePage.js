@@ -59,7 +59,7 @@ function ProfilePage() {
     // Busca recomendações
     const fetchRecs = async () => {
         try {
-            const res = await fetch('http://localhost:8080/api/produtos');
+            const res = await fetch('https://opto-review-production.up.railway.app/api/produtos');
             const data = await res.json();
             const shuffled = data.sort(() => 0.5 - Math.random()).slice(0, 4);
             setRecommendations(shuffled);

@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
         if (user && user.id_usuario) {
             const fetchFavorites = async () => {
                 try {
-                    const response = await fetch(`http://localhost:8080/api/favoritos/${user.id_usuario}`);
+                    const response = await fetch('https://opto-review-production.up.railway.app/api/favoritos/${user.id_usuario}');
                     if (!response.ok) throw new Error('Falha ao buscar favoritos');
                     
                     const favoriteIds = await response.json();
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
         setFavorites(prev => [...prev, productId]); // Otimista
 
         try {
-            await fetch('http://localhost:8080/api/favoritos', {
+            await fetch('https://opto-review-production.up.railway.app/api/favoritos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_usuario: user.id_usuario, id_produto: productId }),
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         setFavorites(prev => prev.filter(id => id !== productId)); // Otimista
 
         try {
-            await fetch('http://localhost:8080/api/favoritos', {
+            await fetch('https://opto-review-production.up.railway.app/api/favoritos', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_usuario: user.id_usuario, id_produto: productId }),
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
         if (!user) return;
         
         try {
-            const response = await fetch(`http://localhost:8080/api/usuarios/${user.id_usuario}`, {
+            const response = await fetch(`https://opto-review-production.up.railway.app/api/usuarios/${user.id_usuario}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newData)
