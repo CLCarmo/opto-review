@@ -134,7 +134,7 @@ function ComparePage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/produtos');
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/produtos`);
                 if (!response.ok) {
                     throw new Error('Falha ao buscar produtos da API');
                 }
