@@ -353,65 +353,8 @@ app.put('/api/usuarios/:id', async (req, res) => {
 });
 
 // ==================================================================
-// ROTA ADMIN: ATUALIZADOR DE PREÇOS (SCRAPER)
+// ROTA: ATUALIZADOR DE PREÇOS (SCRAPER) - Em Breve
 // ==================================================================
-app.post('/api/admin/atualizar-precos', async (req, res) => {
-    try {
-        // 1. Busca links cadastrados que não sejam nulos
-        const result = await db.query('SELECT id_preco, url_produto FROM precos WHERE url_produto IS NOT NULL');
-        const links = result.rows;
-
-        if (links.length === 0) {
-            return res.json({ message: "Nenhum link encontrado para atualizar." });
-        }
-
-        let atualizados = 0;
-        let erros = 0;
-
-        console.log(`🔄 Iniciando atualização de ${links.length} produtos...`);
-
-        // 2. Loop para atualizar cada produto
-        for (const item of links) {
-            // Chama o scraper
-            console.log(`➡️ Verificando: ${item.url_produto}`);
-            const novoPreco = await scraper.getPrice(item.url_produto);
-            
-            if (novoPreco && novoPreco > 0) {
-                // Atualiza no banco
-                await db.query(
-                    'UPDATE precos SET preco = $1, data_ultima_verificacao = NOW() WHERE id_preco = $2',
-                    [novoPreco, item.id_preco]
-                );
-                console.log(`✅ [ID ${item.id_preco}] Atualizado para R$ ${novoPreco}`);
-                atualizados++;
-            } else {
-                console.log(`❌ [ID ${item.id_preco}] Falha ao ler preço.`);
-                erros++;
-            }
-            
-            // IMPORTANTE: Espera 2 segundos entre cada requisição
-            await new Promise(r => setTimeout(r, 2000));
-        }
-
-        // 3. Sincroniza o menor preço na tabela produtos
-        await db.query(`
-            UPDATE produtos p
-            SET price_low = (SELECT MIN(pr.preco) FROM precos pr WHERE pr.id_produto = p.id_produto)
-            WHERE p.id_produto IN (SELECT id_produto FROM precos)
-        `);
-
-        res.json({ 
-            message: `Atualização concluída.`, 
-            sucesso: atualizados, 
-            falhas: erros,
-            total: links.length
-        });
-
-    } catch (err) {
-        console.error("Erro fatal no scraper:", err);
-        res.status(500).json({ error: "Erro ao rodar scraper" });
-    }
-});
 
 // Inicia o servidor e o faz "escutar" por requisições na porta definida
 app.listen(PORT, () => {
