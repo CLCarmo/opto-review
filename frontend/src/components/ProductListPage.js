@@ -48,8 +48,8 @@ const ProductListPage = () => {
             setError(null);
             try {
                 const [productsResponse, categoriesResponse] = await Promise.all([
-                    fetch('http://localhost:8080/api/produtos'), 
-                    fetch('http://localhost:8080/api/categorias')
+                    fetch(`${process.env.REACT_APP_API_URL}api/produtos`), 
+                    fetch(`${process.env.REACT_APP_API_URL}api/categorias`)
                 ]);
 
                 if (!productsResponse.ok || !categoriesResponse.ok) {
