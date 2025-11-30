@@ -20,7 +20,7 @@ const COLOR_OPTIONS = [
 ];
 
 function ProfilePage() {
-  const { user, logout, updateUser } = useAuth();
+  const { user, logout, updateUser, favorites } = useAuth();
   const navigate = useNavigate();
 
   // Estados locais para edição
@@ -32,7 +32,7 @@ function ProfilePage() {
   
   const [recommendations, setRecommendations] = useState([]);
 
-  // Carrega dados iniciais quando abre o modal
+  // Carrega dados iniciais quando abre o modal ou quando o user muda
   useEffect(() => {
       if (user) {
           setTempName(user.nome || '');
@@ -49,55 +49,6 @@ function ProfilePage() {
             const data = await res.json();
             setRecommendations(data.slice(0, 3)); // Pega 3 aleatórios
         } catch(e) { console.error(e); }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     };
     fetchRecs();
   }, []);
@@ -165,7 +116,7 @@ function ProfilePage() {
                 <span className="badge">Membro desde 2024</span>
                 <span className="badge pro">Beta Tester</span>
             </div>
-
+            
             <div className="profile-actions">
                 <button className="btn-edit" onClick={() => setShowSettingsModal(true)}>
                     <i className="fas fa-cog"></i> Editar Perfil
@@ -181,9 +132,20 @@ function ProfilePage() {
           <div className="dashboard-card">
             <div className="card-icon red"><i className="fas fa-heart"></i></div>
             <div className="card-content">
-              <h3>Favoritos</h3>
-              <p>Gerencie seus itens salvos.</p>
+              <h3>Meus Favoritos</h3>
+              <p>Você tem <strong>{favorites?.length || 0}</strong> itens salvos.</p>
               <Link to="/favoritos" className="card-link">Ver Lista <i className="fas fa-arrow-right"></i></Link>
+            </div>
+          </div>
+          
+          <div className="dashboard-card">
+            <div className="card-icon blue"><i className="fas fa-cog"></i></div>
+            <div className="card-content">
+              <h3>Configurações</h3>
+              <p>Gerencie seus dados e preferências.</p>
+              <button className="card-link" onClick={() => setShowSettingsModal(true)}>
+                  Editar Perfil <i className="fas fa-pen"></i>
+              </button>
             </div>
           </div>
         </div>
