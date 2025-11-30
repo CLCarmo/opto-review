@@ -1,18 +1,22 @@
 // backend/db.js
 const { Pool } = require('pg');
 
-// Configuração para usar a Variável de Ambiente do Railway
+// DIAGNÓSTICO: Vamos ver no log do Railway o que está acontecendo
+console.log("🔄 Tentando conectar ao Banco de Dados...");
+console.log("📍 URL da Variável:", process.env.DATABASE_URL ? "Encontrada" : "NÃO ENCONTRADA (Usando fallback?)");
+
+// Configuração que aceita TANTO a String  QUANTO as variáveis soltas (PGHOST, PGUSER, etc.)
+// O Railway fornece as variáveis PG* automaticamente, então isso é o mais seguro.
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL, 
   ssl: {
-    rejectUnauthorized: false // Obrigatório para funcionar no Railway
+    rejectUnauthorized: false
   }
 });
 
-// Evento para monitorar erros inesperados no pool
+// Tratamento de erro de conexão
 pool.on('error', (err, client) => {
-  console.error('Erro inesperado no cliente do pool', err);
-  process.exit(-1);
+  console.error('❌ Erro CRÍTICO no Pool do PostgreSQL:', err);
 });
 
 module.exports = {
