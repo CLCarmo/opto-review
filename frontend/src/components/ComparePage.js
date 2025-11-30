@@ -134,7 +134,7 @@ function ComparePage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/produtos`);
+                const response = await fetch('https://opto-review-production.up.railway.app/api/produtos');
                 if (!response.ok) {
                     throw new Error('Falha ao buscar produtos da API');
                 }

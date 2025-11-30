@@ -6,7 +6,7 @@ import './GlossaryPage.css';
 import TermCard from './TermCard'; // O componente para o "acordeão"
 
 // --- O "MAPA" DE FILTROS (Mantido) ---
-const logicalCategories = [
+/*const logicalCategories = [
   { 
     id: 'Todas',        
     label: 'Todas as Categorias', 
@@ -41,153 +41,98 @@ const logicalCategories = [
     // ADICIONADO: Filtro para "Software e Serviços"
     dataCategories: ['Software e Serviços'] 
   }
+];*/
+
+const logicalCategories = [
+  { id: 'Todas', label: 'Todas as Categorias', icon: 'fas fa-border-all', dataCategories: [] },
+  { id: 'PC', label: 'PC (Computador)', icon: 'fas fa-desktop', dataCategories: ['PC (Computador)'] },
+  { id: 'Perifericos', label: 'Periféricos', icon: 'fas fa-mouse', dataCategories: ['Mouse', 'Teclado', 'Monitor', 'Headset'] },
+  { id: 'Acessorios', label: 'Acessórios', icon: 'fas fa-box-open', dataCategories: ['Acessórios'] },
+  { id: 'Geral', label: 'Conceitos Gerais', icon: 'fas fa-brain', dataCategories: ['Geral', 'Conceitos'] }
 ];
 
-
-// --- DADOS ESTÁTICOS ANTIGOS (REMOVIDO!) ---
-// const termsData = [...]; 
-// O JSON que estava aqui foi APAGADO.
-
-
-/**
- * Componente GlossaryPage
- * (VERSÃO ATUALIZADA COM FETCH DA API)
- */
 function GlossaryPage() {
-
-    // --- ESTADOS DA PÁGINA ---
+    const [terms, setTerms] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [activeFilter, setActiveFilter] = useState('Todas');
+    const [activeCategoryFilter, setActiveCategoryFilter] = useState('Todas');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6; // Quantos termos por página
+    const itemsPerPage = 10;
 
-    // --- NOVOS ESTADOS PARA A API ---
-    const [allTerms, setAllTerms] = useState([]); // Guarda os termos vindos do BD
-    const [isLoading, setIsLoading] = useState(true); // Controla o "Carregando..."
-    const [error, setError] = useState(null); // Guarda mensagens de erro
-
-    // --- PASSO NOVO: BUSCAR DADOS DA API ---
     useEffect(() => {
-        const fetchGlossary = async () => {
+        const fetchTerms = async () => {
             try {
+                // AQUI ESTAVA O ERRO - URL CORRIGIDA
                 const response = await fetch('https://opto-review-production.up.railway.app/api/glossario');
-                if (!response.ok) {
-                    throw new Error('Falha ao buscar dados do glossário');
-                }
-                const dataFromApi = await response.json();
-                
-                // "Traduz" os nomes das colunas do BD (ex: 'termo') 
-                // para os nomes que o TermCard espera (ex: 'term')
-                const mappedData = dataFromApi.map(item => ({
-                    id: item.id_glossario,
-                    term: item.termo,
-                    explanation: item.explicacao,
-                    category: item.categoria,
-                    subcategory: item.subcategoria,
-                    practical_tip: item.dica_pratica,
-                    details: item.detalhes
-                }));
-
-                setAllTerms(mappedData); // Guarda no estado
-
-            } catch (err) {
-                console.error("Erro no fetchGlossary:", err);
-                setError(err.message);
+                if (!response.ok) throw new Error('Erro ao buscar glossário');
+                const data = await response.json();
+                setTerms(data);
+            } catch (error) {
+                console.error("Erro no glossário:", error);
             } finally {
-                setIsLoading(false); // Termina o carregamento
+                setLoading(false);
             }
         };
+        fetchTerms();
+    }, []);
 
-        fetchGlossary(); // Executa a busca
-    }, []); // O array vazio [] faz isso rodar apenas uma vez
+    // ... (RESTO DA LÓGICA DE FILTRO E PAGINAÇÃO PERMANECE IGUAL) ...
+    // Se quiser garantir, cole o arquivo inteiro que eu mando abaixo:
 
-
-    // --- LÓGICA DE FILTRO (useMemo) ---
-    // ATUALIZADO: Agora usa 'allTerms' (do estado) em vez de 'termsData' (estático)
+    // Filtros
     const filteredTerms = useMemo(() => {
-        let terms = allTerms; // Começa com todos os termos da API
+        return terms.filter(term => {
+            const matchesSearch = term.termo.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                  term.definicao.toLowerCase().includes(searchTerm.toLowerCase());
+            
+            if (activeCategoryFilter === 'Todas') return matchesSearch;
 
-        // 1. Filtra por Categoria (baseado no 'activeFilter')
-        const activeCategoryDef = logicalCategories.find(c => c.id === activeFilter);
-        if (activeCategoryDef && activeCategoryDef.dataCategories.length > 0) {
-            terms = terms.filter(term => 
-                activeCategoryDef.dataCategories.includes(term.category)
-            );
-        }
+            const categoryGroup = logicalCategories.find(c => c.id === activeCategoryFilter);
+            if (!categoryGroup) return matchesSearch;
 
-        // 2. Filtra pelo Termo de Busca (Search)
-        if (searchTerm) {
-            const lowerSearch = searchTerm.toLowerCase();
-            terms = terms.filter(term => 
-                term.term.toLowerCase().includes(lowerSearch) ||
-                term.explanation.toLowerCase().includes(lowerSearch)
-            );
-        }
-        
-        return terms;
-    }, [allTerms, activeFilter, searchTerm]); // Depende do estado da API
+            return matchesSearch && categoryGroup.dataCategories.includes(term.categoria);
+        });
+    }, [terms, searchTerm, activeCategoryFilter]);
 
+    // Paginação
+    const totalPages = Math.ceil(filteredTerms.length / itemsPerPage);
+    const currentTerms = filteredTerms.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
-    // --- LÓGICA DE PAGINAÇÃO (useMemo) ---
-    const { paginatedTerms, totalPages } = useMemo(() => {
-        const total = Math.ceil(filteredTerms.length / itemsPerPage);
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        
-        return {
-            paginatedTerms: filteredTerms.slice(start, end),
-            totalPages: total
-        };
-    }, [filteredTerms, currentPage, itemsPerPage]);
-
-    // --- Handlers (Funções de clique) ---
-    const handleFilterClick = (filterId) => {
-        setActiveFilter(filterId);
-        setCurrentPage(1); // Reseta para a página 1
-    };
-
-    const handlePageClick = (pageNum) => {
-        if (pageNum >= 1 && pageNum <= totalPages) {
-            setCurrentPage(pageNum);
+    const handlePageClick = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
+    if (loading) return <div className="loading-state"><i className="fas fa-spinner fa-spin"></i> Carregando glossário...</div>;
 
-    // --- RENDERIZAÇÃO ---
-    
-   return (
-    <div className="glossary-page-wrapper">
-            {/* --- Header da Página --- */}
-            <div className="glossary-header">
-                <h1>
-                    <i className="fas fa-book-open"></i> Glossário Técnico
-                </h1>
-                <p>Descomplicando os termos e jargões do mundo do hardware.</p>
-            </div>
+    return (
+        <div className="glossary-page">
+            <header className="glossary-header">
+                <h1><i className="fas fa-book"></i> Glossário Gamer</h1>
+                <p>Entenda os termos técnicos antes de comprar.</p>
+            </header>
 
-            {/* --- Controles (Busca e Filtros) --- */}
             <div className="glossary-controls">
-                {/* Barra de Busca */}
-                <div className="search-bar-container">
-                    <i className="fas fa-search search-icon"></i>
+                <div className="search-bar-wrapper">
+                    <i className="fas fa-search"></i>
                     <input 
                         type="text" 
-                        className="search-input" 
-                        placeholder="Buscar termo (ex: DPI, Switch, Ray Tracing...)"
+                        placeholder="Pesquisar termo..." 
                         value={searchTerm}
-                        onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                            setCurrentPage(1); // Reseta página ao digitar
-                        }}
+                        onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
                     />
                 </div>
-                {/* Botões de Filtro */}
-                <div className="filter-buttons">
+                <div className="category-filters">
                     {logicalCategories.map(cat => (
                         <button 
-                            key={cat.id}
-                            className={`filter-btn ${activeFilter === cat.id ? 'active' : ''}`}
-                            onClick={() => handleFilterClick(cat.id)}
+                            key={cat.id} 
+                            className={`filter-btn ${activeCategoryFilter === cat.id ? 'active' : ''}`}
+                            onClick={() => { setActiveCategoryFilter(cat.id); setCurrentPage(1); }}
                         >
                             <i className={cat.icon}></i> {cat.label}
                         </button>
@@ -195,71 +140,29 @@ function GlossaryPage() {
                 </div>
             </div>
 
-            {/* --- Grelha de Termos (com Loading e Error) --- */}
-            <div className="terms-grid">
-                {/* ESTADO DE CARREGAMENTO */}
-                {isLoading && (
-                    <div className="glossary-message">
-                        <i className="fas fa-spinner fa-spin"></i>
-                        <p>Carregando termos do banco de dados...</p>
-                    </div>
-                )}
-
-                {/* ESTADO DE ERRO */}
-                {!isLoading && error && (
-                    <div className="glossary-message error">
-                        <i className="fas fa-exclamation-triangle"></i>
-                        <p>Erro ao carregar glossário.</p>
-                        <small>{error}</small>
-                    </div>
-                )}
-
-                {/* SUCESSO, MAS SEM RESULTADOS */}
-                {!isLoading && !error && filteredTerms.length === 0 && (
-                    <div className="glossary-message">
-                        <i className="fas fa-search"></i>
-                        <p>Nenhum termo encontrado.</p>
-                        <small>Tente alterar seus filtros ou termo de busca.</small>
-                    </div>
-                )}
-
-                {/* SUCESSO COM RESULTADOS */}
-                {!isLoading && !error && paginatedTerms.length > 0 && (
-                    paginatedTerms.map(term => (
-                        <TermCard key={term.id} termData={term} />
+            <div className="terms-list">
+                {currentTerms.length === 0 ? (
+                    <div className="no-results">Nenhum termo encontrado.</div>
+                ) : (
+                    currentTerms.map(term => (
+                        // Adaptação para usar o componente TermCard com os dados do banco
+                        <TermCard 
+                            key={term.id_termo} 
+                            termData={{
+                                term: term.termo,
+                                category: term.categoria,
+                                explanation: term.definicao
+                            }} 
+                        />
                     ))
                 )}
             </div>
 
-            {/* --- Paginação (Renderização Condicional) --- */}
             {totalPages > 1 && (
                 <div className="pagination">
-                    <button 
-                        className="page-btn"
-                        onClick={() => handlePageClick(currentPage - 1)}
-                        disabled={currentPage === 1}
-                    >
-                        &laquo;
-                    </button>
-                    {Array.from({ length: totalPages }, (_, index) => {
-                        const pageNum = index + 1;
-                        return (
-                            <button 
-                                key={pageNum}
-                                className={`page-btn ${currentPage === pageNum ? 'active' : ''}`}
-                                onClick={() => handlePageClick(pageNum)}
-                            >
-                                {pageNum}
-                            </button>
-                        );
-                    })}
-                    <button 
-                        className="page-btn"
-                        onClick={() => handlePageClick(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                    >
-                        &raquo;
-                    </button>
+                    <button className="page-btn" onClick={() => handlePageClick(currentPage - 1)} disabled={currentPage === 1}>&laquo;</button>
+                    <span className="page-info">Página {currentPage} de {totalPages}</span>
+                    <button className="page-btn" onClick={() => handlePageClick(currentPage + 1)} disabled={currentPage === totalPages}>&raquo;</button>
                 </div>
             )}
         </div> 

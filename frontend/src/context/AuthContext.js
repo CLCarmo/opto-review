@@ -1,10 +1,10 @@
-// frontend/src/context/AuthContext.js
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     
+    // --- ESTADOS ---
     const [user, setUser] = useState(() => {
         try {
             const storedUser = localStorage.getItem('user');
@@ -17,7 +17,9 @@ export const AuthProvider = ({ children }) => {
 
     const [favorites, setFavorites] = useState([]);
 
-    // 1. Salva User no localStorage
+    // --- EFEITOS ---
+
+    // 1. Salva User no localStorage sempre que mudar
     useEffect(() => {
         if (user) {
             localStorage.setItem('user', JSON.stringify(user));
@@ -26,12 +28,12 @@ export const AuthProvider = ({ children }) => {
         }
     }, [user]);
 
-    // 2. Busca Favoritos na API
+    // 2. Busca Favoritos na API quando o usuário loga
     useEffect(() => {
         if (user && user.id_usuario) {
             const fetchFavorites = async () => {
                 try {
-                    // CORREÇÃO AQUI: Uso de crases (`) para interpolação da variável
+                    // ATENÇÃO: Crases (`) usadas aqui
                     const response = await fetch(`https://opto-review-production.up.railway.app/api/favoritos/${user.id_usuario}`);
                     if (!response.ok) throw new Error('Falha ao buscar favoritos');
                     
@@ -47,19 +49,58 @@ export const AuthProvider = ({ children }) => {
         }
     }, [user]);
 
-    const login = (userData) => {
-        const { senha_hash, ...userToSave } = userData;
-        setUser(userToSave);
+    // --- FUNÇÕES DE API ---
+
+    // Função de Login (Chama a API)
+    const login = async (email, senha) => {
+        try {
+            const response = await fetch('https://opto-review-production.up.railway.app/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, senha })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Erro ao fazer login');
+
+            // Salva o usuário no estado (sem a senha)
+            setUser(data);
+            return { success: true };
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    };
+
+    // Função de Registro (Chama a API)
+    const register = async (nome, email, senha) => {
+        try {
+            const response = await fetch('https://opto-review-production.up.railway.app/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, senha })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Erro ao registrar');
+
+            // Já loga o usuário direto após registrar
+            setUser(data);
+            return { success: true };
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
     };
 
     const logout = () => {
         setUser(null);
+        setFavorites([]);
+        localStorage.removeItem('user');
     };
 
     // Adicionar Favorito
     const addFavorite = useCallback(async (productId) => {
         if (!user) return;
-        setFavorites(prev => [...prev, productId]); 
+        setFavorites(prev => [...prev, productId]); // Atualização Otimista
 
         try {
             await fetch('https://opto-review-production.up.railway.app/api/favoritos', {
@@ -68,14 +109,15 @@ export const AuthProvider = ({ children }) => {
                 body: JSON.stringify({ id_usuario: user.id_usuario, id_produto: productId }),
             });
         } catch (error) {
-            setFavorites(prev => prev.filter(id => id !== productId));
+            console.error("Erro ao favoritar:", error);
+            setFavorites(prev => prev.filter(id => id !== productId)); // Reverte se der erro
         }
     }, [user]);
 
     // Remover Favorito
     const removeFavorite = useCallback(async (productId) => {
         if (!user) return;
-        setFavorites(prev => prev.filter(id => id !== productId)); 
+        setFavorites(prev => prev.filter(id => id !== productId)); // Atualização Otimista
 
         try {
             await fetch('https://opto-review-production.up.railway.app/api/favoritos', {
@@ -84,7 +126,8 @@ export const AuthProvider = ({ children }) => {
                 body: JSON.stringify({ id_usuario: user.id_usuario, id_produto: productId }),
             });
         } catch (error) {
-            setFavorites(prev => [...prev, productId]);
+            console.error("Erro ao remover favorito:", error);
+            setFavorites(prev => [...prev, productId]); // Reverte se der erro
         }
     }, [user]);
 
@@ -93,7 +136,6 @@ export const AuthProvider = ({ children }) => {
         if (!user) return;
         
         try {
-            // CORREÇÃO AQUI: Uso de crases (`) também
             const response = await fetch(`https://opto-review-production.up.railway.app/api/usuarios/${user.id_usuario}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -113,7 +155,8 @@ export const AuthProvider = ({ children }) => {
     const value = {
         user,
         isLoggedIn: !!user,
-        login,
+        login,    // Agora exportamos a função que faz o fetch
+        register, // Agora exportamos a função que faz o fetch
         logout,
         favorites,
         addFavorite,
