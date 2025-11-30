@@ -1,160 +1,101 @@
 /* frontend/src/components/GlossaryPage.css */
-/* VERSÃO COM ESCOPO CORRIGIDO */
-
-/* --- HEADER --- */
-.glossary-page-wrapper .glossary-header { 
-    text-align: center; 
-    margin-bottom: 3rem; 
-}
-.glossary-page-wrapper .glossary-header h1 { 
-    font-size: 3rem; 
-    font-weight: 700; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 1rem; 
-}
-.glossary-page-wrapper .glossary-header p { 
-    font-size: 1.2rem; 
-    color: var(--text-muted); 
-    max-width: 600px; 
-    margin: 0.5rem auto 0; 
-}
-.glossary-page-wrapper .glossary-controls { 
-    max-width: 1200px; 
-    margin: 0 auto 3rem auto; 
-}
-
-/* --- BARRA DE BUSCA --- */
-.glossary-page-wrapper .search-bar-container {
-    max-width: 600px;
-    margin: 1rem auto 2rem auto;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-.glossary-page-wrapper .search-bar-container .search-input {
-    width: 100%;
-    padding: 1rem 3rem 1rem 3rem;
-    border-radius: 50px;
-    border: 1px solid var(--border-color);
-    font-size: 1.1rem;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.2s ease;
-}
-.glossary-page-wrapper .search-bar-container .search-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-}
-.glossary-page-wrapper .search-bar-container .search-icon {
-    position: absolute;
-    left: 1.2rem;
-    color: var(--text-muted);
-}
-
-/* --- BOTÕES DE FILTRO --- */
-.glossary-page-wrapper .filter-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-.glossary-page-wrapper .filter-btn {
-    background: #fff;
-    border: 1px solid var(--border-color);
-    padding: 0.7rem 1.2rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
-}
-.glossary-page-wrapper .filter-btn:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-    transform: translateY(-2px);
-}
-.glossary-page-wrapper .filter-btn.active {
-    background-color: var(--primary-color);
-    color: #fff;
-    border-color: var(--primary-color);
-}
-.glossary-page-wrapper .filter-btn i {
-    font-size: 0.8rem;
-}
-
-/* --- GRELHA DE TERMOS (CARDS) --- */
-.glossary-page-wrapper .terms-grid {
+.glossary-page {
+    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    min-height: 60vh;
 }
 
-/* --- MENSAGENS DE LOADING / ERRO / VAZIO --- */
-.glossary-page-wrapper .glossary-message {
+.glossary-header {
     text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-muted);
-    background-color: #fff;
-    border: 1px dashed var(--border-color);
+    margin-bottom: 3rem;
+    background: #2d3748;
+    color: white;
+    padding: 3rem 1rem;
     border-radius: 12px;
 }
-.glossary-page-wrapper .glossary-message i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    display: block;
-    color: var(--primary-color);
+
+.glossary-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
-.glossary-page-wrapper .glossary-message.error i {
-    color: #e53e3e;
+
+.search-bar-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
 }
-.glossary-page-wrapper .glossary-message p {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--text-dark);
-}
-.glossary-page-wrapper .glossary-message small {
+
+.search-bar-wrapper input {
+    width: 100%;
+    padding: 12px 40px;
+    border-radius: 30px;
+    border: 2px solid #e2e8f0;
     font-size: 1rem;
 }
 
+.search-bar-wrapper .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0;
+}
 
-/* --- PAGINAÇÃO (A REGRA QUE PROVAVELMENTE COLIDIU) --- */
-.glossary-page-wrapper .pagination { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    gap: 0.5rem; 
-    margin: 3rem 0 1rem; 
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
-.glossary-page-wrapper .page-btn { 
-    background: #fff; 
-    border: 1px solid var(--border-color); 
-    color: var(--text-muted); 
-    font-weight: 600; 
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem; 
-    min-width: 40px; 
-    height: 40px; 
-    padding: 0.5rem; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    transition: all 0.2s ease; 
+
+.filter-btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid #cbd5e0;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
-.glossary-page-wrapper .page-btn:hover { 
-    background-color: #f8f9fa; 
-    color: var(--primary-color); 
+
+.filter-btn:hover { background: #f7fafc; }
+
+.filter-btn.active {
+    background: #3182ce;
+    color: white;
+    border-color: #3182ce;
+    box-shadow: 0 4px 6px rgba(49, 130, 206, 0.3);
 }
-.glossary-page-wrapper .page-btn.active { 
-    background-color: var(--primary-color); 
-    border-color: var(--primary-color); 
-    color: #fff; 
-    cursor: default; 
+
+.terms-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
-.glossary-page-wrapper .page-btn:disabled { 
-    opacity: 0.5; 
-    cursor: not-allowed; 
+
+.pagination {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.page-btn {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.page-btn.active {
+    background: #2d3748;
+    color: white;
 }
