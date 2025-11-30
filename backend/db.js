@@ -1,22 +1,17 @@
 // backend/db.js
 const { Pool } = require('pg');
 
-// DIAGNÓSTICO: Vamos ver no log do Railway o que está acontecendo
-console.log("🔄 Tentando conectar ao Banco de Dados...");
-console.log("📍 URL da Variável:", process.env.DATABASE_URL ? "Encontrada" : "NÃO ENCONTRADA (Usando fallback?)");
+// DEBUG: Vamos ver o que está chegando aqui
+console.log("--- DEBUG CONEXÃO ---");
+console.log("DATABASE_URL existe?", !!process.env.DATABASE_URL); // Retorna true ou false
+console.log("Valor (início):", process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 15) + "..." : "INDEFINIDO");
+console.log("---------------------");
 
-// Configuração que aceita TANTO a String  QUANTO as variáveis soltas (PGHOST, PGUSER, etc.)
-// O Railway fornece as variáveis PG* automaticamente, então isso é o mais seguro.
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, 
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
-});
-
-// Tratamento de erro de conexão
-pool.on('error', (err, client) => {
-  console.error('❌ Erro CRÍTICO no Pool do PostgreSQL:', err);
 });
 
 module.exports = {
