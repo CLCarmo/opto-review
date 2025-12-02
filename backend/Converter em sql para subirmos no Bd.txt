@@ -1,0 +1,814 @@
+{
+  "Mouse": [
+    {
+      "nome": "Mouse Dr. Office Sem Fio, Rainbow, 1600 DPI, 4 Botões, Black, MDR-0102-B",
+      "preco": "R$ 19,90",
+      "link": "https://www.terabyteshop.com.br/produto/23712/mouse-dr-office-1600-dpi-4-botoes-sem-fio-black-mdr-0102-b",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/mouse-dr-office-1600-dpi-4-botoes-sem-fio-black-mdr-0102-b_161653.png",
+      "especificacoes": []
+    },
+    {
+      "nome": "Mouse Gamer SuperFrame Flick Pro, Wireless/Bluetooth, Sensor Pixart 3395, 26.000 DPI, 5 Botões, Black",
+      "preco": "R$ 159,99",
+      "link": "https://www.terabyteshop.com.br/produto/26800/mouse-gamer-superframe-flick-pro-wireless-sensor-pixart-3395-26000-dpi-5-botoes-black",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/mouse-gamer-superframe-flick-pro-wireless-sensor-pixart-3395-26000-dpi-5-botoes-black_204218.jpg",
+      "especificacoes": [
+        "Marca: SuperFrame",
+        "Modelo: Flick Pro Black",
+        "Cor: Preto",
+        "Número de botões: 6",
+        "Sensor: Pixart 3395",
+        "DPI: Até 26.000",
+        "Polling rate: 125-250-500-1000hz,(defaut 1000hz )",
+        "Interface: Wireless 2.4G / Bluetooth / USB",
+        "Bateria de lítio: 300mAh",
+        "Cabo: Paracord de 1,5 metros",
+        "Dimensões: 120x65x36mm",
+        "Suporte: Win 7 /Win8/Win10/Windows VISTA/Windows XP"
+      ]
+    },
+    {
+      "nome": "Mouse Gamer Redragon Storm Pro, 16000 DPI, Wireless, 8 Botões Programáveis, RGB, Black, M808-KS",
+      "preco": "R$ 179,99",
+      "link": "https://www.terabyteshop.com.br/produto/24076/mouse-gamer-redragon-storm-pro-16000-dpi-wireless-8-botoes-programaveis-rgb-black-m808-ks",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/mouse-gamer-redragon-storm-pro-16000-dpi-wireless-8-botoes-programaveis-rgb-black-m808-ks_163897.jpg",
+      "especificacoes": [
+        "Marca: Redragon",
+        "Modelo: M808-KS",
+        "Cor: Preto",
+        "Sensor: Pixart PAW 3335",
+        "DPI: Até 16000 DPI",
+        "Botões Programáveis: 8",
+        "Shape: Ergonômico",
+        "Design: Tradicional",
+        "Bateria: 1000mAh",
+        "Switches principais: Huano",
+        "Iluminação: RGB Redragon Chroma Mk.II",
+        "Materiais: Plástico ABS",
+        "Conectividade: Wireless USB 2.4GHz e USB C",
+        "Voltagem: 4.2V",
+        "Corrente: 45mA",
+        "Tipo de cabo: USB C revestido em nylon",
+        "Comprimento do cabo: 180 cm",
+        "Software: Sim"
+      ]
+    },
+    {
+      "nome": "Mouse Fortrek OM103BK, USB, 2400DPI, 4 Botões, Preto",
+      "preco": "R$ 24,90",
+      "link": "https://www.terabyteshop.com.br/produto/31583/mouse-fortrek-om103bk-usb-2400dpi-4-botoes-preto",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/mouse-fortrek-om103bk-usb-2400dpi-4-botoes-preto_211681.jpg",
+      "especificacoes": [
+        "Marca: Fortrek",
+        "Cor: Preto",
+        "Resolução máxima: 2400 DPI (800 - 1200 - 1600 - 2400)",
+        "Sensor: Sensor Óptico",
+        "Frequência de atualização: 125Hz",
+        "Comprimento: 1,5m",
+        "Conector: USB 2.0"
+      ]
+    },
+    {
+      "nome": "Mouse Gamer Redragon Neva 8K M815, USB, 26000 DPI, Sensor PAW 3395, 6 Botões, Preto",
+      "preco": "R$ 208,99",
+      "link": "https://www.terabyteshop.com.br/produto/37314/mouse-gamer-redragon-neva-8k-m815-usb-26000-dpi-sensor-paw-3395-6-botoes-preto",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/mouse-gamer-redragon-neva-8k-m815-usb-26000-dpi-sensor-paw-3395-6-botoes-preto_244325.jpg",
+      "especificacoes": [
+        "Marca: Redragon",
+        "Modelo: M815"
+      ]
+    }
+  ],
+  "Teclado": [
+    {
+      "nome": "Teclado Mecânico Gamer Ninja Leap, Switch Blue, Rainbow, ABNT2, Black",
+      "preco": "R$ 79,99",
+      "link": "https://www.terabyteshop.com.br/produto/23655/teclado-mecanico-gamer-ninja-leap-switch-blue-rainbow-abnt2-black",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/teclado-mecanico-gamer-ninja-leap-switch-blue-rainbow-abnt2-black_161087.png",
+      "especificacoes": [
+        "Marca: Gamer Ninja",
+        "Modelo: Gamer Ninja Leap Black",
+        "Switch: Blue não removível",
+        "Teclas anti-ghosting: 25",
+        "Modos diferentes de iluminação: 12",
+        "Nomeros de teclas: 102 ABNT2",
+        "Cabo: 1.5M em PVC",
+        "Tamanho do teclado: 435*130*34mm",
+        "Voltagem: 5V",
+        "Tensão: <250mA",
+        "Vida útil: ≥50 milhões de click",
+        "Temperatura de operação: 0℃~45℃"
+      ]
+    },
+    {
+      "nome": "Teclado Mecânico Gamer Ninja Leap Pudim, Switch Blue, Rainbow, ABNT2, White",
+      "preco": "R$ 79,99",
+      "link": "https://www.terabyteshop.com.br/produto/23652/teclado-mecanico-gamer-ninja-leap-pudim-switch-blue-rgb-rainbow-abnt2-white",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/teclado-mecanico-gamer-ninja-leap-pudim-switch-blue-rgb-rainbow-abnt2-white_161062.png",
+      "especificacoes": [
+        "Marca: Gamer Ninja",
+        "Modelo: Gamer Ninja Leap Pudim",
+        "Teclas: Pudim",
+        "Switch: Blue não removível",
+        "Teclas anti-ghosting: 25",
+        "Modos diferentes de iluminação: 12",
+        "Nomeros de teclas: 87 ABNT2",
+        "Cabo: 1.5M em PVC",
+        "Tamanho do teclado: 353*130*34mm",
+        "Voltagem: 5V",
+        "Tensão: <250mA",
+        "Vida útil: ≥50 milhões de click",
+        "Temperatura de operação: 0℃~45℃"
+      ]
+    },
+    {
+      "nome": "Teclado Gamer SuperFrame Ribbon, RGB, Switch Red, 75%, ANSI, Hot Swap, Com Fio, Black/Grey",
+      "preco": "R$ 189,99",
+      "link": "https://www.terabyteshop.com.br/produto/25525/teclado-gamer-superframe-ribbon-rgb-switch-red-75-abnt2-hot-swap-com-fio-blackgrey",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/teclado-gamer-superframe-ribbon-rgb-switch-red-75-abnt2-hot-swap-com-fio-blackgrey_254049.jpg",
+      "especificacoes": [
+        "Marca: SuperFrame",
+        "Modelo: SuperFrame Ribbon - Black/Grey",
+        "Cor: Preto e Cinza",
+        "Acionamento: Mecânico",
+        "Switch: Lubrificado, RED",
+        "Iluminação: RGB",
+        "Hotswap: Sim",
+        "Formato: 75%",
+        "Anti-ghosting: Sim",
+        "Layout: ANSI",
+        "Conector: USB-C para USB",
+        "Comprimento do cabo: 1,5m",
+        "Plug e Play: Sim"
+      ]
+    },
+    {
+      "nome": "Teclado Mecânico Gamer SuperFrame Player, RGB, 60%, Switch Red, USB, ABNT2, Preto, SF-KB-PLRD60BRUAB",
+      "preco": "R$ 109,99",
+      "link": "https://www.terabyteshop.com.br/produto/32415/teclado-mecanico-gamer-superframe-player-rgb-60-switch-red-usb-abnt2-preto-sf-kb-plrd60bruab",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/teclado-mecanico-gamer-superframe-player-rgb-60-switch-red-usb-abnt2-preto-sf-kb-plrd60bruab_216378.jpg",
+      "especificacoes": [
+        "Switch: Red",
+        "Iluminação: RGB",
+        "Keycaps: ABS",
+        "Padrão: ABNT 2",
+        "Cabo: Destacável de 1.6m",
+        "Peso: 550g",
+        "Suporte: WinXP, Win7, Win8, Win10, OS X, Linux, etc"
+      ]
+    },
+    {
+      "nome": "Teclado Mecânico Gamer Ninja Leap Pudim, Switch Blue, Rainbow, ABNT2, Full Size, White, GN-KB-LPFSWPRUAB",
+      "preco": "R$ 79,99",
+      "link": "https://www.terabyteshop.com.br/produto/34406/teclado-mecanico-gamer-ninja-leap-pudim-switch-blue-rainbow-abnt2-full-size-white-gn-kb-lpfswpruab",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/teclado-mecanico-gamer-ninja-leap-pudim-switch-blue-rainbow-abnt2-full-size-white-gn-kb-lpfswpruab_228664.jpg",
+      "especificacoes": [
+        "Marca: Gamer Ninja",
+        "Modelo: Gamer Ninja Leap White Pudim / GN-KB-LPFSWPRUAB",
+        "Switch: Blue não removível",
+        "Teclas anti-ghosting: 25",
+        "Modos diferentes de iluminação: 12",
+        "Nomeros de teclas: 102 ABNT2",
+        "Cabo: 1.5M em PVC",
+        "Tamanho do teclado: 435*130*34mm",
+        "Voltagem: 5V",
+        "Tensão: <250mA",
+        "Vida útil: ≥50 milhões de click",
+        "Temperatura de operação: 0℃~45℃"
+      ]
+    }
+  ],
+  "Monitor": [
+    {
+      "nome": "Suporte de Mesa North Bayou F80, Articulado, Com Pistão, Para Monitores 17 Até 30 Pol, Preto/Cinza",
+      "preco": "R$ 129,99",
+      "link": "https://www.terabyteshop.com.br/produto/39460/suporte-de-mesa-north-bayou-f80-articulado-com-pistao-para-monitores-17-ate-30-pol-pretocinza",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/suporte-de-mesa-north-bayou-f80-articulado-com-pistao-para-monitores-17-ate-30-pol-pretocinza_255864.jpg",
+      "especificacoes": [
+        "Marcas: North Bayou",
+        "Modelo: F80",
+        "Características: VESA: 75x75 - 100x100 mm Rotação: 360° Inclinação: +85°/-30° Capacidade de carga: 9Kg Monitores de até 30 polegadas"
+      ]
+    },
+    {
+      "nome": "Monitor Gamer SuperFrame View, 23.8 Pol, Full HD, Fast IPS, 1ms, 180Hz, 99% sRGB, FreeSync, HDMI/DP, SFVF",
+      "preco": "R$ 589,99",
+      "link": "https://www.terabyteshop.com.br/produto/36653/monitor-gamer-superframe-view-238-pol-full-hd-fast-ips-1ms-180hz-99-srgb-freesync-hdmidp-sfvfb-24180-fhd-pro",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/monitor-gamer-superframe-view-238-pol-full-hd-fast-ips-1ms-180hz-99-srgb-freesync-hdmidp-sfvfb-24180-fhd-pro_240837.jpg",
+      "especificacoes": [
+        "Marca: SuperFrame",
+        "Modelo: SFVFB-24180-FHD-PRO",
+        "Tamanho da tela: 23.8\"",
+        "Tipo de Painel: FAST IPS",
+        "Plano/Curvado: Plano",
+        "Proporção da Tela: 16:9",
+        "Área da Tela (H*V): 527,04 (H) × 296,46 (V)",
+        "Resolução do Painel: 1920*1080",
+        "Taxa de Atualização: 180HZ",
+        "Tipo de Retroiluminação: ELED",
+        "Brilho: Padrão (TYP): 250 (±20) Máximo (TYP): 280 (±20)",
+        "Temperatura de Cor Padrão: 7500K",
+        "Relação de Contraste: Estado Estático: 1000:1 (TYP) Estado Dinâmico: Milhões",
+        "Pixels: 16,7M",
+        "Gama de Cores (Cobertura): sRGB 99%",
+        "NTSC: 72%",
+        "HDR: HDR 400",
+        "Ângulo de Visão (H/V): 178°/178°",
+        "Tempo de Resposta OC (GtG): 5,0MS",
+        "Aceleração de Resposta OD: 1MS / MPRT0.5ms",
+        "Chipset: 9701",
+        "Portas I/O (Padrão): 1 HDMI + 1 DP + Saída de Áudio Porta 1: HDMI2.1 / 180Hz Porta 2: DP1.4 / 180Hz Porta 3: Saída de Áudio Porta 4: DC 12V 3A",
+        "MPRT: Sim",
+        "Alto-falante: N/A",
+        "Entrada de Energia: DC 12V 3A",
+        "Fonte de Alimentação: Adaptador de energia externo",
+        "Consumo de Energia: Potência de Entrada: DC 12V 3A Consumo de Energia em Stand-by (Máx): ≤0,5W",
+        "Modo de Luz Indicadora: Ligado: Azul (LED)",
+        "Tamanho VESA (WxH): Dimensão VESA: 100*100 mm Método de Montagem VESA: Parafuso",
+        "Funções do Suporte: Ângulo (Inclinação para frente/para trás): Inclinação para frente: 5° / Inclinação para trás: 15° Subida e Descida (Vertical): N/A Giro (L/D): N/A Pivô: N/A",
+        "Software: Modo de Controle da OSD: 5 Teclas Estilo do Menu OSD: OSD Preto e Azul Menu de Idiomas: Múltiplos Idiomas (Padrão: Inglês)",
+        "Funções: Color Temperature（Cold、Warm、User） Low Blue Light Control 6 Contextual Models DCR Multiple-Language Menu FPS/RTS Game Mode with 1 key-switch GAME PLUS FreeSync / Adaptive-Sync Over Drive HDR MPRT",
+        "Suporte para console: Xbox Series X|S PS5 Switch",
+        "Acessórios: Manual Cabo de energia Parafusos de suporte Cabo HDMI"
+      ]
+    },
+    {
+      "nome": "Monitor Gamer LG UltraGear, 27 Pol, IPS, Full HD, 240Hz, 1ms, Preto, 27GN750-B.AWZM",
+      "preco": "R$ 2.109,99",
+      "link": "https://www.terabyteshop.com.br/produto/26785/monitor-gamer-lg-ultragear-27-pol-ips-full-hd-240hz-1ms-preto-27gn750-bawzm",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/monitor-gamer-lg-ultragear-27-pol-ips-full-hd-240hz-1ms-preto-27gn750-bawzm_182970.png",
+      "especificacoes": [
+        "Marca: LG",
+        "Modelo: 27GN750-B.AWZM",
+        "Resolução: Full HD (1920 x 1080)",
+        "Tamanho de Tela: 27\"",
+        "Tipo de Tela: IPS",
+        "Ângulo de Visão: 178º / 178º",
+        "Resolução Máxima: Full HD (1920 x 1080)",
+        "Brilho: 400 cd/m²",
+        "Contraste: 1000:1 (típ.)",
+        "Tempo de Resposta: 1ms (GtG)",
+        "Taxa de Atualização: 240Hz",
+        "Gama de Cores (típ.): sRGB 99%",
+        "Profundidade de Cores (nº de cores): 16,7 milhões",
+        "Distância entre Pixels: 0,3108 x 0,3108 mm",
+        "Tratamento de Tela: Antirreflexo",
+        "HDMI: 2x",
+        "DisplayPort: 1x",
+        "USB: (x3 USB 3.0 - 1up / 2 down)",
+        "Saída de Fone de Ouvido: Sim",
+        "HDR: HDR 10",
+        "Flicker Safe: Sim",
+        "AMD FreeSync: Sim",
+        "NVIDIA G-Sync: Sim (Compatível)",
+        "Crosshair: Sim",
+        "Dynamic Action Sync: Sim",
+        "Black Stabilizer: Sim",
+        "Dimensões sem Embalagem (sem base): LxAxP 614,7 x 56,3 x 364,8 mm",
+        "Dimensões sem Embalagem (com base): LxAxP 614,7 x 274,4 x 464,8 mm",
+        "Fonte de alimentação: Sim",
+        "Organizador de Cabos: Sim",
+        "Consumo de Energia: 45W (típ.)",
+        "Tamanho Furação VESA: Sim (100 x 100 mm)"
+      ]
+    },
+    {
+      "nome": "Suporte de Mesa Bluecase, Pedestal Ajustável, Com Suporte Para Mini PC, Compatível com Monitores de 17&qu",
+      "preco": "R$ 159,99",
+      "link": "https://www.terabyteshop.com.br/produto/39475/suporte-de-mesa-bluecase-pedestal-ajustavel-com-suporte-para-mini-pc-compativel-com-monitores-de-17-a-27-bsfs01-1bbx",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/suporte-de-mesa-bluecase-pedestal-ajustavel-com-suporte-para-mini-pc-compativel-com-monitores-de-17-a-27-bsfs01-1bbx_255963.jpg",
+      "especificacoes": [
+        "Marca: Bluecase",
+        "Modelo: BSFS01-1BBX",
+        "Local da instalação: Livre",
+        "Compatibilidade tamanho TV/Monitor: 17~27\"",
+        "Peso suportado: 6KG para Monitores e 2KG para Mini PC",
+        "VESA disponíveis: 75x75mm, 100x100mm",
+        "Produto pré-montado: Não",
+        "Acabamento da pintura: Pintura Eletroestática",
+        "Distância mínima da parede: 10cm",
+        "Distância máxima da parede: 55cm",
+        "Altura mínima do suporte: 16cm",
+        "Altura máxima do suporte: 41cm",
+        "Nivelador incluso: Não",
+        "Organizador de cabos: Sim",
+        "Tipo de pistão pneumático: Não",
+        "Inclinação vertical (Tilt): + 60° ~ - 20°",
+        "Giro do suporte (Pivot): ± 180°"
+      ]
+    },
+    {
+      "nome": "Monitor Dr. Office, 21.5 Pol, Full HD, 75Hz, HDMI/VGA, MDR-0505-21",
+      "preco": "R$ 279,90",
+      "link": "https://www.terabyteshop.com.br/produto/24463/monitor-dr-office-215-pol-full-hd-75hz-hdmivga-mdr-0505-21",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/monitor-dr-office-215-pol-full-hd-75hz-hdmivga-mdr-0505-21_180903.png",
+      "especificacoes": [
+        "Marca: Dr.Office",
+        "Modelo: MDR-0505-21",
+        "Cor: Preto",
+        "Tamanho da tela: 21 Polegadas",
+        "Resolução: 1920x1080 pixels 75@Hz",
+        "Pixel pitch: 0.0831x0.241",
+        "Frequência: 30-81Khz",
+        "Cores de exibição: 16,7 milhões de cores (típicas)",
+        "Brilho: 250 cd/m² (Típico)",
+        "Taxa de contraste: 3000:1 (Típico)",
+        "Interface: VGA+HDMI",
+        "VESA: 75x75mm",
+        "Conteúdo da embalagem: 1x Monitor Dr. Office 1x Cabo de força 1x HDMI"
+      ]
+    }
+  ],
+  "Headset": [
+    {
+      "nome": "Headset Gamer Fifine H6, 7.1 Surround, Drivers de 50mm, RGB, USB, Black",
+      "preco": "R$ 179,99",
+      "link": "https://www.terabyteshop.com.br/produto/22478/headset-gamer-fifine-h6-71-surround-drivers-de-50mm-rgb-usb-black",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/headset-gamer-fifine-h6-71-surround-drivers-de-50mm-rgb-usb-black_151053.jpg",
+      "especificacoes": [
+        "Marca: Fifine",
+        "Modelo: H6",
+        "Cor: Preto",
+        "Iluminação: RGB",
+        "Microfone: Omnidirecional",
+        "Drivers: 50mm",
+        "7.1 Virtual Surround: Sim",
+        "Plug & Play: Sim",
+        "Compatibilidade: Windows, PS4 / PS5, MAC OS"
+      ]
+    },
+    {
+      "nome": "Headset Gamer Redragon Zeus Lite, P3, Drivers de 53mm, Microfone Destacável, Black, H510-LT",
+      "preco": "R$ 169,99",
+      "link": "https://www.terabyteshop.com.br/produto/36844/headset-gamer-redragon-zeus-lite-p3-drivers-de-53mm-microfone-destacavel-black-h510-lt",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/headset-gamer-redragon-zeus-lite-p3-drivers-de-53mm-microfone-destacavel-black-h510-lt_241840.jpg",
+      "especificacoes": [
+        "Marca: Redragon",
+        "Modelo: H510-LT"
+      ]
+    },
+    {
+      "nome": "Headset Gamer SuperFrame Sound Pro, Surround 7.1, Wireless, Bluetooth, Drivers de 50mm, RGB, White, SF-HS",
+      "preco": "R$ 149,99",
+      "link": "https://www.terabyteshop.com.br/produto/32398/headset-gamer-superframe-sound-pro-surround-71-wireless-bluetooth-drivers-de-50mm-rgb-white-sf-hs-ps7wruw",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/headset-gamer-superframe-sound-pro-surround-71-wireless-bluetooth-drivers-de-50mm-rgb-white-sf-hs-ps7wruw_216267.jpg",
+      "especificacoes": [
+        "Marca: SuperFrame",
+        "Modelo: SF-HS-PS7WRUW",
+        "Cor: Branco",
+        "Modo: 2.4GHz + Bluetooth + Aux",
+        "Chipset: JL",
+        "Distância de funcionamento: 10m",
+        "Bateria: 250mAh Bateria de lítio recarregável",
+        "Duração de uso: 14h",
+        "Dimensões: 180mm * 150mm * 90mm",
+        "Cabo: 3.5mm + Cabo de carregamento USB Tipo-C de 1m",
+        "Tempo de carregamento: Aproximadamente 3.5 horas",
+        "Parâmetros dos drivers: Diâmetro: 50mm Impedância: 20Ω±15% Frequência: 20Hz-20kHz Sensibilidade: 118±4dB",
+        "Parâmetros do microfone: Diâmetro: 6mm e 5mm de espessura (microfone externo) 6mm e 2.7mm de espessura (microfone integrado)",
+        "Sensibilidade: -38±3dB(microfone externo) -36±3dB(microfone integrado)",
+        "Impedância: MAX 2.2K",
+        "Frequência: 100Hz-10kHz",
+        "Proporção de Sinal para Ruído: >55dB",
+        "Conteúdo da Caixa: Headset Manual do Usuário Conector USB Tipo-A 2.4GHz Cabo de carregamento Cabo AUX"
+      ]
+    },
+    {
+      "nome": "Headset Gamer SuperFrame Odin, Drivers De 50mm, 7.1 Surround, USB, Black",
+      "preco": "R$ 119,99",
+      "link": "https://www.terabyteshop.com.br/produto/23453/headset-gamer-superframe-odin-drivers-de-50mm-71-surround-usb-black",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/headset-gamer-superframe-odin-drivers-de-50mm-71-surround-usb-black_159118.jpg",
+      "especificacoes": [
+        "Marca: SuperFrame",
+        "Modelo: SuperFrame Odin",
+        "Cor: Preto",
+        "Drivers: 50mm",
+        "Diâmetro do alto-falante: Φ50mm",
+        "Impedância: 32Ω±15%",
+        "Faixa de frequência: 20 Hz-20 kHz",
+        "Sensibilidade (S.P.L): 110db±3db",
+        "Microfone: Diâmetro do microfone: Φ6,0*5,0 mm",
+        "Sensibilidade do microfone: 42db±3db",
+        "Diretividade do microfone: Diretividade única",
+        "Comprimento do cabo: 2m",
+        "Plug: USB",
+        "Dimensões: 200x160x100mm",
+        "Software: Sim"
+      ]
+    },
+    {
+      "nome": "Headset Gamer SuperFrame Sound, Surround 7.1, Drivers de 50mm, RGB, USB, White, SF-HS-SD7CR3W",
+      "preco": "R$ 89,99",
+      "link": "https://www.terabyteshop.com.br/produto/29851/headset-gamer-superframe-sound-surround-71-drivers-de-50mm-rgb-usb-white-sf-hs-sd7cr3w",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/headset-gamer-superframe-sound-surround-71-drivers-de-50mm-rgb-usb-white-sf-hs-sd7cr3w_203576.jpg",
+      "especificacoes": [
+        "Marca: SuperFrame",
+        "Modelo: SF-HS-SD7CR3W",
+        "Cor: Branco",
+        "Drivers: De 50mm",
+        "Conexão: USB",
+        "Iluminação: RGB",
+        "Características: Som Surround 7.1 Construção em liga de alumínio",
+        "Material: Liga de alumínio e ABS",
+        "Sensibilidade do alto-falante: 110 ± 3dB",
+        "Resposta de frequência do alto-falante: 20 Hz-20 kHz",
+        "Impedância do alto-falante: 210 ± 15%",
+        "Microfone: microfone omnidirecional",
+        "sensibilidade: -38±3db"
+      ]
+    }
+  ],
+  "Microfone": [
+    {
+      "nome": "Microfone Gamer Fifine Ampligame A6T, RGB, USB, Black, Com Braço Articulado",
+      "preco": "R$ 199,99",
+      "link": "https://www.terabyteshop.com.br/produto/22453/microfone-gamer-fifine-ampligame-a6t-rgb-usb-black-com-braco-articulado",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/microfone-gamer-fifine-ampligame-a6t-rgb-usb-black-com-braco-articulado_150845.jpg",
+      "especificacoes": [
+        "Marca: Fifine",
+        "Modelo: Ampligame A6T",
+        "Cor: Preto",
+        "Tipo: Condensador",
+        "Braço articulado: Sim",
+        "Iluminação: RGB",
+        "Conexão: USB Tipo-C (saída do microfone) para Tipo-A (entrada)",
+        "Plug & Play: Sim",
+        "Padrão polar: Cardióide",
+        "Bit rate: 16-bit/24-bit",
+        "Rate: 44.1kHz-192kHz",
+        "Frequência: 60Hz-18KHz",
+        "S/N Ratio: 1kHz﹥70dB",
+        "Sensibilidade: -40±3dB",
+        "Comprimento do cabo USB: 2,5 Metros"
+      ]
+    },
+    {
+      "nome": "Microfone Gamer SuperFrame Voice, RGB, USB, Black, MSF-VOICE-RGB",
+      "preco": "R$ 109,99",
+      "link": "https://www.terabyteshop.com.br/produto/25545/microfone-gamer-superframe-voice-rgb-usb-black-msf-voice-rgb",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/microfone-gamer-superframe-voice-rgb-usb-black-msf-voice-rgb_175088.png",
+      "especificacoes": [
+        "Marca: SuperFrame",
+        "Modelo: MSF-VOICE-RGB",
+        "Direcionalidade: Apontar em forma de coração",
+        "Sensibilidade: 33 2dB (1,5V,680KQ0dB =1V/Pa,1KHz)",
+        "Faixa de frequência: 80Hz-20000Hz",
+        "Nível de pressão sonora: 110dB",
+        "Relação sinal-ruído: >68dB",
+        "Impedância de saída: <2,2KQ",
+        "Taxa de amostragem/profundidade de bits: 192KHz/24bit",
+        "Símbolos de fonte de alimentação: DC5V",
+        "Tensão de alimentação nominal ou faixa de tensão de alimentação nominal: 5V",
+        "Consumo de corrente nominal ou consumo de energia nominal: 50mA",
+        "Potência de saída: 0,5 W"
+      ]
+    },
+    {
+      "nome": "Microfone Gamer Fifine Ampligame Q6T, RGB, USB, Black, Com Braço Articulado",
+      "preco": "R$ 199,99",
+      "link": "https://www.terabyteshop.com.br/produto/36466/microfone-gamer-fifine-ampligame-q6t-rgb-usb-black-com-braco-articulado",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/microfone-gamer-fifine-ampligame-q6t-rgb-usb-black-com-braco-articulado_239701.jpg",
+      "especificacoes": [
+        "Marca: Fifine",
+        "Modelo: Ampligame Q6T",
+        "Cor: Preto",
+        "Tipo: Condensador",
+        "Braço articulado: Sim",
+        "Iluminação: RGB",
+        "Conexão: USB Tipo-C (saída do microfone) para Tipo-A (entrada)",
+        "Plug & Play: Sim",
+        "Padrão polar: Cardióide",
+        "Frequency range: 20Hz-20KHz",
+        "S/N Ratio: 70.7dB",
+        "Sensibilidade: -43±3dB",
+        "Power supply: 5V",
+        "Comprimento do cabo USB: 2,5 Metros"
+      ]
+    },
+    {
+      "nome": "Mesa Controladora Fifine Ampligame D6, 15 Teclas, RGB, Preto",
+      "preco": "R$ 399,99",
+      "link": "https://www.terabyteshop.com.br/produto/36474/mesa-controladora-fifine-ampligame-d6-15-teclas-rgb-preto",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/mesa-controladora-fifine-ampligame-d6-15-teclas-rgb-preto_239741.jpg",
+      "especificacoes": [
+        "Conteúdo da Embalagem: Mesa Controladora Cabo USB A para USB C Manual do usuário"
+      ]
+    },
+    {
+      "nome": "Microfone Gamer Fifine Ampligame A6NEO, RGB, USB, Black",
+      "preco": "R$ 159,99",
+      "link": "https://www.terabyteshop.com.br/produto/22452/microfone-gamer-fifine-ampligame-a6neo-rgb-usb-black",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/microfone-gamer-fifine-ampligame-a6neo-rgb-usb-black_250376.jpg",
+      "especificacoes": [
+        "Marca: Fifine",
+        "Modelo: Ampligame A6NEO",
+        "Cor: Preto",
+        "Tipo: Condensador",
+        "Iluminação: RGB",
+        "Conexão: USB Tipo-C (saída do microfone) para Tipo-A (entrada)",
+        "Plug & Play: Sim",
+        "Padrão polar: Cardióide",
+        "Base: Base redonda estável com pés de borracha",
+        "Conteúdo da embalagem: 1x Microfone Fifine Ampligame A6NEO 1x Filtro pop 1x Suporte de mesa 1x Cabo USB 1x Manual do usuário"
+      ]
+    }
+  ],
+  "Controle": [
+    {
+      "nome": "Controle Gamer Ninja Shield, Bluetooth, PC, Android, iOS, Switch, Verde, GN-CT-SHGYNW",
+      "preco": "R$ 79,99",
+      "link": "https://www.terabyteshop.com.br/produto/32927/controle-gamer-ninja-shield-bluetooth-pc-android-ios-switch-verde-gn-ct-shgynw",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/controle-gamer-ninja-shield-bluetooth-pc-android-ios-switch-verde-gn-ct-shgynw_235225.jpg",
+      "especificacoes": [
+        "Marca: Gamer Ninja",
+        "Cor: Verde",
+        "Iluminação: RGB",
+        "Layout: Nintendo",
+        "Uso contínuo: 12 horas",
+        "Corrente máx. de uso: DC3.7V/120mA",
+        "Tensão máxima: DV5V/500mAA",
+        "Corrente máxima: 200mA",
+        "Alcance de onda Bluetooth: ≤ 8m",
+        "Dimensões: L160,C103, A61mm",
+        "Peso: 203,6g",
+        "Conteúdo da caixa: Controle Manual de usuário Cabo USB Tipo-C Não acompanha Dongle 2.4"
+      ]
+    },
+    {
+      "nome": "Controle Gamer 8BitDo Ultimate 2, RGB, Wireless, Bluetooth, Windows/Android/iOS, Hall Effect, Branco, 81H",
+      "preco": "R$ 379,99",
+      "link": "https://www.terabyteshop.com.br/produto/37727/controle-gamer-8bitdo-ultimate-2-rgb-wireless-bluetooth-windowsandroidios-hall-effect-branco-81he01",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/controle-gamer-8bitdo-ultimate-2-rgb-wireless-bluetooth-windowsandroidios-hall-effect-branco-81he01_246835.jpg",
+      "especificacoes": [
+        "Marca: 8BitDo",
+        "Modelo: 81HE01",
+        "Cor: Branco",
+        "Características especiais: Joysticks TMR \"8Speed\" --- Latência ultrabaixa e conexão 2.4G estável Taxa de pesquisa de 1000 Hz (para conexão 2.4G e com fio)* Fire Ring - Joysticks de iluminação RGB Para-choques extras (R4 e L4) 2 botões de remo traseiro Pro Interruptor de modo de gatilho Gatilhos de efeito Hall Amortecedores táteis e D-pad Controle de movimento de 6 eixos Função turbo Vibração Suporte 8BitDo Ultimate Software V2",
+        "Compatibilidade: Windows 10 (1903) ou superior Android 13.0 ou superior SteamOS 3.7.13 ou superior Apple iOS 26 e superior Apple iPadOS 26 e superior Apple tvOS 26 e superior Apple macOS 26 e superior Apple VisionOS 26 e superior",
+        "Conectividade: Sem fio 2.4G - Windows Com fio - Windows Bluetooth-Android",
+        "Dimensões: 147*103*61,3 milímetros 246g"
+      ]
+    },
+    {
+      "nome": "Controle Gamer 8BitDo Ultimate 2, RGB, Bluetooth, Switch/Windows, Hall Effect, Branco, 80ND01",
+      "preco": "R$ 439,99",
+      "link": "https://www.terabyteshop.com.br/produto/37723/controle-gamer-8bitdo-ultimate-2-rgb-bluetooth-switchwindows-hall-effect-branco-80nd01",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/controle-gamer-8bitdo-ultimate-2-rgb-bluetooth-switchwindows-hall-effect-branco-80nd01_246814.jpg",
+      "especificacoes": [
+        "Marca: 8BitDo",
+        "Modelo: 80ND01",
+        "Cor: Branco",
+        "Características especiais: Joysticks TMR Fire Ring - Joysticks de iluminação RGB Para-choques extras (R4 e L4) 2 botões de remo traseiro Pro Interruptor de modo de gatilho Gatilhos de efeito Hall Amortecedores táteis e D-pad Controle de movimento (somente para Switch) Função turbo Vibração Suporte 8BitDo Ultimate Software V2",
+        "Compatibilidade: Windows 10 (1903) ou superior Switch (3.0.0 e superior) Switch 2 (20.1.1 e superior) OBS- Os modelos da 8BitDo compatíveis com Nintendo Switch tiveram uma atualização liberada para que possam ser utilizados no Nintendo Switch 2. Basta utilizar o 8BitDo Ultimate Software V2 com o controle conectado via cabo USB ao computador para instalar o firmware mais recente.",
+        "Conectividade: Interruptor: Bluetooth, 2.4G ou USB com fio Windows: 2.4G ou USB com fio",
+        "Dimensões: 147*103*61,3 milímetros 246g"
+      ]
+    },
+    {
+      "nome": "Controle Gamer Machenike G5 Pro V2, Wireless/Bluetooth, Hall Effect, Branco, JJ02GL00B",
+      "preco": "R$ 369,99",
+      "link": "https://www.terabyteshop.com.br/produto/36611/controle-gamer-machenike-g5-pro-v2-wirelessbluetooth-hall-effect-branco-jj02gl00b",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/controle-gamer-machenike-g5-pro-v2-wirelessbluetooth-hall-effect-branco-jj02gl00b_240511.jpg",
+      "especificacoes": [
+        "Marca: Machenike",
+        "Modelo: JJ02GL00B",
+        "Polling Rate: 1000Hz"
+      ]
+    },
+    {
+      "nome": "Controle Gamer Machenike G5 Pro V2, Wireless/Bluetooth, Hall Effect, Preto, JJ02GP00B",
+      "preco": "R$ 369,99",
+      "link": "https://www.terabyteshop.com.br/produto/36614/controle-gamer-machenike-g5-pro-v2-wirelessbluetooth-hall-effect-preto-jj02gp00b",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/controle-gamer-machenike-g5-pro-v2-wirelessbluetooth-hall-effect-preto-jj02gp00b_240523.jpg",
+      "especificacoes": [
+        "Marca: Machenike",
+        "Modelo: JJ02GP00B",
+        "Polling Rate: 1000Hz"
+      ]
+    }
+  ],
+  "Processador": [
+    {
+      "nome": "Processador AMD Ryzen 7 5700X 3.4GHz (4.6GHz Turbo), 8-Cores 16-Threads, AM4, Sem Cooler, 100-100000926WO",
+      "preco": "R$ 1.194,90",
+      "link": "https://www.terabyteshop.com.br/produto/20813/processador-amd-ryzen-7-5700x-34ghz-46ghz-turbo-8-cores-16-threads-am4-sem-cooler-100-100000926wof",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/processador-amd-ryzen-7-5700x-34ghz-46ghz-turbo-8-cores-16-threads-am4-sem-cooler-100-100000926wof_211497.jpg"
+    },
+    {
+      "nome": "Processador AMD Ryzen 5 5600GT, 3.6GHz (4.6GHz Turbo), 6-Cores 12-Threads, Cooler Wraith Stealth, AM4, 10",
+      "preco": "R$ 819,99",
+      "link": "https://www.terabyteshop.com.br/produto/27314/processador-amd-ryzen-5-5600gt-36ghz-46ghz-turbo-6-cores-12-threads-cooler-wraith-stealth-am4-100-100001488box",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/processador-amd-ryzen-5-5600gt-36ghz-46ghz-turbo-6-cores-12-threads-cooler-wraith-stealth-am4-100-100001488box_186129.jpg"
+    },
+    {
+      "nome": "Processador AMD Ryzen 5 4500 3.6GHz (4.1GHz Turbo), 6-Cores 12-Threads, Cooler Wraith Stealth, AM4, 100-1",
+      "preco": "R$ 389,99",
+      "link": "https://www.terabyteshop.com.br/produto/21277/processador-amd-ryzen-5-4500-36ghz-41ghz-turbo-6-cores-12-threads-cooler-wraith-stealth-am4-100-100000644box",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/processador-amd-ryzen-5-4500-36ghz-41ghz-turbo-6-cores-12-threads-cooler-wraith-stealth-am4-100-100000644box_141344.jpg"
+    },
+    {
+      "nome": "Processador Intel Core i5 12400F, 2.5GHz (4.4GHz Turbo), 12ª Geração, 6-Cores 12-Threads, LGA 1700, Com C",
+      "preco": "R$ 679,90",
+      "link": "https://www.terabyteshop.com.br/produto/20072/processador-intel-core-i5-12400f-25ghz-44ghz-turbo-12-geracao-6-cores-12-threads-lga-1700-bx8071512400f",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/processador-intel-core-i5-12400f-25ghz-44ghz-turbo-12-geracao-6-cores-12-threads-lga-1700-bx8071512400f_135083.jpg"
+    },
+    {
+      "nome": "Processador AMD Ryzen 7 7800X3D, 4.2GHz (5.0GHz Turbo), 8-Cores 16-Threads, AM5, Sem Cooler, 100-10000091",
+      "preco": "R$ 2.359,90",
+      "link": "https://www.terabyteshop.com.br/produto/24769/processador-amd-ryzen-7-7800x3d-42ghz-50ghz-turbo-8-cores-16-threads-am5-sem-cooler-100-100000910wof",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/processador-amd-ryzen-7-7800x3d-42ghz-50ghz-turbo-8-cores-16-threads-am5-sem-cooler-100-100000910wof_168345.png"
+    }
+  ],
+  "Placa de Vídeo": [
+    {
+      "nome": "Placa de Vídeo Biostar AMD Radeon RX 580 2048SP, 8GB, GDDR5, 256 Bit, VA5815RF82",
+      "preco": "R$ 759,90",
+      "link": "https://www.terabyteshop.com.br/produto/36107/placa-de-video-biostar-amd-radeon-rx-580-2048sp-8gb-gddr5-256-bit-va5815rf82",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-de-video-biostar-amd-radeon-rx-580-2048sp-8gb-gddr5-256-bit-va5815rf82_252388.jpg"
+    },
+    {
+      "nome": "Placa de Vídeo ASRock Radeon RX 6600 Challenger White, 8GB, GDDR6, FSR, Ray Tracing, Branco, 90-GA4UZZ-00",
+      "preco": "R$ 1.399,99",
+      "link": "https://www.terabyteshop.com.br/produto/29998/placa-de-video-asrock-radeon-rx-6600-challenger-white-8gb-gddr6-fsr-ray-tracing-branco-90-ga4uzz-00uanf",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-de-video-asrock-radeon-rx-6600-challenger-white-8gb-gddr6-fsr-ray-tracing-branco-90-ga4uzz-00uanf_204751.jpg"
+    },
+    {
+      "nome": "Placa de Vídeo ASRock AMD Radeon RX 9060 XT Challenger OC, 16GB, GDDR6, FSR, Ray Tracing, 90-GA5QZZ-00UAN",
+      "preco": "R$ 2.999,90",
+      "link": "https://www.terabyteshop.com.br/produto/36467/placa-de-video-asrock-amd-radeon-rx-9060-xt-challenger-oc-16gb-gddr6-fsr-ray-tracing-90-ga5qzz-00uanf",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-de-video-asrock-amd-radeon-rx-9060-xt-challenger-oc-16gb-gddr6-fsr-ray-tracing-90-ga5qzz-00uanf_239708.jpg"
+    },
+    {
+      "nome": "Placa De Vídeo AMD Radeon RX 6600 LE Neuron, 8GB, GDDR6, FSR, Ray Tracing, Preto, DXRX6600-LE",
+      "preco": "R$ 1.399,99",
+      "link": "https://www.terabyteshop.com.br/produto/37692/placa-de-video-duex-amd-radeon-rx-6600-le-neuron-8gb-gddr6-fsr-ray-tracing-preto-dxrx6600-le",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-de-video-duex-amd-radeon-rx-6600-le-neuron-8gb-gddr6-fsr-ray-tracing-preto-dxrx6600-le_246525.jpg"
+    },
+    {
+      "nome": "Placa De Vídeo Asus Dual AMD Radeon RX 7600 EVO OC Edition, 8GB, GDDR6, FSR, Ray Tracing, DUAL-RX7600-O8G",
+      "preco": "R$ 1.749,99",
+      "link": "https://www.terabyteshop.com.br/produto/32738/placa-de-video-asus-dual-amd-radeon-rx-7600-evo-oc-edition-8gb-gddr6-fsr-ray-tracing-dual-rx7600-o8g-evo",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-de-video-asus-dual-amd-radeon-rx-7600-evo-oc-edition-8gb-gddr6-fsr-ray-tracing-dual-rx7600-o8g-evo_218236.jpg"
+    }
+  ],
+  "Placa Mãe": [
+    {
+      "nome": "Placa Mãe MSI B550M PRO-VDH, Chipset B550, AMD AM4, mATX, DDR4",
+      "preco": "R$ 579,99",
+      "link": "https://www.terabyteshop.com.br/produto/18645/placa-mae-msi-b550m-pro-vdh-chipset-b550-amd-am4-matx-ddr4",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-mae-msi-b550m-pro-vdh-chipset-b550-amd-am4-matx-ddr4_124703.jpg"
+    },
+    {
+      "nome": "Placa Mãe MSI B650M Gaming Plus WIFI, Chipset B650, AMD AM5, MATX, DDR5",
+      "preco": "R$ 1.299,90",
+      "link": "https://www.terabyteshop.com.br/produto/30512/placa-mae-msi-b650m-gaming-plus-wifi-chipset-b650-amd-am5-matx-ddr5",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-mae-msi-b650m-gaming-plus-wifi-chipset-b650-amd-am5-matx-ddr5_207406.jpg"
+    },
+    {
+      "nome": "Placa Mãe Gigabyte B550M AORUS Elite, Chipset B550, AMD AM4, mATX, DDR4",
+      "preco": "R$ 819,99",
+      "link": "https://www.terabyteshop.com.br/produto/16145/placa-mae-gigabyte-b550m-aorus-elite-chipset-b550-amd-am4-atx-ddr4",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-mae-gigabyte-b550m-aorus-elite-chipset-b550-amd-am4-atx-ddr4_110070.png"
+    },
+    {
+      "nome": "Placa Mãe Colorful BATTLE-AX A520M-K M.2 V14, Chipset A520, AMD AM4, MATX, DDR4",
+      "preco": "R$ 329,99",
+      "link": "https://www.terabyteshop.com.br/produto/31276/placa-mae-colorful-battle-ax-a520m-k-m2-v14-chipset-a520-amd-am4-matx-ddr4",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-mae-colorful-battle-ax-a520m-k-m2-v14-chipset-a520-amd-am4-matx-ddr4_209691.jpg"
+    },
+    {
+      "nome": "Placa Mãe SuperFrame B550M Legendary Series Chipset B550, AMD, AM4, mATX, DDR4, SF-B550-LS",
+      "preco": "R$ 959,00",
+      "link": "https://www.terabyteshop.com.br/produto/27544/placa-mae-superframe-b550m-legendary-series-chipset-b550-amd-am4-matx-ddr4-sf-b550-ls",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/placa-mae-superframe-b550m-legendary-series-chipset-b550-amd-am4-matx-ddr4-sf-b550-ls_192663.jpg"
+    }
+  ],
+  "Memória RAM": [
+    {
+      "nome": "Memória DDR4 Hiksemi Armor U10, 8GB, 3200Mhz, Branco",
+      "preco": "R$ 267,90",
+      "link": "https://www.terabyteshop.com.br/produto/31370/memoria-ddr4-hiksemi-armor-white-8gb-3200mhz-branco",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/memoria-ddr4-hiksemi-armor-white-8gb-3200mhz-branco_210178.jpg"
+    },
+    {
+      "nome": "Memória DDR4 Geil Orion RGB, 8GB, 3200MHz, Gray, GAOSG48GB3200C22SC",
+      "preco": "R$ 274,90",
+      "link": "https://www.terabyteshop.com.br/produto/26932/memoria-ddr4-geil-orion-rgb-8gb-3200mhz-gray-gaosg48gb3200c22sc",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/memoria-ddr4-geil-orion-rgb-8gb-3200mhz-gray-gaosg48gb3200c22sc_183858.jpg"
+    },
+    {
+      "nome": "Memória DDR4 Rise Mode Venon, RGB, 8GB, 3200MHz, Preto, RM-D4-8G-3200-RGB",
+      "preco": "R$ 264,90",
+      "link": "https://www.terabyteshop.com.br/produto/38783/memoria-ddr4-rise-mode-venon-rgb-8gb-3200mhz-preto-rm-d4-8g-3200-rgb",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/memoria-ddr4-rise-mode-venon-rgb-8gb-3200mhz-preto-rm-d4-8g-3200-rgb_253074.jpg"
+    },
+    {
+      "nome": "Memória DDR4 Geil Orion RGB, 8GB, 3200MHz, Gray, GAOSG48GB3200C16BSC",
+      "preco": "R$ 274,90",
+      "link": "https://www.terabyteshop.com.br/produto/16831/memoria-ddr4-geil-orion-rgb-edicao-amd-8gb-3200mhz-gray-gaosg48gb3200c16bsc",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/memoria-ddr4-geil-orion-rgb-edicao-amd-8gb-3200mhz-gray-gaosg48gb3200c16bsc_115377.png"
+    },
+    {
+      "nome": "Memória DDR4 XPG Gammix D20, 8GB, 3200MHz, Black, AX4U32008G16A-CBK20",
+      "preco": "R$ 359,99",
+      "link": "https://www.terabyteshop.com.br/produto/26096/memoria-ddr4-xpg-gammix-d20-8gb-3200mhz-black-ax4u32008g16a-cbk20",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/memoria-ddr4-xpg-gammix-d20-8gb-3200mhz-black-ax4u32008g16a-cbk20_178878.jpg"
+    }
+  ],
+  "Armazenamento": [
+    {
+      "nome": "SSD Kingston NV3, 1TB, M.2 NVMe, 2280, PCIe 4.0, Leitura 6000MBs e Gravação 4000MBs, SNV3S/1000G",
+      "preco": "R$ 579,99",
+      "link": "https://www.terabyteshop.com.br/produto/31564/ssd-kingston-nv3-1tb-m2-nvme-2280-pcie-40-leitura-6000mbs-e-gravacao-4000mbs-snv3s1000g",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/ssd-kingston-nv3-1tb-m2-nvme-2280-pcie-40-leitura-6000mbs-e-gravacao-4000mbs-snv3s1000g_211589.jpg"
+    },
+    {
+      "nome": "SSD Adata Legend 710, 512GB, M.2 2280 NVMe Leitura 2.400MBs, Gravação 1.600MBs, ALEG-710-512GCS",
+      "preco": "R$ 339,99",
+      "link": "https://www.terabyteshop.com.br/produto/25640/ssd-adata-legend-710-512gb-m2-2280-nvme-leitura-2400mbs-gravacao-1600mbs-aleg-710-512gcs",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/ssd-adata-legend-710-512gb-m2-2280-nvme-leitura-2400mbs-gravacao-1600mbs-aleg-710-512gcs_175589.jpg"
+    },
+    {
+      "nome": "SSD Kingston A400, 480GB, Sata III, Leitura 500MBs Gravação 450MBs, SA400S37/480G",
+      "preco": "R$ 249,90",
+      "link": "https://www.terabyteshop.com.br/produto/19382/ssd-kingston-a400-480gb-sata-iii-leitura-500mbs-gravacao-450mbs-sa400s37480g-imp",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/ssd-kingston-a400-480gb-sata-iii-leitura-500mbs-gravacao-450mbs-sa400s37480g-imp_129879.jpg"
+    },
+    {
+      "nome": "SSD XPG GAMMMIX S70 BLADE 1TB, M.2 2280 NVMe, Leitura 7400MBs e Gravação 5500MBs, AGAMMIXS70B-1T-CS",
+      "preco": "R$ 689,99",
+      "link": "https://www.terabyteshop.com.br/produto/25625/ssd-xpg-gammmix-s70-blade-1tb-m2-2280-nvme-leitura-7400mbs-e-gravacao-5500mbs-agammixs70b-1t-cs",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/ssd-xpg-gammmix-s70-blade-1tb-m2-2280-nvme-leitura-7400mbs-e-gravacao-5500mbs-agammixs70b-1t-cs_175503.jpg"
+    },
+    {
+      "nome": "SSD Kingston A400, 960GB, Sata III, Leitura 500MBs e Gravação 450MBs, SA400S37/960G",
+      "preco": "R$ 449,99",
+      "link": "https://www.terabyteshop.com.br/produto/19384/ssd-kingston-a400-960gb-sata-iii-leitura-500mbs-e-gravacao-450mbs-sa400s37960g-imp",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/ssd-kingston-a400-960gb-sata-iii-leitura-500mbs-e-gravacao-450mbs-sa400s37960g-imp_129886.jpg"
+    }
+  ],
+  "Fonte": [
+    {
+      "nome": "Fonte ASRock Pro, 650W, 80 Plus Bronze, ATX 3.1, PFC Ativo, Preto, PRO-650B",
+      "preco": "R$ 257,99",
+      "link": "https://www.terabyteshop.com.br/produto/37777/fonte-asrock-pro-650w-80-plus-bronze-atx-31-pfc-ativo-preto-pro-650b",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/fonte-asrock-pro-650w-80-plus-bronze-atx-31-pfc-ativo-preto-pro-650b_247138.jpg"
+    },
+    {
+      "nome": "Fonte MSI MAG A750BN PCIE5, 750W, 80 Plus Bronze, PFC Ativo, Preto",
+      "preco": "R$ 459,99",
+      "link": "https://www.terabyteshop.com.br/produto/37334/fonte-msi-mag-a750bn-pcie5-750w-80-plus-bronze-pfc-ativo-preto",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/fonte-msi-mag-a750bn-pcie5-750w-80-plus-bronze-pfc-ativo-preto_251860.jpg"
+    },
+    {
+      "nome": "Fonte Gamemax GS600, 600W, 80 Plus White, PFC Ativo, Black",
+      "preco": "R$ 299,99",
+      "link": "https://www.terabyteshop.com.br/produto/17493/fonte-gamemax-gs600-600w-80-plus-white-pfc-ativo",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/fonte-gamemax-gs600-600w-80-plus-white-pfc-ativo_197842.jpg"
+    },
+    {
+      "nome": "Fonte One Power, 650W, PFC Ativo, Black, MP-650-OPASW",
+      "preco": "R$ 159,90",
+      "link": "https://www.terabyteshop.com.br/produto/27221/fonte-one-power-650w-pfc-ativo-black-mp-650-opasw",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/fonte-one-power-650w-pfc-ativo-black-mp-650-opasw_185561.jpg"
+    },
+    {
+      "nome": "Fonte Duex Pulse Pro, 500W, 80 Plus Bronze, TecLab, PFC Ativo, Preto",
+      "preco": "R$ 199,99",
+      "link": "https://www.terabyteshop.com.br/produto/32175/fonte-duex-pulse-pro-500w-80-plus-bronze-pfc-ativo-preto",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/fonte-duex-pulse-pro-500w-80-plus-bronze-pfc-ativo-preto_214785.jpg"
+    }
+  ],
+  "Gabinete": [
+    {
+      "nome": "Gabinete Gamer SuperFrame Vhagar, Mid Tower, Vidro Temperado, ATX, Preto, Sem Fan, SF-CS-VGMABSF",
+      "preco": "R$ 399,90",
+      "link": "https://www.terabyteshop.com.br/produto/31121/gabinete-gamer-superframe-vhagar-mid-tower-vidro-temperado-atx-preto-sem-fan-sf-cs-vgmabsf",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/gabinete-gamer-superframe-vhagar-mid-tower-vidro-temperado-atx-preto-sem-fan-sf-cs-vgmabsf_253203.jpg"
+    },
+    {
+      "nome": "Gabinete Gamer Ninja Bee, Mid Tower, RGB, Vidro Temperado, M-ATX, Sem Fonte, Com 1 Fan ARGB, GN-CS-BEMTB1",
+      "preco": "R$ 119,90",
+      "link": "https://www.terabyteshop.com.br/produto/22033/gabinete-gamer-ninja-bee-mid-tower-rgb-vidro-temperado-atx-sem-fonte-com-1-fan-argb",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/gabinete-gamer-ninja-bee-mid-tower-rgb-vidro-temperado-atx-sem-fonte-com-1-fan-argb_246770.jpg"
+    },
+    {
+      "nome": "Gabinete Gamer Redragon Wideload Pro, Mid Tower, Vidro Temperado, ATX, Black, Sem Fonte, Sem Fan, CA-604B",
+      "preco": "R$ 399,99",
+      "link": "https://www.terabyteshop.com.br/produto/27178/gabinete-gamer-redragon-wideload-pro-mid-tower-vidro-temperado-atx-black-sem-fonte-sem-fan-ca-604b-pro",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/gabinete-gamer-redragon-wideload-pro-mid-tower-vidro-temperado-atx-black-sem-fonte-sem-fan-ca-604b-pro_208944.jpg"
+    },
+    {
+      "nome": "Gabinete Gamer Ninja Leaf, RGB, Mid Tower, Vidro Temperado, ATX, Sem Fonte, Com 3 Fans, GN-CS-LFMTB3F",
+      "preco": "R$ 169,90",
+      "link": "https://www.terabyteshop.com.br/produto/23066/gabinete-gamer-ninja-folha-rgb-mid-tower-vidro-temperado-atx-sem-fonte-com-3-fans",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/gabinete-gamer-ninja-folha-rgb-mid-tower-vidro-temperado-atx-sem-fonte-com-3-fans_162290.jpg"
+    },
+    {
+      "nome": "Gabinete Gamer Ninja Eraser, RGB, Mid Tower, Vidro Temperado, ATX, Sem Fonte, Com 1 Fan, GN-CS-ERMTB1F",
+      "preco": "R$ 159,90",
+      "link": "https://www.terabyteshop.com.br/produto/21976/gabinete-gamer-ninja-eraser-rgb-mid-tower-vidro-temperado-atx-sem-fonte-com-1-fan",
+      "imagem": "https://img.terabyteshop.com.br/produto/p/gabinete-gamer-ninja-eraser-rgb-mid-tower-vidro-temperado-atx-sem-fonte-com-1-fan_246765.jpg"
+    }
+  ]
+}
