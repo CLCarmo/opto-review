@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import './ProductDetailPage.css';
 
 function ProductDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams(); // O ID que vem da URL
   const navigate = useNavigate();
   const { isLoggedIn, user, addFavorite, removeFavorite, favorites } = useAuth();
 
@@ -15,28 +15,28 @@ function ProductDetailPage() {
   const [selectedImage, setSelectedImage] = useState('');
   const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Verifica se está favoritado
+  // Verifica se está favoritado (Converte tudo para String para garantir a comparação)
   const isFavorited = useMemo(() => {
       if (!favorites) return false;
-      return favorites.includes(Number(id)) || favorites.includes(String(id));
+      return favorites.some(favId => String(favId) === String(id));
   }, [favorites, id]);
 
-  // 1. Carrega os dados do produto
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        // LINK CORRIGIDO: Aponta para o Railway
+        // Busca direta no Backend
         const response = await fetch(`https://opto-review-production.up.railway.app/api/produtos/${id}`);
         
         if (!response.ok) {
-            throw new Error('Produto não encontrado');
+            // Se o backend disser 404, lançamos o erro
+            throw new Error('Produto não encontrado no banco de dados.');
         }
 
         const data = await response.json();
         setProduct(data);
         
-        // Carrega produtos relacionados (mesma categoria) se existir categoria
+        // Se deu certo, busca relacionados
         if (data.categoria) {
             fetchRelated(data.categoria, data.id_produto);
         }
@@ -49,14 +49,13 @@ function ProductDetailPage() {
       }
     };
 
-    // Função interna para buscar relacionados
     const fetchRelated = async (categoria, currentId) => {
         try {
             const response = await fetch('https://opto-review-production.up.railway.app/api/produtos');
             const data = await response.json();
-            // Filtra: Mesma categoria, ID diferente, pega 4 itens
+            // Filtra: Mesma categoria, ID diferente (comparando como String pra garantir)
             const related = data
-                .filter(p => p.categoria === categoria && p.id_produto !== currentId)
+                .filter(p => p.categoria === categoria && String(p.id_produto) !== String(currentId))
                 .slice(0, 4);
             setRelatedProducts(related);
         } catch (e) {
@@ -64,12 +63,14 @@ function ProductDetailPage() {
         }
     };
 
-    fetchProduct();
+    if (id) {
+        fetchProduct();
+    }
   }, [id]);
 
   const handleFavoriteClick = async () => {
       if (!isLoggedIn) {
-          navigate('/login'); // Manda pro login se não estiver logado
+          navigate('/login');
           return;
       }
       if (isFavorited) {
@@ -79,22 +80,16 @@ function ProductDetailPage() {
       }
   };
 
-  if (loading) return <div className="loading-state"><i className="fas fa-spinner fa-spin"></i> Carregando detalhes...</div>;
-  if (error) return <div className="error-state"><h2>Produto não encontrado</h2><Link to="/produtos" className="back-link">Voltar para Loja</Link></div>;
-  if (!product) return null;
-
-  // TRATAMENTO DE ESPECIFICAÇÕES (O "Pulo do Gato" para dados do Scraper)
-  // O scraper pode retornar specs como Array [] ou Objeto {}. Aqui tratamos os dois.
+  // --- RENDERIZAÇÃO DAS ESPECIFICAÇÕES (Compatível com Scraper) ---
   const renderSpecs = () => {
       const specs = product.especificacoes;
       
-      if (!specs) return <p>Sem especificações técnicas detalhadas.</p>;
+      if (!specs) return <p className="no-specs">Detalhes técnicos não informados.</p>;
 
-      // Caso 1: É um Objeto (ex: { "DPI": "1000", "Cor": "Preto" })
+      // Se for Objeto (ex: { "DPI": "1000" })
       if (!Array.isArray(specs) && typeof specs === 'object') {
-          // Filtra chaves vazias ou nulas
           const validEntries = Object.entries(specs).filter(([_, v]) => v !== null && v !== '');
-          if (validEntries.length === 0) return <p>Sem especificações detalhadas.</p>;
+          if (validEntries.length === 0) return <p className="no-specs">Sem detalhes.</p>;
 
           return (
               <div className="specs-grid">
@@ -107,7 +102,7 @@ function ProductDetailPage() {
           );
       }
 
-      // Caso 2: É um Array (ex: ["DPI: 1000", "Cor: Preto"])
+      // Se for Lista (ex: ["DPI: 1000", "Cor: Preto"])
       if (Array.isArray(specs) && specs.length > 0) {
           return (
               <ul className="specs-list-simple">
@@ -118,26 +113,34 @@ function ProductDetailPage() {
           );
       }
 
-      return <p>Especificações indisponíveis no momento.</p>;
+      return <p className="no-specs">Detalhes técnicos indisponíveis.</p>;
   };
+
+  if (loading) return <div className="loading-state"><i className="fas fa-spinner fa-spin"></i> Carregando detalhes...</div>;
+  
+  if (error || !product) return (
+      <div className="error-state">
+          <i className="fas fa-exclamation-triangle"></i>
+          <h2>Produto não encontrado</h2>
+          <p>O produto que você procura não existe ou foi removido.</p>
+          <Link to="/produtos" className="back-link">Voltar para a Loja</Link>
+      </div>
+  );
 
   return (
     <div className="product-detail-page">
-      
       <div className="breadcrumb">
         <Link to="/">Home</Link> / <Link to="/produtos">Produtos</Link> / <span>{product.nome}</span>
       </div>
 
       <div className="detail-container">
-          {/* COLUNA DA ESQUERDA: IMAGEM */}
           <div className="detail-images">
               <div className="main-image" onClick={() => { setSelectedImage(product.imagem_url); setShowImageModal(true); }}>
-                  <img src={product.imagem_url || 'https://via.placeholder.com/400'} alt={product.nome} />
-                  <div className="zoom-hint"><i className="fas fa-search-plus"></i> Clique para ampliar</div>
+                  <img src={product.imagem_url || 'https://via.placeholder.com/400'} alt={product.nome} onError={(e) => { e.target.src = 'https://via.placeholder.com/400?text=Sem+Imagem'; }} />
+                  <div className="zoom-hint"><i className="fas fa-search-plus"></i> Ampliar</div>
               </div>
           </div>
 
-          {/* COLUNA DA DIREITA: INFORMAÇÕES */}
           <div className="detail-info">
               <h1 className="product-title">{product.nome}</h1>
               
@@ -146,12 +149,10 @@ function ProductDetailPage() {
                   {product.categoria && <span className="category-badge">{product.categoria}</span>}
               </div>
 
-              {/* PREÇO E AÇÃO */}
-              <div className="price-card" id="offers-section">
+              <div className="price-card">
                   <div className="price-row">
                       <span className="price-label">Melhor Preço:</span>
                       <span className="current-price">
-                        {/* Formatação segura de preço */}
                         R$ {product.price_low ? parseFloat(product.price_low).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '---'}
                       </span>
                   </div>
@@ -165,42 +166,41 @@ function ProductDetailPage() {
                         {isFavorited ? 'Salvo' : 'Favoritar'}
                     </button>
                     
-                    {/* Botão para ir à loja externa (Scraper) */}
-                    {product.ofertas && product.ofertas.length > 0 ? (
+                    {/* Botão para Loja Externa */}
+                    {/* O scraper salva o link na tabela precos, então verificamos se existe oferta */}
+                    {(product.ofertas && product.ofertas.length > 0) ? (
                         <a href={product.ofertas[0].url_produto} target="_blank" rel="noopener noreferrer" className="buy-btn-large">
                             Ir à Loja <i className="fas fa-external-link-alt"></i>
                         </a>
                     ) : (
-                        <button className="buy-btn-large disabled" disabled>Indisponível</button>
+                        // Fallback: Se não tiver oferta, tenta usar um link genérico ou desabilita
+                        <button className="buy-btn-large disabled" disabled>Sem Estoque</button>
                     )}
                   </div>
               </div>
 
-              {/* DESCRIÇÃO (Se houver) */}
               {product.descricao && (
                   <div className="description-box">
-                      <h3>Descrição</h3>
+                      <h3>Sobre este produto</h3>
                       <p>{product.descricao}</p>
                   </div>
               )}
 
-              {/* ESPECIFICAÇÕES TÉCNICAS */}
               <div className="specs-box">
-                  <h3>Especificações Técnicas</h3>
+                  <h3>Ficha Técnica</h3>
                   {renderSpecs()}
               </div>
           </div>
       </div>
 
-      {/* PRODUTOS RELACIONADOS */}
       {relatedProducts.length > 0 && (
           <div className="related-products-section">
-              <h3><i className="fas fa-random"></i> Você também pode gostar</h3>
+              <h3>Veja também</h3>
               <div className="related-grid">
                   {relatedProducts.map(rel => (
                       <Link to={`/produtos/${rel.id_produto}`} key={rel.id_produto} className="related-card">
                           <div className="related-img-box">
-                              <img src={rel.imagem_url || 'https://via.placeholder.com/150'} alt={rel.nome} />
+                              <img src={rel.imagem_url} alt={rel.nome} onError={(e) => {e.target.src='https://via.placeholder.com/150'}} />
                           </div>
                           <div className="related-info">
                               <h4 title={rel.nome}>{rel.nome}</h4>
@@ -214,7 +214,6 @@ function ProductDetailPage() {
           </div>
       )}
 
-      {/* MODAL DE ZOOM DA IMAGEM */}
       {showImageModal && (
         <div className="image-modal" onClick={() => setShowImageModal(false)}>
           <span className="modal-close">&times;</span>
